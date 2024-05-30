@@ -43,8 +43,27 @@ const getAllStates = async (country) => {
         throw new Error(err);
     }
 };
+const getAllCities = async (state, country) => {
+    const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
+    try {
+        const response = await axios.post(url, {
+            country,
+            state,
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            maxBodyLength: Infinity,
+        });
+        return response.data.data;
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
 export default {
     getAllCountries,
     getAllStates,
+    getAllCities,
 };
 //# sourceMappingURL=locations.service.js.map
