@@ -59,7 +59,33 @@ const getAllStates = async (country: string): Promise<string[]> => {
   }
 };
 
+const getAllCities = async (
+  state: string,
+  country: string
+): Promise<string[]> => {
+  const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
+  try {
+    const response = await axios.post(
+      url,
+      {
+        country,
+        state,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        maxBodyLength: Infinity,
+      }
+    );
+    return response.data.data;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
 export default {
   getAllCountries,
   getAllStates,
+  getAllCities,
 };

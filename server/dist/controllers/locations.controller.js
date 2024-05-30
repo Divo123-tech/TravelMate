@@ -19,8 +19,19 @@ const getAllStates = async (req, res) => {
         res.status(403).json({ message: "No states found" });
     }
 };
+const getAllCities = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getAllCities(req.params.state, req.params.country));
+    }
+    catch (err) {
+        res.status(403).json({ message: "No cities found" });
+    }
+};
 export default {
     getAllCountries,
     getAllStates,
+    getAllCities,
 };
 //# sourceMappingURL=locations.controller.js.map

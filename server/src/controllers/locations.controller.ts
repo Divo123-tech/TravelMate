@@ -30,7 +30,22 @@ const getAllStates = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getAllCities = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(
+        await locationsService.getAllCities(
+          req.params.state,
+          req.params.country
+        )
+      );
+  } catch (err: any) {
+    res.status(403).json({ message: "No cities found" });
+  }
+};
 export default {
   getAllCountries,
   getAllStates,
+  getAllCities,
 };
