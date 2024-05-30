@@ -20,6 +20,17 @@ const getAllCountries = async (
   }
 };
 
+const getAllStates = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(await locationsService.getAllStates(req.params.country));
+  } catch (err: any) {
+    res.status(403).json({ message: "No states found" });
+  }
+};
+
 export default {
   getAllCountries,
+  getAllStates,
 };

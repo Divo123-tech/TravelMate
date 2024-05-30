@@ -10,10 +10,9 @@ const getAllCountries = async (continent, page) => {
                 Authorization: "Bearer " + countriesTOKEN,
             },
         });
-        // if (!response.data.data) {
-        //   throw new Error("failed to get countries");
-        // }
-        console.log(response.data);
+        if (!response.data.data) {
+            throw new Error("failed to get countries");
+        }
         const countriesArray = response.data.data.map((country) => {
             return {
                 name: country.name,
@@ -27,7 +26,25 @@ const getAllCountries = async (continent, page) => {
         throw new Error(err);
     }
 };
+const getAllStates = async (country) => {
+    const url = "https://countriesnow.space/api/v0.1/countries/states";
+    try {
+        const response = await axios.post(url, { country }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            maxBodyLength: Infinity,
+        });
+        return response.data.data.states.map((state) => {
+            return state.name;
+        });
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
 export default {
     getAllCountries,
+    getAllStates,
 };
 //# sourceMappingURL=locations.service.js.map
