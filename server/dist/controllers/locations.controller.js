@@ -60,6 +60,26 @@ const getAllHotels = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+const getAllAttractions = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getAllAttractions(req.params.city, req.params.countryCode, req.query.category || "attractions"));
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
+const getYoutubeVideos = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getYoutubeVideos(req.params.city));
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
 export default {
     getAllCountries,
     getAllStates,
@@ -67,5 +87,7 @@ export default {
     getAllAirports,
     getAllFlights,
     getAllHotels,
+    getAllAttractions,
+    getYoutubeVideos,
 };
 //# sourceMappingURL=locations.controller.js.map

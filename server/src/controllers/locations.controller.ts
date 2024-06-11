@@ -113,6 +113,40 @@ const getAllHotels = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+
+interface AttractionReqInterface {
+  category: string;
+}
+
+const getAllAttractions = async (
+  req: Request<any, any, any, AttractionReqInterface>,
+  res: Response
+): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(
+        await locationsService.getAllAttractions(
+          req.params.city,
+          req.params.countryCode,
+          req.query.category || "attractions"
+        )
+      );
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const getYoutubeVideos = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(await locationsService.getYoutubeVideos(req.params.city));
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 export default {
   getAllCountries,
   getAllStates,
@@ -120,4 +154,6 @@ export default {
   getAllAirports,
   getAllFlights,
   getAllHotels,
+  getAllAttractions,
+  getYoutubeVideos,
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const countriesTOKEN = "884|oAmLCk0nENRVkaWHi4XlQ0y7joyW0BHhSZW28vh0";
-const AmadeusToken = "fxjsxE2r7QaM4TGOruFIvIJPf9Bv";
+const AmadeusToken = "nTmMCtLXDY8UMsFHW90FlyknVQvX";
 export interface CountriesInterface {
   name: string;
   iso2: string;
@@ -208,7 +208,14 @@ const getAllFlights = async (
   infants?: number,
   maxPrice?: number,
   travelClass?: travelClassType
-) => {
+): Promise<{
+  duration: string;
+  stops: string;
+  departureDate: string;
+  arrivalDate: string;
+  cabin: string;
+  url: string;
+}> => {
   let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=SGD`;
 
   const updatedUrl = populateURLWithOptionalParams(
@@ -274,6 +281,80 @@ const getAllHotels = async (
   }
 };
 
+const getAllAttractions = async (
+  city: string,
+  countryCode: string,
+  category: string
+): Promise<{
+  name: string;
+  id: string;
+  address: string;
+  city: string;
+  countryCode: string;
+  country: string;
+  url: string;
+}> => {
+  try {
+    const { lon, lat } = await getCoords(city, countryCode);
+    console.log(lon, lat);
+    //trip advisor
+    const API_KEY = "23DAF60B26D7494EBA23B858770B9A0D";
+
+    const url = `https://api.content.tripadvisor.com/api/v1/location/nearby_search?latLong=${lat}%2C${lon}&key=${API_KEY}&category=${category}&language=en`;
+
+    const response = await axios.get(url, {
+      headers: { accept: "application/json" },
+    });
+
+    return response.data.data.map((destination: any) => {
+      return {
+        name: destination.name,
+        id: destination.location_id,
+        address: destination.address_obj.address_string,
+        city,
+        countryCode,
+        country: destination.address_obj.country,
+        url: `https://www.tripadvisor.com/Search?q=${destination.name.replaceAll(
+          " ",
+          "+"
+        )}+${city}`,
+      };
+    });
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const getYoutubeVideos = async (
+  city: string
+): Promise<{
+  url: string;
+  title: string;
+  views: string;
+}> => {
+  try {
+    const response = await axios.get(
+      `https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`,
+      {
+        headers: {
+          "x-rapidapi-key":
+            "f4c0980fc1mshab3d905ffd60c17p185bb8jsn4e4e59d0d197",
+          "x-rapidapi-host": "youtube-search-and-download.p.rapidapi.com",
+        },
+      }
+    );
+    return response.data.contents.slice(0, 10).map((video: any) => {
+      return {
+        url: `https://www.youtube.com/embed/${video.video.videoId}`,
+        title: video.video.title,
+        views: video.video.viewCountText,
+      };
+    });
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
 export default {
   getAllCountries,
   getAllStates,
@@ -282,4 +363,6 @@ export default {
   getAllAirports,
   getAllFlights,
   getAllHotels,
+  getAllAttractions,
+  getYoutubeVideos,
 };
