@@ -1,22 +1,11 @@
-import locationsService, {
-  FlightInterface,
-} from "../services/locations.service.js";
+import locationsService from "../services/locations.service.js";
 import { Request, Response } from "express";
 
-type Page = Record<string, string>;
-const getAllCountries = async (
-  req: Request<any, any, any, Page>,
-  res: Response
-): Promise<void> => {
+const getAllCountries = async (req: Request, res: Response): Promise<void> => {
   try {
     res
       .status(200)
-      .json(
-        await locationsService.getAllCountries(
-          req.params.continent,
-          req.query.page
-        )
-      );
+      .json(await locationsService.getAllCountries(req.params.continent));
   } catch (err: any) {
     res.status(403).json({ message: err.message });
   }
@@ -62,6 +51,18 @@ const getAllAirports = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
+interface FlightInterface {
+  origin: string;
+  destination: string;
+  departureDate: string;
+  adults: number;
+  nonstop: boolean;
+  children?: number;
+  infants?: number;
+  maxPrice?: number;
+  travelClass?: travelClassType;
+}
 const getAllFlights = async (
   req: Request<any, any, any, FlightInterface>,
   res: Response
@@ -112,7 +113,6 @@ const getAllHotels = async (req: Request, res: Response): Promise<void> => {
     res.status(400).json({ message: err.message });
   }
 };
-
 
 interface AttractionReqInterface {
   category: string;

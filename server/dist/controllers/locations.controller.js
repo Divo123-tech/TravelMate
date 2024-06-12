@@ -3,7 +3,7 @@ const getAllCountries = async (req, res) => {
     try {
         res
             .status(200)
-            .json(await locationsService.getAllCountries(req.params.continent, req.query.page));
+            .json(await locationsService.getAllCountries(req.params.continent));
     }
     catch (err) {
         res.status(403).json({ message: err.message });

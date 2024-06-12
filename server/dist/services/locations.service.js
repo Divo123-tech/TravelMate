@@ -1,13 +1,12 @@
 import axios from "axios";
-const countriesTOKEN = "884|oAmLCk0nENRVkaWHi4XlQ0y7joyW0BHhSZW28vh0";
-const AmadeusToken = "nTmMCtLXDY8UMsFHW90FlyknVQvX";
-const getAllCountries = async (continent, page) => {
-    const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}&per_page=15&page=${page}`;
+import { getAmadeusToken } from "../utils/utils.js";
+const getAllCountries = async (continent) => {
+    const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}`;
     try {
         const response = await axios.get(url, {
             headers: {
                 Accept: "application/json",
-                Authorization: "Bearer " + countriesTOKEN,
+                Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
             },
         });
         if (!response.data.data) {
@@ -156,7 +155,7 @@ const getAllFlights = async (origin, destination, departureDate, adults = 1, non
     try {
         const response = await axios.get(updatedUrl, {
             headers: {
-                Authorization: `Bearer ${AmadeusToken}`,
+                Authorization: `Bearer ${await getAmadeusToken()}`,
             },
         });
         const data = response.data.data;
@@ -181,7 +180,7 @@ const getAllHotels = async (city, countryCode) => {
     try {
         const response = await axios.get(url, {
             headers: {
-                Authorization: `Bearer ${AmadeusToken}`,
+                Authorization: `Bearer ${process.env.AMADEUS_TOKEN}`,
             },
         });
         return response.data.data.map((hotel) => {

@@ -1,7 +1,6 @@
 import axios from "axios";
+import { getAmadeusToken } from "../utils/utils.js";
 
-const countriesTOKEN = "884|oAmLCk0nENRVkaWHi4XlQ0y7joyW0BHhSZW28vh0";
-const AmadeusToken = "nTmMCtLXDY8UMsFHW90FlyknVQvX";
 export interface CountriesInterface {
   name: string;
   iso2: string;
@@ -9,15 +8,14 @@ export interface CountriesInterface {
 }
 
 const getAllCountries = async (
-  continent: string,
-  page: string
+  continent: string
 ): Promise<CountriesInterface[]> => {
-  const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}&per_page=15&page=${page}`;
+  const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}`;
   try {
     const response = await axios.get(url, {
       headers: {
         Accept: "application/json",
-        Authorization: "Bearer " + countriesTOKEN,
+        Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
       },
     });
 
@@ -83,7 +81,10 @@ const getAllCities = async (
   }
 };
 
-const getCoords = async (city: string, countryCode: string) => {
+const getCoords = async (
+  city: string,
+  countryCode: string
+): Promise<{ lat: number; lon: number }> => {
   const API_KEY = "DAHOjQWWz9QXdO7GC5H1F0qT7UEJVvH8";
   const url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=${API_KEY}&municipality=${city}&countryCode=${countryCode}`;
   const response = await axios.get(url, {
@@ -94,7 +95,14 @@ const getCoords = async (city: string, countryCode: string) => {
   return response.data.results[0].position;
 };
 
-const getAllAirports = async (city: string, countryCode: string) => {
+interface AirportInterface {
+  name: string;
+  iata: string;
+}
+const getAllAirports = async (
+  city: string,
+  countryCode: string
+): Promise<AirportInterface[]> => {
   const apiKey = "jcrhq4rQeiVW0U+R+Whmog==YKWRBGrFM7D1QC4b";
   const url = `https://api.api-ninjas.com/v1/airports?city=${city}&country=${countryCode}`;
   try {
@@ -118,19 +126,6 @@ const getAllAirports = async (city: string, countryCode: string) => {
   }
 };
 
-type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
-export interface FlightInterface {
-  origin: string;
-  destination: string;
-  departureDate: string;
-  adults: number;
-  nonstop: boolean;
-  children?: number;
-  infants?: number;
-  maxPrice?: number;
-  travelClass?: travelClassType;
-}
-
 const populateURLWithOptionalParams = (
   params: any[],
   url: string,
@@ -142,7 +137,7 @@ const populateURLWithOptionalParams = (
   return url;
 };
 
-const convertTime = (depTimeRaw: string) => {
+const convertTime = (depTimeRaw: string): string => {
   let [hours, minutes] = depTimeRaw.split(":").map(Number);
   let totalMinutesDep = hours * 60 + minutes;
   let timeCut = 400;
@@ -198,6 +193,15 @@ const getFlightURL = (
   return finalUrl;
 };
 
+type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
+interface FlightInterface {
+  duration: string;
+  stops: string;
+  departureDate: string;
+  arrivalDate: string;
+  cabin: string;
+  url: string;
+}
 const getAllFlights = async (
   origin: string,
   destination: string,
@@ -208,14 +212,7 @@ const getAllFlights = async (
   infants?: number,
   maxPrice?: number,
   travelClass?: travelClassType
-): Promise<{
-  duration: string;
-  stops: string;
-  departureDate: string;
-  arrivalDate: string;
-  cabin: string;
-  url: string;
-}> => {
+): Promise<FlightInterface[]> => {
   let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=SGD`;
 
   const updatedUrl = populateURLWithOptionalParams(
@@ -227,7 +224,7 @@ const getAllFlights = async (
   try {
     const response = await axios.get(updatedUrl, {
       headers: {
-        Authorization: `Bearer ${AmadeusToken}`,
+        Authorization: `Bearer ${await getAmadeusToken()}`,
       },
     });
     const data = response.data.data;
@@ -249,21 +246,23 @@ const getAllFlights = async (
   }
 };
 
-const getAllHotels = async (
-  city: string,
-  countryCode: string
-): Promise<{
+interface HotelInterface {
   name: string;
   id: string;
   url: string;
-}> => {
+}
+
+const getAllHotels = async (
+  city: string,
+  countryCode: string
+): Promise<HotelInterface[]> => {
   const { lat, lon } = await getCoords(city, countryCode);
 
   const url = `https://api.amadeus.com/v1/reference-data/locations/hotels/by-geocode?latitude=${lat}&longitude=${lon}&radius=10&radiusUnit=KM&hotelSource=ALL`;
   try {
     const response = await axios.get(url, {
       headers: {
-        Authorization: `Bearer ${AmadeusToken}`,
+        Authorization: `Bearer ${process.env.AMADEUS_TOKEN}`,
       },
     });
     return response.data.data.map((hotel: any) => {
@@ -281,11 +280,7 @@ const getAllHotels = async (
   }
 };
 
-const getAllAttractions = async (
-  city: string,
-  countryCode: string,
-  category: string
-): Promise<{
+interface AttractionInterface{
   name: string;
   id: string;
   address: string;
@@ -293,7 +288,13 @@ const getAllAttractions = async (
   countryCode: string;
   country: string;
   url: string;
-}> => {
+}
+
+const getAllAttractions = async (
+  city: string,
+  countryCode: string,
+  category: string
+): Promise<AttractionInterface[]> => {
   try {
     const { lon, lat } = await getCoords(city, countryCode);
     console.log(lon, lat);
@@ -325,13 +326,14 @@ const getAllAttractions = async (
   }
 };
 
-const getYoutubeVideos = async (
-  city: string
-): Promise<{
+interface VidoeInterface {
   url: string;
   title: string;
   views: string;
-}> => {
+}
+const getYoutubeVideos = async (
+  city: string
+): Promise<VidoeInterface[]> => {
   try {
     const response = await axios.get(
       `https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`,
