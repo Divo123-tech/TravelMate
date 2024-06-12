@@ -234,6 +234,7 @@ const getYoutubeVideos = async (city) => {
             return {
                 url: `https://www.youtube.com/embed/${video.video.videoId}`,
                 title: video.video.title,
+                views: video.video.viewCountText,
             };
         });
     }
