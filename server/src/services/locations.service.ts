@@ -1,12 +1,16 @@
+//import axios
 import axios from "axios";
+//import getAmadeusToken as it refreshes every 30 minutes
 import { getAmadeusToken } from "../utils/utils.js";
 
+//create an interface for the Counrties Interface
 export interface CountriesInterface {
   name: string;
   iso2: string;
   flag: string;
 }
 
+//function that returns an array of countries within a given continent
 const getAllCountries = async (
   continent: string
 ): Promise<CountriesInterface[]> => {
@@ -19,10 +23,11 @@ const getAllCountries = async (
       },
     });
 
+    //if data doesn't exist throw an error
     if (!response.data.data) {
       throw new Error("failed to get countries");
     }
-
+    //Map the data of the response to fit the country interface
     return response.data.data.map((country: any) => {
       return {
         name: country.name,
@@ -30,11 +35,13 @@ const getAllCountries = async (
         flag: country.href.flag,
       };
     });
+    //error handling
   } catch (err: any) {
     throw new Error("No Countries Found");
   }
 };
 
+//function to get all states within a given country
 const getAllStates = async (country: string): Promise<string[]> => {
   const url = "https://countriesnow.space/api/v0.1/countries/states";
   try {
@@ -48,14 +55,21 @@ const getAllStates = async (country: string): Promise<string[]> => {
         maxBodyLength: Infinity,
       }
     );
+    //if data doesn't exist throw an error
+    if (!response.data.data) {
+      throw new Error("failed to get states");
+    }
+    //Map the data of the response to return just the name
     return response.data.data.states.map((state: any) => {
       return state.name;
     });
+    //error handling
   } catch (err: any) {
     throw new Error("No States Found");
   }
 };
 
+//function to get all the cities within a given state and country
 const getAllCities = async (
   state: string,
   country: string
@@ -75,12 +89,19 @@ const getAllCities = async (
         maxBodyLength: Infinity,
       }
     );
+    //if data doesn't exist throw an error
+    if (!response.data.data) {
+      throw new Error("failed to get states");
+    }
+
     return response.data.data;
+    //error handling
   } catch (err: any) {
     throw new Error("No Cities Found");
   }
 };
 
+//helper function that gets coordinates of a city from a given country
 const getCoords = async (
   city: string,
   countryCode: string
@@ -91,62 +112,79 @@ const getCoords = async (
       Accept: "application/json",
     },
   });
+  //returns an object {lat: number, lon: number}
   return response.data.results[0].position;
 };
 
+//create AirportInterface for the output
 interface AirportInterface {
   name: string;
   iata: string;
 }
+
+//function to get All airports within a given city and country
 const getAllAirports = async (
   city: string,
   countryCode: string
 ): Promise<AirportInterface[]> => {
-  const apiKey = "jcrhq4rQeiVW0U+R+Whmog==YKWRBGrFM7D1QC4b";
   const url = `https://api.api-ninjas.com/v1/airports?city=${city}&country=${countryCode}`;
   try {
     const response = await axios.get(url, {
       headers: {
-        "X-Api-Key": apiKey,
+        "X-Api-Key": process.env.APININJA_KEY,
       },
     });
+    //if data doesn't exist throw an error
+    if (!response.data) {
+      throw new Error("failed to get airports");
+    }
+
+    //filter the airports that are actually commercial and not air bases
     const airportsData = response.data.filter((airport: any) => {
       return airport.iata != "";
     });
+    //if data doesn't exist throw an error
     if (airportsData.length == 0) throw new Error("No Airports found");
+    //Map the data of the response to fit the airport interface
     return airportsData.map((airport: any) => {
       return {
         name: airport.name,
         iata: airport.iata,
       };
     });
+    //error handling
   } catch (err: any) {
     throw new Error("No Airports Found");
   }
 };
 
+//helper function for the flights function that populates the URL with the optional query parameters
 const populateURLWithOptionalParams = (
   params: any[],
   url: string,
   paramNames: string[]
 ): string => {
+  //iterate through the params array
   for (let i = 0; i < params.length; i++) {
+    //if the paramete exists add it to the url
     params[i] ? (url += `&${paramNames[i]}=${params[i]}`) : "";
   }
   return url;
 };
 
-const convertTime = (depTimeRaw: string): string => {
-  let [hours, minutes] = depTimeRaw.split(":").map(Number);
+//helper function that converts raw time of the flight to a url friendly time string
+const convertTime = (timeRaw: string): string => {
+  let [hours, minutes] = timeRaw.split(":").map(Number);
   let totalMinutesDep = hours * 60 + minutes;
   let timeCut = 400;
   totalMinutesDep -= timeCut;
   let h = Math.floor(totalMinutesDep / 60);
   let m = totalMinutesDep % 60;
-  let depTimeConverted = h.toString() + m.toString();
-  return depTimeConverted;
+  let timeConverted = h.toString() + m.toString();
+  return timeConverted;
 };
 
+//function that converts a duration into minutes for the flight URL
 const durationToMinutes = (duration: string): number => {
   // Use a regular expression to extract hours and minutes
   let match = duration.match(/PT(\d+H)?(\d+M)?/);
@@ -158,11 +196,13 @@ const durationToMinutes = (duration: string): number => {
 
     // Calculate total minutes
     return hours * 60 + minutes;
+    //error handling
   } else {
     throw new Error("Invalid duration format");
   }
 };
 
+//create the flight url that will redirect to the skyscanner site
 const getFlightURL = (
   flight: any,
   children: number,
@@ -179,6 +219,7 @@ const getFlightURL = (
   const cabin = flight.travelerPricings[0].fareDetailsBySegment[0].cabin;
   const duration = durationToMinutes(flight.itineraries[0].duration);
   let finalUrl = `https://www.skyscanner.com/transport/flights/${depIata}/${arrIata}/${dateformatted}/?adultsv2=1&cabinclass=${cabin}&departure-times=${depTime}-${arrTime}&duration=${duration}&childrenv2=`;
+  //iterate through the parameters and populate the url accordingly
   for (let i = 0; i < children; i++) {
     if (i == 0) {
       finalUrl += "8";
@@ -192,7 +233,10 @@ const getFlightURL = (
   return finalUrl;
 };
 
+//initialize the travelClassType which can only be 4 strings
 type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
+
+//create a flight interface to output
 interface FlightInterface {
   duration: string;
   stops: string;
@@ -201,6 +245,7 @@ interface FlightInterface {
   cabin: string;
   url: string;
 }
+//function that gets all flights on various parameters
 const getAllFlights = async (
   origin: string,
   destination: string,
@@ -214,6 +259,7 @@ const getAllFlights = async (
 ): Promise<FlightInterface[]> => {
   let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=SGD`;
 
+  //update the url
   const updatedUrl = populateURLWithOptionalParams(
     [children, infants, maxPrice, travelClass],
     url,
@@ -226,8 +272,12 @@ const getAllFlights = async (
         Authorization: `Bearer ${await getAmadeusToken()}`,
       },
     });
-    const data = response.data.data;
-    return data.map((flight: any) => {
+    //if data doesn't exist throw an error
+    if (!response.data.data) {
+      throw new Error("failed to get flights");
+    }
+    //Map the data of the response to fit the flight interface
+    return response.data.data.map((flight: any) => {
       return {
         duration: flight.itineraries[0].duration.substring(2),
         stops: flight.itineraries[0].segments.length - 1,
@@ -245,16 +295,19 @@ const getAllFlights = async (
   }
 };
 
+//create a hotel interface to output
 interface HotelInterface {
   name: string;
   id: string;
   url: string;
 }
 
+//function that returns an array of all hotels within a city and country code
 const getAllHotels = async (
   city: string,
   countryCode: string
 ): Promise<HotelInterface[]> => {
+  //use destructuring to get the latitude and longitude from getCoords
   const { lat, lon } = await getCoords(city, countryCode);
 
   const url = `https://api.amadeus.com/v1/reference-data/locations/hotels/by-geocode?latitude=${lat}&longitude=${lon}&radius=10&radiusUnit=KM&hotelSource=ALL`;
@@ -264,6 +317,13 @@ const getAllHotels = async (
         Authorization: `Bearer ${await getAmadeusToken()}`,
       },
     });
+
+    //if data doesn't exist throw an error
+    if (!response.data.data) {
+      throw new Error("failed to get hotels");
+    }
+
+    //Map the data of the response to fit the hotel interface
     return response.data.data.map((hotel: any) => {
       return {
         name: hotel.name,
@@ -274,11 +334,13 @@ const getAllHotels = async (
         )}`,
       };
     });
+    //error handling
   } catch (err: any) {
     throw new Error(err);
   }
 };
 
+//create an interface for the attractions output
 interface AttractionInterface {
   name: string;
   id: string;
@@ -289,6 +351,7 @@ interface AttractionInterface {
   url: string;
 }
 
+//function that returns an array of attractions from a given city or country
 const getAllAttractions = async (
   city: string,
   countryCode: string,
@@ -296,13 +359,20 @@ const getAllAttractions = async (
 ): Promise<AttractionInterface[]> => {
   try {
     const { lon, lat } = await getCoords(city, countryCode);
-    console.log(lon, lat);
+
     //trip advisor
     const url = `https://api.content.tripadvisor.com/api/v1/location/nearby_search?latLong=${lat}%2C${lon}&key=${process.env.TRIPADV_KEY}&category=${category}&language=en`;
 
     const response = await axios.get(url, {
       headers: { accept: "application/json" },
     });
+
+    //if data doesn't exist throw an error
+    if (!response.data.data) {
+      throw new Error("failed to get attractions");
+    }
+
+    //Map the data of the response to fit the attraction interface
 
     return response.data.data.map((destination: any) => {
       return {
@@ -318,17 +388,21 @@ const getAllAttractions = async (
         )}+${city}`,
       };
     });
+    //error handling
   } catch (err: any) {
     throw new Error(err);
   }
 };
 
-interface VidoeInterface {
+//create an interface for the videos output
+interface VideoInterface {
   url: string;
   title: string;
   views: string;
 }
-const getYoutubeVideos = async (city: string): Promise<VidoeInterface[]> => {
+
+//function that returns an array of videos
+const getYoutubeVideos = async (city: string): Promise<VideoInterface[]> => {
   try {
     const response = await axios.get(
       `https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`,
@@ -339,6 +413,11 @@ const getYoutubeVideos = async (city: string): Promise<VidoeInterface[]> => {
         },
       }
     );
+    //if data doesn't exist throw an error
+    if (!response.data.contents) {
+      throw new Error("failed to get videos");
+    }
+    //takes only the first 10 videos and maps the results to fit the video interface
     return response.data.contents.slice(0, 10).map((video: any) => {
       return {
         url: `https://www.youtube.com/embed/${video.video.videoId}`,
