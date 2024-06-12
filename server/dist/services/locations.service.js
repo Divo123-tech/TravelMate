@@ -60,8 +60,7 @@ const getAllCities = async (state, country) => {
     }
 };
 const getCoords = async (city, countryCode) => {
-    const API_KEY = "DAHOjQWWz9QXdO7GC5H1F0qT7UEJVvH8";
-    const url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=${API_KEY}&municipality=${city}&countryCode=${countryCode}`;
+    const url = `https://api.tomtom.com/search/2/structuredGeocode.json?key=${process.env.TOMTOM_KEY}&municipality=${city}&countryCode=${countryCode}`;
     const response = await axios.get(url, {
         headers: {
             Accept: "application/json",
@@ -180,7 +179,7 @@ const getAllHotels = async (city, countryCode) => {
     try {
         const response = await axios.get(url, {
             headers: {
-                Authorization: `Bearer ${process.env.AMADEUS_TOKEN}`,
+                Authorization: `Bearer ${await getAmadeusToken()}`,
             },
         });
         return response.data.data.map((hotel) => {
@@ -200,8 +199,7 @@ const getAllAttractions = async (city, countryCode, category) => {
         const { lon, lat } = await getCoords(city, countryCode);
         console.log(lon, lat);
         //trip advisor
-        const API_KEY = "23DAF60B26D7494EBA23B858770B9A0D";
-        const url = `https://api.content.tripadvisor.com/api/v1/location/nearby_search?latLong=${lat}%2C${lon}&key=${API_KEY}&category=${category}&language=en`;
+        const url = `https://api.content.tripadvisor.com/api/v1/location/nearby_search?latLong=${lat}%2C${lon}&key=${process.env.TRIPADV_KEY}&category=${category}&language=en`;
         const response = await axios.get(url, {
             headers: { accept: "application/json" },
         });
@@ -225,7 +223,7 @@ const getYoutubeVideos = async (city) => {
     try {
         const response = await axios.get(`https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`, {
             headers: {
-                "x-rapidapi-key": "f4c0980fc1mshab3d905ffd60c17p185bb8jsn4e4e59d0d197",
+                "x-rapidapi-key": process.env.YT_KEY,
                 "x-rapidapi-host": "youtube-search-and-download.p.rapidapi.com",
             },
         });
