@@ -8,9 +8,6 @@ dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use("/locations", locationRouter);
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
 app.listen(port, () => {
     console.log("listening on port " + port);
 });
