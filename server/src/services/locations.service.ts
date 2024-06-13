@@ -176,12 +176,7 @@ const populateURLWithOptionalParams = (
 const convertTime = (timeRaw: string): string => {
   let [hours, minutes] = timeRaw.split(":").map(Number);
   let totalMinutesDep = hours * 60 + minutes;
-  let timeCut = 400;
-  totalMinutesDep -= timeCut;
-  let h = Math.floor(totalMinutesDep / 60);
-  let m = totalMinutesDep % 60;
-  let timeConverted = h.toString() + m.toString();
-  return timeConverted;
+  return totalMinutesDep.toString();
 };
 
 //function that converts a duration into minutes for the flight URL
