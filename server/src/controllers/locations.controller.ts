@@ -147,6 +147,26 @@ const getYoutubeVideos = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getCountryDetails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(
+        await locationsService.getCountryDetails(
+          req.params.countryCodeFrom,
+          req.params.countryCodeTo,
+          req.params.currencyFrom,
+          req.params.currencyTo
+        )
+      );
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 export default {
   getAllCountries,
   getAllStates,
@@ -156,4 +176,5 @@ export default {
   getAllHotels,
   getAllAttractions,
   getYoutubeVideos,
+  getCountryDetails,
 };
