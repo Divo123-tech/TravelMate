@@ -8,6 +8,7 @@ router.get("/airports/:city/:countryCode", locationsController.getAllAirports);
 router.get("/flights", locationsController.getAllFlights);
 router.get("/hotels/:city/:countryCode", locationsController.getAllHotels);
 router.get("/attractions/:city/:countryCode", locationsController.getAllAttractions);
+router.get("/details/:countryCodeFrom/:countryCodeTo/:currencyFrom/:currencyTo", locationsController.getCountryDetails);
 router.get("/videos/:city", locationsController.getYoutubeVideos);
 export default router;
 //# sourceMappingURL=locations.router.js.map

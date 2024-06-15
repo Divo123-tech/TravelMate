@@ -8,6 +8,7 @@ export interface CountriesInterface {
   name: string;
   iso2: string;
   flag: string;
+  currency: string;
 }
 
 //function that returns an array of countries within a given continent
@@ -33,6 +34,7 @@ const getAllCountries = async (
         name: country.name,
         iso2: country.iso2,
         flag: country.href.flag,
+        currency: country.currency,
       };
     });
     //error handling
@@ -425,6 +427,46 @@ const getYoutubeVideos = async (city: string): Promise<VideoInterface[]> => {
   }
 };
 
+//create an interface for the Country Details output
+interface CountryDetailsInterface {
+  visaStatus: string;
+  visaDuration: string;
+  conversionRate: number;
+  holidays: [{ date: string; name: string }];
+}
+
+//function that returns details of a country
+const getCountryDetails = async (
+  countryCodeFrom: string,
+  countryCodeTo: string,
+  currencyFrom: string,
+  currencyTo: string
+): Promise<CountryDetailsInterface> => {
+  //get the current year
+  const currentYear = new Date().getFullYear();
+  const holidayURL = `https://date.nager.at/api/v3/publicholidays/${currentYear}/${countryCodeTo}`;
+  const visaURL = `https://rough-sun-2523.fly.dev/api/${countryCodeFrom}/${countryCodeTo}`;
+  const excRateURL = `https://v6.exchangerate-api.com/v6/${process.env.EXCRATE_KEY}/pair/${currencyFrom}/${currencyTo}`;
+  try {
+    const publicholidays = (await axios.get(holidayURL)).data.slice(0, 5);
+    const visaStatus = (await axios.get(visaURL)).data;
+    const exchangeRate = (await axios.get(excRateURL)).data;
+    return {
+      visaStatus: visaStatus.category,
+      visaDuration: visaStatus.dur,
+      conversionRate: exchangeRate.conversion_rate,
+      holidays: publicholidays.map((holiday: any) => {
+        return {
+          date: holiday.date,
+          name: `${holiday.localName} | ${holiday.name}`,
+        };
+      }),
+    };
+  } catch (err) {
+    throw new Error("failed to get details");
+  }
+};
+
 export default {
   getAllCountries,
   getAllStates,
@@ -435,4 +477,5 @@ export default {
   getAllHotels,
   getAllAttractions,
   getYoutubeVideos,
+  getCountryDetails,
 };

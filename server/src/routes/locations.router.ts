@@ -12,5 +12,9 @@ router.get(
   "/attractions/:city/:countryCode",
   locationsController.getAllAttractions
 );
+router.get(
+  "/details/:countryCodeFrom/:countryCodeTo/:currencyFrom/:currencyTo",
+  locationsController.getCountryDetails
+);
 router.get("/videos/:city", locationsController.getYoutubeVideos);
 export default router;

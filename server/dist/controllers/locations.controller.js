@@ -80,6 +80,16 @@ const getYoutubeVideos = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+const getCountryDetails = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getCountryDetails(req.params.countryCodeFrom, req.params.countryCodeTo, req.params.currencyFrom, req.params.currencyTo));
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
 export default {
     getAllCountries,
     getAllStates,
@@ -89,5 +99,6 @@ export default {
     getAllHotels,
     getAllAttractions,
     getYoutubeVideos,
+    getCountryDetails,
 };
 //# sourceMappingURL=locations.controller.js.map
