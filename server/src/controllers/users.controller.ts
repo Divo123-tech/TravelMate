@@ -7,7 +7,7 @@ const editUserDetails = async (req: Request, res: Response) => {
       .status(200)
       .json(
         await usersService.editUserDetails(
-          req.params.id,
+          req.body.email,
           req.body.name,
           req.body.passport,
           req.body.countryOfOrigin
