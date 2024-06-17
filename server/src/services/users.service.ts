@@ -14,14 +14,14 @@ const addUser = async (email: string, picture: string): Promise<void> => {
 };
 
 const editUserDetails = async (
-  id: string,
+  email: string,
   name: string,
   passport: string,
   countryOfOrigin: string
 ) => {
   try {
-    return await userModel.findByIdAndUpdate(
-      id,
+    return await userModel.findOneAndUpdate(
+      { email },
       {
         $set: {
           name,

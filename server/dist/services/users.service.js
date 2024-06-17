@@ -11,9 +11,9 @@ const addUser = async (email, picture) => {
         throw new Error(err);
     }
 };
-const editUserDetails = async (id, name, passport, countryOfOrigin) => {
+const editUserDetails = async (email, name, passport, countryOfOrigin) => {
     try {
-        return await userModel.findByIdAndUpdate(id, {
+        return await userModel.findOneAndUpdate({ email }, {
             $set: {
                 name,
                 passport,
