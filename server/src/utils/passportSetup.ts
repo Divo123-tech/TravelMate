@@ -7,7 +7,6 @@ const config = {
   CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
 };
 
-console.log(config);
 passport.use(
   new Strategy(
     {
@@ -17,7 +16,6 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log(profile);
         done(null, profile);
       } catch (error) {
         done(error);

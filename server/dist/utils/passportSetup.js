@@ -6,14 +6,12 @@ const config = {
     CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 };
-console.log(config);
 passport.use(new Strategy({
     clientID: config.CLIENT_ID,
     clientSecret: config.CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/google/callback",
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        console.log(profile);
         done(null, profile);
     }
     catch (error) {
