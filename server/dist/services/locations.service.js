@@ -1,7 +1,7 @@
 //import axios
 import axios from "axios";
 //import getAmadeusToken as it refreshes every 30 minutes
-import { getAmadeusToken } from "../utils/utils.js";
+import { getAmadeusToken } from "../utils/amadeusKey.js";
 //function that returns an array of countries within a given continent
 const getAllCountries = async (continent) => {
     const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}`;
