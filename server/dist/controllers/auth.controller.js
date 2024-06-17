@@ -4,6 +4,6 @@ export const googleAuth = passport.authenticate("google", {
 });
 export const googleAuthCallback = passport.authenticate("google");
 export const redirectToHome = (req, res) => {
-    res.redirect("http://localhost:5500");
+    res.redirect(process.env.REDIRECT_URI);
 };
 //# sourceMappingURL=auth.controller.js.map
