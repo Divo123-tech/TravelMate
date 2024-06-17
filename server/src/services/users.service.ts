@@ -13,7 +13,31 @@ const addUser = async (email: string, picture: string): Promise<void> => {
   }
 };
 
+const editUserDetails = async (
+  id: string,
+  name: string,
+  passport: string,
+  countryOfOrigin: string
+) => {
+  try {
+    return await userModel.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          name,
+          passport,
+          countryOfOrigin,
+        },
+      },
+      { new: true }
+    );
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
 export default {
   addUser,
   userExists,
+  editUserDetails,
 };

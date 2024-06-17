@@ -5,6 +5,7 @@ import session from "express-session";
 
 import locationRouter from "../routes/locations.router.js";
 import authRouter from "../routes/auth.router.js";
+import usersRouter from "../routes/users.router.js";
 import passport from "../utils/passportSetup.js";
 
 const app = express();
@@ -23,4 +24,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/locations", locationRouter);
 app.use("/auth/google", authRouter);
+app.use("/users", usersRouter);
 export default app;
