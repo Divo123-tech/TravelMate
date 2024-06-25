@@ -12,6 +12,7 @@ export interface TripInterface {
 }
 
 export interface UserInterface {
+  googleId: string;
   email: string;
   picture: string;
   name?: string;
@@ -22,6 +23,10 @@ export interface UserInterface {
 }
 
 const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
+  googleId: {
+    required: true,
+    type: String,
+  },
   email: {
     required: true,
     type: String,

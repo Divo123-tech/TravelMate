@@ -5,23 +5,31 @@ const userExists = async (email: string): Promise<boolean> => {
   return user ? true : false;
 };
 
-const addUser = async (email: string, picture: string): Promise<void> => {
+const addUser = async (
+  googleId: string,
+  email: string,
+  picture: string
+): Promise<void> => {
   try {
-    await userModel.create({ email: email, picture: picture });
+    await userModel.create({
+      googleId: googleId,
+      email: email,
+      picture: picture,
+    });
   } catch (err: any) {
     throw new Error(err);
   }
 };
 
 const editUserDetails = async (
-  email: string,
+  googleId: string,
   name: string,
   passport: string,
   countryOfOrigin: string
 ) => {
   try {
     return await userModel.findOneAndUpdate(
-      { email },
+      { googleId },
       {
         $set: {
           name,
@@ -36,8 +44,17 @@ const editUserDetails = async (
   }
 };
 
+const getUserDetails = async (googleId: string) => {
+  try {
+    return await userModel.findOne({ googleId });
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
 export default {
   addUser,
   userExists,
   editUserDetails,
+  getUserDetails,
 };
