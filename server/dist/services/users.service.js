@@ -3,17 +3,21 @@ const userExists = async (email) => {
     const user = await userModel.findOne({ email: email });
     return user ? true : false;
 };
-const addUser = async (email, picture) => {
+const addUser = async (googleId, email, picture) => {
     try {
-        await userModel.create({ email: email, picture: picture });
+        await userModel.create({
+            googleId: googleId,
+            email: email,
+            picture: picture,
+        });
     }
     catch (err) {
         throw new Error(err);
     }
 };
-const editUserDetails = async (email, name, passport, countryOfOrigin) => {
+const editUserDetails = async (googleId, name, passport, countryOfOrigin) => {
     try {
-        return await userModel.findOneAndUpdate({ email }, {
+        return await userModel.findOneAndUpdate({ googleId }, {
             $set: {
                 name,
                 passport,
@@ -25,9 +29,18 @@ const editUserDetails = async (email, name, passport, countryOfOrigin) => {
         throw new Error(err.message);
     }
 };
+const getUserDetails = async (googleId) => {
+    try {
+        return await userModel.findOne({ googleId });
+    }
+    catch (err) {
+        throw new Error(err.message);
+    }
+};
 export default {
     addUser,
     userExists,
     editUserDetails,
+    getUserDetails,
 };
 //# sourceMappingURL=users.service.js.map

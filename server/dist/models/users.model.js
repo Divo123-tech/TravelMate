@@ -1,5 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 const userSchema = new Schema({
+    googleId: {
+        required: true,
+        type: String,
+    },
     email: {
         required: true,
         type: String,
