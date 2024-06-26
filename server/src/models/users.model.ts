@@ -1,16 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface TripInterface {
-  startDate: Date;
-  endDate: Date;
-  countries: string[];
-  states?: string[];
-  cities?: string[];
-  activities?: string[];
-  flights?: string[];
-  hotels?: string[];
-}
-
 export interface UserInterface {
   googleId: string;
   email: string;
@@ -18,8 +7,7 @@ export interface UserInterface {
   name?: string;
   passport?: string;
   countryOfOrigin?: string;
-  friends?: [string];
-  trips?: [TripInterface];
+  trips?: [string];
 }
 
 const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
@@ -47,12 +35,8 @@ const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
     type: String,
     default: "",
   },
-  friends: {
-    type: [String],
-    default: [],
-  },
   trips: {
-    type: [{}],
+    type: [String],
     default: [],
   },
 });

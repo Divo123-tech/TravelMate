@@ -24,12 +24,8 @@ const userSchema = new Schema({
         type: String,
         default: "",
     },
-    friends: {
-        type: [String],
-        default: [],
-    },
     trips: {
-        type: [{}],
+        type: [String],
         default: [],
     },
 });

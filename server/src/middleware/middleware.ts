@@ -4,7 +4,6 @@ import cors from "cors";
 import session from "express-session";
 import dotenv from "dotenv";
 dotenv.config();
-
 import passport from "../utils/passportSetup.js";
 import usersService from "../services/users.service.js";
 import jwt from "jsonwebtoken";

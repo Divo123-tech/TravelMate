@@ -4,17 +4,15 @@ import axios from "axios";
 import { getAmadeusToken } from "../utils/amadeusKey.js";
 
 //create an interface for the Counrties Interface
-export interface CountriesInterface {
+export type countryType = {
   name: string;
   iso2: string;
   flag: string;
   currency: string;
-}
+};
 
 //function that returns an array of countries within a given continent
-const getAllCountries = async (
-  continent: string
-): Promise<CountriesInterface[]> => {
+const getAllCountries = async (continent: string): Promise<countryType[]> => {
   const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}`;
   try {
     const response = await axios.get(url, {
@@ -43,8 +41,15 @@ const getAllCountries = async (
   }
 };
 
+export type stateType = {
+  name: string;
+  code: string;
+  countryName: string;
+  countryCode: string;
+};
+
 //function to get all states within a given country
-const getAllStates = async (country: string): Promise<string[]> => {
+const getAllStates = async (country: string): Promise<stateType[]> => {
   const url = "https://countriesnow.space/api/v0.1/countries/states";
   try {
     const response = await axios.post(
@@ -63,7 +68,12 @@ const getAllStates = async (country: string): Promise<string[]> => {
     }
     //Map the data of the response to return just the name
     return response.data.data.states.map((state: any) => {
-      return state.name;
+      return {
+        name: state.name,
+        code: state.state_code,
+        countryName: response.data.name,
+        countryCode: response.data.iso3,
+      };
     });
     //error handling
   } catch (err: any) {
@@ -71,11 +81,17 @@ const getAllStates = async (country: string): Promise<string[]> => {
   }
 };
 
+export type cityType = {
+  name: string;
+  country: string;
+  state: string;
+};
+
 //function to get all the cities within a given state and country
 const getAllCities = async (
   state: string,
   country: string
-): Promise<string[]> => {
+): Promise<cityType[]> => {
   const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
   try {
     const response = await axios.post(
@@ -96,7 +112,13 @@ const getAllCities = async (
       throw new Error("failed to get states");
     }
 
-    return response.data.data;
+    return response.data.data.map((city: any) => {
+      return {
+        name: city,
+        country,
+        state,
+      };
+    });
     //error handling
   } catch (err: any) {
     throw new Error("No Cities Found");
@@ -119,16 +141,18 @@ const getCoords = async (
 };
 
 //create AirportInterface for the output
-interface AirportInterface {
+type airportType = {
   name: string;
+  city: string;
+  countryCode: string;
   iata: string;
-}
+};
 
 //function to get All airports within a given city and country
 const getAllAirports = async (
   city: string,
   countryCode: string
-): Promise<AirportInterface[]> => {
+): Promise<airportType[]> => {
   const url = `https://api.api-ninjas.com/v1/airports?city=${city}&country=${countryCode}`;
   try {
     const response = await axios.get(url, {
@@ -148,10 +172,13 @@ const getAllAirports = async (
     //if data doesn't exist throw an error
     if (airportsData.length == 0) throw new Error("No Airports found");
     //Map the data of the response to fit the airport interface
+    console.log(airportsData);
     return airportsData.map((airport: any) => {
       return {
         name: airport.name,
         iata: airport.iata,
+        city,
+        countryCode,
       };
     });
     //error handling
@@ -234,14 +261,16 @@ const getFlightURL = (
 type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
 
 //create a flight interface to output
-interface FlightInterface {
+export type flightType = {
+  origin: string;
+  destination: string;
   duration: string;
   stops: string;
   departureDate: string;
   arrivalDate: string;
   cabin: string;
   url: string;
-}
+};
 //function that gets all flights on various parameters
 const getAllFlights = async (
   origin: string,
@@ -253,7 +282,7 @@ const getAllFlights = async (
   infants?: number,
   maxPrice?: number,
   travelClass?: travelClassType
-): Promise<FlightInterface[]> => {
+): Promise<flightType[]> => {
   let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=SGD`;
 
   //update the url
@@ -276,6 +305,8 @@ const getAllFlights = async (
     //Map the data of the response to fit the flight interface
     return response.data.data.map((flight: any) => {
       return {
+        origin,
+        destination,
         duration: flight.itineraries[0].duration.substring(2),
         stops: flight.itineraries[0].segments.length - 1,
         departureDate: flight.itineraries[0].segments[0].departure.at,
@@ -293,17 +324,19 @@ const getAllFlights = async (
 };
 
 //create a hotel interface to output
-interface HotelInterface {
+export type hotelType = {
   name: string;
   id: string;
   url: string;
-}
+  city: string;
+  countryCode: string;
+};
 
 //function that returns an array of all hotels within a city and country code
 const getAllHotels = async (
   city: string,
   countryCode: string
-): Promise<HotelInterface[]> => {
+): Promise<hotelType[]> => {
   //use destructuring to get the latitude and longitude from getCoords
   const { lat, lon } = await getCoords(city, countryCode);
 
@@ -329,6 +362,8 @@ const getAllHotels = async (
           " ",
           "+"
         )}`,
+        city,
+        countryCode,
       };
     });
     //error handling
@@ -338,7 +373,7 @@ const getAllHotels = async (
 };
 
 //create an interface for the attractions output
-interface AttractionInterface {
+export type attractionType = {
   name: string;
   id: string;
   address: string;
@@ -346,14 +381,14 @@ interface AttractionInterface {
   countryCode: string;
   country: string;
   url: string;
-}
+};
 
 //function that returns an array of attractions from a given city or country
 const getAllAttractions = async (
   city: string,
   countryCode: string,
   category: string
-): Promise<AttractionInterface[]> => {
+): Promise<attractionType[]> => {
   try {
     const { lon, lat } = await getCoords(city, countryCode);
 
@@ -392,14 +427,14 @@ const getAllAttractions = async (
 };
 
 //create an interface for the videos output
-interface VideoInterface {
+type videoType = {
   url: string;
   title: string;
   views: string;
-}
+};
 
 //function that returns an array of videos
-const getYoutubeVideos = async (city: string): Promise<VideoInterface[]> => {
+const getYoutubeVideos = async (city: string): Promise<videoType[]> => {
   try {
     const response = await axios.get(
       `https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`,

@@ -47,7 +47,12 @@ const getAllStates = async (country) => {
         }
         //Map the data of the response to return just the name
         return response.data.data.states.map((state) => {
-            return state.name;
+            return {
+                name: state.name,
+                code: state.state_code,
+                countryName: response.data.name,
+                countryCode: response.data.iso3,
+            };
         });
         //error handling
     }
@@ -72,7 +77,13 @@ const getAllCities = async (state, country) => {
         if (!response.data.data) {
             throw new Error("failed to get states");
         }
-        return response.data.data;
+        return response.data.data.map((city) => {
+            return {
+                name: city,
+                country,
+                state,
+            };
+        });
         //error handling
     }
     catch (err) {
@@ -111,10 +122,13 @@ const getAllAirports = async (city, countryCode) => {
         if (airportsData.length == 0)
             throw new Error("No Airports found");
         //Map the data of the response to fit the airport interface
+        console.log(airportsData);
         return airportsData.map((airport) => {
             return {
                 name: airport.name,
                 iata: airport.iata,
+                city,
+                countryCode,
             };
         });
         //error handling
@@ -199,6 +213,8 @@ const getAllFlights = async (origin, destination, departureDate, adults = 1, non
         //Map the data of the response to fit the flight interface
         return response.data.data.map((flight) => {
             return {
+                origin,
+                destination,
                 duration: flight.itineraries[0].duration.substring(2),
                 stops: flight.itineraries[0].segments.length - 1,
                 departureDate: flight.itineraries[0].segments[0].departure.at,
@@ -233,6 +249,8 @@ const getAllHotels = async (city, countryCode) => {
                 name: hotel.name,
                 id: hotel.hotelId,
                 url: `https://www.tripadvisor.com/Search?q=${hotel.name.replaceAll(" ", "+")}`,
+                city,
+                countryCode,
             };
         });
         //error handling
