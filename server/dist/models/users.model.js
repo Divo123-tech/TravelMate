@@ -25,7 +25,7 @@ const userSchema = new Schema({
         default: "",
     },
     trips: {
-        type: [String],
+        type: [mongoose.Types.ObjectId],
         default: [],
     },
 });

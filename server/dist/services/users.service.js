@@ -37,10 +37,19 @@ const getUserDetails = async (googleId) => {
         throw new Error(err.message);
     }
 };
+const addTrip = async (googleId, tripId) => {
+    try {
+        return await userModel.findOneAndUpdate({ googleId }, { $push: { trips: tripId } }, { new: true });
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
 export default {
     addUser,
     userExists,
     editUserDetails,
     getUserDetails,
+    addTrip,
 };
 //# sourceMappingURL=users.service.js.map

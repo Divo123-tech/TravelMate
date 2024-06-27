@@ -10,8 +10,8 @@ import {
 
 export interface TripInterface {
   name: string;
-  owner: mongoose.Schema.Types.ObjectId;
-  collaborators?: mongoose.Schema.Types.ObjectId[];
+  owner: mongoose.Types.ObjectId;
+  collaborators?: mongoose.Types.ObjectId[];
   startDate: Date;
   endDate?: Date;
   countries?: countryType[];
@@ -30,6 +30,7 @@ const tripSchema: Schema<TripInterface> = new Schema<TripInterface>({
   owner: {
     required: true,
     type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
   },
   collaborators: {
     type: [mongoose.Schema.Types.ObjectId],
@@ -42,27 +43,27 @@ const tripSchema: Schema<TripInterface> = new Schema<TripInterface>({
   },
   countries: {
     default: [],
-    type: [String],
+    type: [{}],
   },
   states: {
     default: [],
-    type: [String],
+    type: [{}],
   },
   cities: {
     default: [],
-    type: [String],
+    type: [{}],
   },
   activities: {
     default: [],
-    type: [String],
+    type: [{}],
   },
   flights: {
     default: [],
-    type: [String],
+    type: [{}],
   },
   hotels: {
     default: [],
-    type: [String],
+    type: [{}],
   },
 });
 

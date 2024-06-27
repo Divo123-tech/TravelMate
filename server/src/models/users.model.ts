@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, mongo } from "mongoose";
 
 export interface UserInterface {
   googleId: string;
@@ -7,7 +7,7 @@ export interface UserInterface {
   name?: string;
   passport?: string;
   countryOfOrigin?: string;
-  trips?: [string];
+  trips?: [mongoose.Types.ObjectId];
 }
 
 const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
@@ -36,7 +36,7 @@ const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
     default: "",
   },
   trips: {
-    type: [String],
+    type: [mongoose.Types.ObjectId],
     default: [],
   },
 });

@@ -1,0 +1,1 @@
+{"version":3,"file":"trips.router.js","sourceRoot":"","sources":["../../src/routes/trips.router.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,eAAe,MAAM,mCAAmC,CAAC;AAChE,MAAM,MAAM,GAAG,MAAM,EAAE,CAAC;AAExB,MAAM,CAAC,IAAI,CAAC,GAAG,EAAE,eAAe,CAAC,OAAO,CAAC,CAAC;AAC1C,MAAM,CAAC,GAAG,CAAC,UAAU,EAAE,eAAe,CAAC,cAAc,CAAC,CAAC;AAEvD,eAAe,MAAM,CAAC"}

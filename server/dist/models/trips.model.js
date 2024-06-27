@@ -7,6 +7,7 @@ const tripSchema = new Schema({
     owner: {
         required: true,
         type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
     },
     collaborators: {
         type: [mongoose.Schema.Types.ObjectId],
@@ -19,27 +20,27 @@ const tripSchema = new Schema({
     },
     countries: {
         default: [],
-        type: [String],
+        type: [{}],
     },
     states: {
         default: [],
-        type: [String],
+        type: [{}],
     },
     cities: {
         default: [],
-        type: [String],
+        type: [{}],
     },
     activities: {
         default: [],
-        type: [String],
+        type: [{}],
     },
     flights: {
         default: [],
-        type: [String],
+        type: [{}],
     },
     hotels: {
         default: [],
-        type: [String],
+        type: [{}],
     },
 });
 export default mongoose.model("trips", tripSchema);
