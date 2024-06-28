@@ -15,7 +15,49 @@ const addTrip = async (userId: mongoose.Types.ObjectId, tripName: string) => {
 
 const getTripDetails = async (tripId: string) => {
   try {
-    return await tripsModel.findById(tripId);
+    return await tripsModel
+      .findById(tripId)
+      .populate("owner")
+      .populate("collaborators")
+      .exec();
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const deleteTrip = async (tripId: string) => {
+  try {
+    return await tripsModel.findByIdAndDelete(tripId);
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const addCollaborator = async (
+  tripId: string,
+  collaboratorId: mongoose.Types.ObjectId
+) => {
+  try {
+    return await tripsModel.findByIdAndUpdate(
+      tripId,
+      { $push: { collaborators: collaboratorId } },
+      { new: true }
+    );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const removeCollaborator = async (
+  tripId: string,
+  collaboratorId: mongoose.Types.ObjectId
+) => {
+  try {
+    return await tripsModel.findByIdAndUpdate(
+      tripId,
+      { $pull: { collaborators: collaboratorId } },
+      { new: true }
+    );
   } catch (err: any) {
     throw new Error(err);
   }
@@ -24,4 +66,7 @@ const getTripDetails = async (tripId: string) => {
 export default {
   addTrip,
   getTripDetails,
+  deleteTrip,
+  addCollaborator,
+  removeCollaborator,
 };

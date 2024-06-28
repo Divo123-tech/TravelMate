@@ -12,6 +12,7 @@ const tripSchema = new Schema({
     collaborators: {
         type: [mongoose.Schema.Types.ObjectId],
         default: [],
+        ref: "users",
     },
     startDate: {
         required: true,

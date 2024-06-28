@@ -38,7 +38,11 @@ export const googleAuthCallback = passport.authenticate("google", {
   failureRedirect: "/failure",
 });
 
-export const redirectToHome = async (req: Request, res: Response) => {
+export const redirectToHome = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     if (!req.user) {
       throw new Error("failed to verify user");

@@ -38,6 +38,7 @@ const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
   trips: {
     type: [mongoose.Types.ObjectId],
     default: [],
+    ref: "trips",
   },
 });
 

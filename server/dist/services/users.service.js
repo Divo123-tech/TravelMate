@@ -1,4 +1,5 @@
 import userModel from "../models/users.model.js";
+import mongoose from "mongoose";
 const userExists = async (email) => {
     const user = await userModel.findOne({ email: email });
     return user ? true : false;
@@ -31,7 +32,15 @@ const editUserDetails = async (googleId, name, passport, countryOfOrigin) => {
 };
 const getUserDetails = async (googleId) => {
     try {
-        return await userModel.findOne({ googleId });
+        return await userModel.findOne({ googleId }).populate("trips").exec();
+    }
+    catch (err) {
+        throw new Error(err.message);
+    }
+};
+const findUserById = async (id) => {
+    try {
+        return await userModel.findById(id);
     }
     catch (err) {
         throw new Error(err.message);
@@ -39,7 +48,25 @@ const getUserDetails = async (googleId) => {
 };
 const addTrip = async (googleId, tripId) => {
     try {
-        return await userModel.findOneAndUpdate({ googleId }, { $push: { trips: tripId } }, { new: true });
+        return await userModel.findOneAndUpdate({ googleId }, {
+            $push: {
+                trips: typeof tripId == "string"
+                    ? new mongoose.Types.ObjectId(tripId)
+                    : tripId,
+            },
+        }, { new: true });
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
+const deleteTrip = async (googleId, tripId) => {
+    try {
+        return await userModel.findOneAndUpdate({ googleId }, {
+            $pull: {
+                trips: tripId,
+            },
+        }, { new: true });
     }
     catch (err) {
         throw new Error(err);
@@ -51,5 +78,7 @@ export default {
     editUserDetails,
     getUserDetails,
     addTrip,
+    deleteTrip,
+    findUserById,
 };
 //# sourceMappingURL=users.service.js.map

@@ -27,6 +27,7 @@ const userSchema = new Schema({
     trips: {
         type: [mongoose.Types.ObjectId],
         default: [],
+        ref: "trips",
     },
 });
 export default mongoose.model("users", userSchema);
