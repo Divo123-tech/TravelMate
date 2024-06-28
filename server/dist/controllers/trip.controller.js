@@ -58,11 +58,12 @@ const deleteTrip = async (req, res) => {
             //delete the trip from the owner's database and
             res.status(200).json(await tripsService.deleteTrip(req.params.tripId));
         }
-        //else just return with a success after removing it from the user's trips array
+        //else remove the collaborator from the trip
         else {
             const user = await usersService.getUserDetails(req.params.id);
-            await tripsService.removeCollaborator(req.params.tripId, user?._id);
-            res.status(200).json({ message: "success" });
+            res
+                .status(200)
+                .json(await tripsService.removeCollaborator(req.params.tripId, user?._id));
         }
     }
     catch (err) {

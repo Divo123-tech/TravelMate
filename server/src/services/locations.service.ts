@@ -502,6 +502,18 @@ const getCountryDetails = async (
   }
 };
 
+const getLocationTime = async (city: string, countryCode: string) => {
+  const { lon, lat } = await getCoords(city, countryCode);
+  const response = await axios.get(
+    `https://timeapi.io/api/Time/current/coordinate?latitude=${lat}&longitude=${lon}`
+  );
+  return {
+    date: response.data.date,
+    time: response.data.time,
+    timeZone: response.data.timeZone,
+  };
+};
+
 export default {
   getAllCountries,
   getAllStates,
@@ -513,4 +525,5 @@ export default {
   getAllAttractions,
   getYoutubeVideos,
   getCountryDetails,
+  getLocationTime,
 };

@@ -17,4 +17,5 @@ router.get(
   locationsController.getCountryDetails
 );
 router.get("/videos/:city", locationsController.getYoutubeVideos);
+router.get("/time/:city/:countryCode", locationsController.getLocationTime);
 export default router;

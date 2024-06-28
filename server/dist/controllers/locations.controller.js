@@ -90,6 +90,16 @@ const getCountryDetails = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+const getLocationTime = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getLocationTime(req.params.city, req.params.countryCode));
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
 export default {
     getAllCountries,
     getAllStates,
@@ -100,5 +110,6 @@ export default {
     getAllAttractions,
     getYoutubeVideos,
     getCountryDetails,
+    getLocationTime,
 };
 //# sourceMappingURL=locations.controller.js.map
