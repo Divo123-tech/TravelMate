@@ -103,11 +103,45 @@ const removeCollaborator = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+const addLocationToTrip = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await tripsService.addLocationToTrip(req.params.tripId, req.body.location, req.body.locationType));
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
+const removeLocationFromTrip = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await tripsService.removeLocationFromTrip(req.params.tripId, req.body.location, req.body.locationType));
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
+const editTripDetails = async (req, res) => {
+    try {
+        const { name, startDate, endDate } = req.body;
+        res
+            .status(200)
+            .json(await tripsService.editTripDetails(req.params.tripId, name, startDate, endDate));
+    }
+    catch (err) {
+        throw new Error(err);
+    }
+};
 export default {
     addTrip,
     getTripDetails,
     deleteTrip,
     addCollaborator,
     removeCollaborator,
+    addLocationToTrip,
+    removeLocationFromTrip,
+    editTripDetails,
 };
 //# sourceMappingURL=trip.controller.js.map

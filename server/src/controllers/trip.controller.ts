@@ -132,10 +132,63 @@ const removeCollaborator = async (
   }
 };
 
+const addLocationToTrip = async (req: Request, res: Response) => {
+  try {
+    res
+      .status(200)
+      .json(
+        await tripsService.addLocationToTrip(
+          req.params.tripId,
+          req.body.location,
+          req.body.locationType
+        )
+      );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const removeLocationFromTrip = async (req: Request, res: Response) => {
+  try {
+    res
+      .status(200)
+      .json(
+        await tripsService.removeLocationFromTrip(
+          req.params.tripId,
+          req.body.location,
+          req.body.locationType
+        )
+      );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const editTripDetails = async (req: Request, res: Response) => {
+  try {
+    const { name, startDate, endDate } = req.body;
+    res
+      .status(200)
+      .json(
+        await tripsService.editTripDetails(
+          req.params.tripId,
+          name,
+          startDate,
+          endDate
+        )
+      );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
 export default {
   addTrip,
   getTripDetails,
   deleteTrip,
   addCollaborator,
   removeCollaborator,
+  addLocationToTrip,
+  removeLocationFromTrip,
+  editTripDetails,
 };
