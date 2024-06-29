@@ -63,10 +63,62 @@ const removeCollaborator = async (
   }
 };
 
+const addLocationToTrip = async (
+  tripId: string,
+  location: {},
+  locationType: string
+) => {
+  try {
+    return await tripsModel.findByIdAndUpdate(
+      tripId,
+      { $push: { [locationType]: location } },
+      { new: true }
+    );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const removeLocationFromTrip = async (
+  tripId: string,
+  location: {},
+  locationType: string
+) => {
+  try {
+    return await tripsModel.findByIdAndUpdate(
+      tripId,
+      { $pull: { [locationType]: location } },
+      { new: true }
+    );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+const editTripDetails = async (
+  tripId: string,
+  name: string,
+  startDate: string,
+  endDate: string
+) => {
+  try {
+    return await tripsModel.findByIdAndUpdate(
+      tripId,
+      { $set: { name: name, startDate: startDate, endDate: endDate } },
+      { new: true }
+    );
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
 export default {
   addTrip,
   getTripDetails,
   deleteTrip,
   addCollaborator,
   removeCollaborator,
+  addLocationToTrip,
+  removeLocationFromTrip,
+  editTripDetails,
 };
