@@ -35,6 +35,7 @@ const listenForTrips = (io) => {
         socket.on("EditTrip", async (tripId, name, startDate, endDate) => {
             try {
                 await tripsService.editTripDetails(tripId, name, startDate, endDate);
+                io.emit("TripEdited", await tripsService.getTripDetails(tripId));
             }
             catch (err) {
                 console.error(err);

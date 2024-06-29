@@ -8,9 +8,6 @@ router.put("/:id", usersController.editUserDetails);
 router.get("/:id", usersController.getUserDetails);
 router.post("/:id/trips", tripController.addTrip);
 router.get("/:id/trips/:tripId", tripController.getTripDetails);
-router.post("/:id/trips/:tripId", tripController.addLocationToTrip);
-router.post("/:id/trips/:tripId/remove", tripController.removeLocationFromTrip);
-router.put("/:id/trips/:tripId", tripController.editTripDetails);
 router.delete("/:id/trips/:tripId", tripController.deleteTrip);
 router.post("/:id/trips/:tripId/collaborator", tripController.addCollaborator);
 router.delete(
