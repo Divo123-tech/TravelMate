@@ -17,8 +17,11 @@ const getTripDetails = async (tripId: string) => {
   try {
     return await tripsModel
       .findById(tripId)
-      .populate("owner")
-      .populate("collaborators")
+      .populate({ path: "owner", select: "googleId _id email picture name" })
+      .populate({
+        path: "collaborators",
+        select: "googleId _id email picture name",
+      })
       .exec();
   } catch (err: any) {
     throw new Error(err);
