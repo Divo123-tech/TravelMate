@@ -1,8 +1,6 @@
-import React from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -11,7 +9,7 @@ type Props = { userId: string | null };
 const NavigationBar = ({ userId }: Props) => {
   return (
     <>
-      <Navbar className="bg-nav-color py-3" expand="md">
+      <Navbar className="bg-baby-powder py-3" expand="md">
         <Container>
           <Navbar.Brand href="#home">TM Logo</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -47,7 +45,6 @@ const NavigationBar = ({ userId }: Props) => {
                   href="#pricing"
                 >
                   {userId == "" ? "Login/Signup" : "Profile"}
-                  {/* Login/Sign up */}
                 </Nav.Link>
               </Link>
             </Nav>

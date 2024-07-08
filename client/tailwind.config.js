@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        "nav-color": "#F4F6EF",
-        "loctab-color": "#327D81",
-        "trip-color": "#13294B",
+        "baby-powder": "#F4F6EF",
+        teal: "#327D81",
+        "oxford-blue": "#13294B",
       },
       fontFamily: {
         arial: ["Arial", "sans-serif"],
