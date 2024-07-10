@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState } from "react";
 import NavigationBar from "./Components/NavigationBar";
 import UserProfile from "./Components/UserProfile";
 import Countries from "./Components/Countries";
 import Contact from "./Components/Contact";
 import HomePage from "./Components/HomePage";
+import Footer from "./Components/Footer";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import "./App.css";
@@ -29,8 +30,9 @@ function App() {
           </Routes>
         </CSSTransition>
       </SwitchTransition>
+      <Footer />
     </>
   );
 }
 
-export default App
+export default App;

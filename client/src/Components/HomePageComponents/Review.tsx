@@ -17,20 +17,18 @@ type Props = {
 const Review = ({ imgSrc, name, title, body }: Props) => {
   return (
     <motion.div
-      className="review w-1/4 flex flex-col items-center text-justify px-10 gap-2"
+      className="review w-full md:w-1/4 lg:w-1/4 flex flex-col items-center text-justify px-4 md:px-10 gap-4"
       variants={childVariant}
     >
-      <img src={imgSrc} className="rounded-full w-40 "></img>
+      <img src={imgSrc} className="rounded-full w-24 md:w-40" alt={name} />
       <p className="italic">-{name}-</p>
-      <div className="flex gap-2 text-yellow-400">
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
+      <div className="flex gap-2 text-yellow-400 justify-center">
+        {[...Array(5)].map((_, index) => (
+          <FontAwesomeIcon key={index} icon={faStar} />
+        ))}
       </div>
       <p className="font-bold">"{title}"</p>
-      <p>{body}</p>
+      <p className="text-sm md:text-base">{body}</p>
     </motion.div>
   );
 };

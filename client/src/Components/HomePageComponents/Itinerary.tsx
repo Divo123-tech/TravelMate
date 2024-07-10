@@ -14,8 +14,11 @@ type Props = {
 };
 const Itinerary = ({ countryName, imgSrc, desc }: Props) => {
   return (
-    <motion.div variants={childVariant}>
-      <Card className="w-72 bg-baby-powder hover:opacity-90 h-full flex flex-col items-center justify-between ">
+    <motion.div
+      variants={childVariant}
+      className="w-72 bg-baby-powder hover:opacity-90 h-full flex flex-col items-center justify-between "
+    >
+      <Card>
         <Card.Img variant="top" src={imgSrc} />
         <Card.Body className="text-center">
           <Card.Title className="text-4xl text-oxford-blue ">
