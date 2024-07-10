@@ -29,7 +29,15 @@ const getUserDetails = async (req: Request, res: Response) => {
 
 const getCurrentUser = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({ user: req.user });
+    if (!req.user) {
+      res.status(400).json({ message: "No user" });
+    }
+    interface User {
+      id: string;
+      // Other properties
+    }
+    const user = req.user as User & { id: string };
+    res.status(200).json(await usersService.getUserDetails(user.id));
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }

@@ -514,6 +514,14 @@ const getLocationTime = async (city: string, countryCode: string) => {
   };
 };
 
+const getImage = async (keyword: string) => {
+  const response = await axios.get(
+    `https://api.unsplash.com/search/photos?page=1&query=${keyword}`
+  );
+  console.log(response.data.results);
+  return response.data;
+};
+
 export default {
   getAllCountries,
   getAllStates,
@@ -526,4 +534,5 @@ export default {
   getYoutubeVideos,
   getCountryDetails,
   getLocationTime,
+  getImage,
 };

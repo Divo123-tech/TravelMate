@@ -100,6 +100,14 @@ const getLocationTime = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+const getImage = async (req, res) => {
+    try {
+        res.status(200).json(await locationsService.getImage(req.params.keyword));
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+};
 export default {
     getAllCountries,
     getAllStates,
@@ -111,5 +119,6 @@ export default {
     getYoutubeVideos,
     getCountryDetails,
     getLocationTime,
+    getImage,
 };
 //# sourceMappingURL=locations.controller.js.map

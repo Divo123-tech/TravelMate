@@ -1,6 +1,5 @@
 import { Socket } from "dgram";
 import tripsService from "../services/trips.service.js";
-import { Server } from "http";
 
 const listenForTrips = (io: any) => {
   io.on("connection", (socket: Socket) => {

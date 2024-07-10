@@ -21,8 +21,8 @@ const port = 3000;
 
 app.use("/locations", locationRouter);
 app.use("/auth/google", authRouter);
-// app.use("/users", isAuthenticated, usersRouter);
-app.use("/users", usersRouter);
+app.use("/users", isAuthenticated, usersRouter);
+// app.use("/users", usersRouter);
 
 server.listen(port, async () => {
   try {

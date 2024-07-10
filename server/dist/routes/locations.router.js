@@ -11,5 +11,6 @@ router.get("/attractions/:city/:countryCode", locationsController.getAllAttracti
 router.get("/details/:countryCodeFrom/:countryCodeTo/:currencyFrom/:currencyTo", locationsController.getCountryDetails);
 router.get("/videos/:city", locationsController.getYoutubeVideos);
 router.get("/time/:city/:countryCode", locationsController.getLocationTime);
+router.get("/image/:keyword", locationsController.getImage);
 export default router;
 //# sourceMappingURL=locations.router.js.map

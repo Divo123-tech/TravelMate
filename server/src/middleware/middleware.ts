@@ -62,7 +62,7 @@ export const redirectToHome = async (
       expiresIn: "1h", // Token expires in 1 hour
     });
     req.session.token = token; // Store JWT in session
-    res.redirect(`http://localhost:3000/users/${user.id}`);
+    res.redirect(`http://localhost:5173/profile`);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -80,7 +80,13 @@ app.use(
 app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
