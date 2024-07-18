@@ -2,17 +2,28 @@ import Carousel from "react-bootstrap/Carousel";
 import Carousel1 from "../../assets/Carousel1.jpg";
 import Carousel2 from "../../assets/Carousel2.jpg";
 import Carousel3 from "../../assets/Carousel3.jpg";
+import { motion } from "framer-motion";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlaneDeparture,
   faMagnifyingGlassLocation,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-
 const CarouselComponent = () => {
   return (
     <>
-      <div className="relative mb-32">
+      <motion.div
+        className="relative mb-32"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 1 }}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { opacity: 1 },
+        }}
+      >
         <Carousel className="h-full">
           <Carousel.Item interval={5000}>
             <img
@@ -70,7 +81,7 @@ const CarouselComponent = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

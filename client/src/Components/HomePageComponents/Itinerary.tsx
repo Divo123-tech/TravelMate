@@ -16,9 +16,9 @@ const Itinerary = ({ countryName, imgSrc, desc }: Props) => {
   return (
     <motion.div
       variants={childVariant}
-      className="w-72 bg-baby-powder hover:opacity-90 h-full flex flex-col items-center justify-between "
+      className="w-72  h-full flex flex-col items-center justify-between "
     >
-      <Card>
+      <Card className="bg-baby-powder hover:opacity-90">
         <Card.Img variant="top" src={imgSrc} />
         <Card.Body className="text-center">
           <Card.Title className="text-4xl text-oxford-blue ">

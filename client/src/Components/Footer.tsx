@@ -5,12 +5,11 @@ import {
   faYoutube,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
-import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <>
-      <footer className="bg-oxford-blue flex justify-between px-16 py-4 font-light">
+      <footer className="bg-oxford-blue flex justify-between px-8 md:px-16 py-4 font-light">
         <div className="flex flex-col text-white gap-3 text-md ">
           <div className="flex flex-col gap-1 mb-4 text-lg">
             <p className="border-white">MENU</p>

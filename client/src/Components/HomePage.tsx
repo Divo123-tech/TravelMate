@@ -3,7 +3,7 @@ import Itinerary from "./HomePageComponents/Itinerary";
 import Review from "./HomePageComponents/Review";
 import CarouselComponent from "./HomePageComponents/Carousel";
 import { itineraries, reviews } from "../data/homepage";
-
+import { ItineraryType, ReviewType } from "../types/types";
 const container = {
   hidden: {},
   visible: {
@@ -14,6 +14,7 @@ const container = {
 const HomePage = () => {
   return (
     <>
+      <div id="home"></div>
       <CarouselComponent />
 
       {/* Itineraries  */}
@@ -39,13 +40,8 @@ const HomePage = () => {
           transition={{ duration: 1 }}
           variants={container}
         >
-          {itineraries.map((itinerary: any, index: number) => (
-            <Itinerary
-              key={index}
-              countryName={itinerary.countryName}
-              desc={itinerary.desc}
-              imgSrc={itinerary.imgSrc}
-            />
+          {itineraries.map((itinerary: ItineraryType, index: number) => (
+            <Itinerary key={index} {...itinerary} />
           ))}
         </motion.div>
       </section>
@@ -74,16 +70,8 @@ const HomePage = () => {
           viewport={{ once: true, amount: 0.25 }}
           variants={container}
         >
-          {reviews.map((review, index) => {
-            return (
-              <Review
-                key={index}
-                imgSrc={review.imgSrc}
-                name={review.name}
-                title={review.title}
-                body={review.body}
-              />
-            );
+          {reviews.map((review: ReviewType, index: number) => {
+            return <Review key={index} {...review} />;
           })}
         </motion.div>
       </section>
