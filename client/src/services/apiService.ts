@@ -1,6 +1,6 @@
 const ServerAPI = "http://localhost:3000/";
 import axios from "axios";
-import { PassportType, UserType } from "../types/types";
+import { PassportType, TripType, UserType } from "../types/types";
 export const fetchCountries = async (continent: string) => {
   const url = ServerAPI + `locations/countries/${continent}`;
 
@@ -22,7 +22,7 @@ export const editUserDetails = async (
   name: string,
   passport: PassportType,
   currencyUsed: string
-) => {
+): Promise<UserType> => {
   const url = ServerAPI + "users/details";
   const body = {
     googleId,
@@ -38,9 +38,29 @@ export const editUserDetails = async (
   }
 };
 
-export const getUserDetails = async () => {
+export const getUserDetails = async (): Promise<UserType> => {
   try {
-    const url = `http://localhost:3000/users/current`;
+    const url = `${ServerAPI}users/current`;
+    const { data } = await axios.get(url, { withCredentials: true });
+    return data;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+export const deleteTrip = async (userId: string, tripId: string) => {
+  try {
+    const url = `${ServerAPI}users/${userId}/trips/${tripId}`;
+    const { data } = await axios.delete(url, { withCredentials: true });
+    return data;
+  } catch (err: any) {
+    throw new Error(err);
+  }
+};
+
+export const getTripDetails = async (userId: string, tripId: string) => {
+  try {
+    const url = `${ServerAPI}users/${userId}/trips/${tripId}`;
     const { data } = await axios.get(url, { withCredentials: true });
     return data;
   } catch (err: any) {

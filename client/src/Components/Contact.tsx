@@ -8,7 +8,8 @@ import {
 import Accordion from "react-bootstrap/Accordion";
 import FAQAccordion from "./ContactComponents/Accordion";
 import { FAQInformation } from "../data/faq";
-const Contact = () => {
+import { FC } from "react";
+const Contact: FC = () => {
   return (
     <>
       <div className="relative">

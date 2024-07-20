@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -7,13 +7,10 @@ import { motion } from "framer-motion";
 import Trip from "./UserProfileComponents/Trip";
 import CreateNewTrip from "./UserProfileComponents/CreateNewTrip";
 import EditSuccessToast from "./UserProfileComponents/EditSuccessToast";
-import { UserType } from "../types/types";
 import { getUserDetails } from "../services/apiService";
-type Props = {
-  user: UserType | null;
-  setUser: (value: any) => void;
-};
-
+import { useContext } from "react";
+import { UserContext } from "../App";
+import Spinner from "react-bootstrap/Spinner";
 const container = {
   hidden: {},
   visible: {
@@ -21,7 +18,14 @@ const container = {
   },
 };
 
-const UserProfile = ({ user, setUser }: Props) => {
+const UserProfile: FC = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+
+  const { user, setUser } = context;
   const [countries, setCountries] = useState([]);
   const [editSuccess, setEditSuccess] = useState(false);
   useEffect(() => {
@@ -50,22 +54,25 @@ const UserProfile = ({ user, setUser }: Props) => {
   }, []);
 
   const handleChange = (e: any) => {
-    console.log(e.target.value, e.target.name);
     if (e.target.name == "passport") {
       let code = e.target.value.split(",")[0];
       let name = e.target.value.split(",")[1];
-      setUser({
-        ...user,
-        ["passport"]: {
-          code,
-          name,
-        },
-      });
+      if (user) {
+        setUser({
+          ...user,
+          ["passport"]: {
+            code,
+            name,
+          },
+        });
+      }
     } else {
-      setUser({
-        ...user,
-        [e.target.name]: e.target.value,
-      });
+      if (user) {
+        setUser({
+          ...user,
+          [e.target.name]: e.target.value,
+        });
+      }
     }
   };
   const handleSubmit = (e: any) => {
@@ -81,8 +88,6 @@ const UserProfile = ({ user, setUser }: Props) => {
           user.passport,
           user.currencyUsed
         );
-        console.log(user.passport);
-        console.log(userData);
         setUser({
           ...user,
           ["name"]: userData.name,
@@ -112,9 +117,9 @@ const UserProfile = ({ user, setUser }: Props) => {
               <p className="text-xl">User Id</p>
               <p className="text-lg italic">{user.googleId}</p>
             </div>
-            <div className="">
+            <div>
               <form onSubmit={handleSubmit}>
-                <Container>
+                <Container className="flex flex-wrap md:grid">
                   <Row className="mb-2">
                     <Col>
                       <div className="flex flex-col">
@@ -241,6 +246,7 @@ const UserProfile = ({ user, setUser }: Props) => {
                     role={trip.owner == user._id ? "Owner" : "Collaborator"}
                     id={trip._id}
                     key={index}
+                    userId={user.googleId}
                   />
                 );
               })}
@@ -249,7 +255,14 @@ const UserProfile = ({ user, setUser }: Props) => {
           <CreateNewTrip />
         </section>
       ) : (
-        <h1>loading....</h1>
+        <div className="flex flex-col gap-8 justify-center items-center my-auto text-2xl">
+          <Spinner
+            animation="border"
+            role="status"
+            className="mb-auto text-center"
+          ></Spinner>
+          <h1>Loading.......</h1>
+        </div>
       )}
     </>
   );

@@ -4,6 +4,7 @@ import Review from "./HomePageComponents/Review";
 import CarouselComponent from "./HomePageComponents/Carousel";
 import { itineraries, reviews } from "../data/homepage";
 import { ItineraryType, ReviewType } from "../types/types";
+import { FC } from "react";
 const container = {
   hidden: {},
   visible: {
@@ -11,7 +12,7 @@ const container = {
   },
 };
 
-const HomePage = () => {
+const HomePage: FC = () => {
   return (
     <>
       <div id="home"></div>

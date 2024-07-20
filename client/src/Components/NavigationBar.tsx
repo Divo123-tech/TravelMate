@@ -3,10 +3,17 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { UserType } from "../types/types";
-type Props = { user: UserType | null };
+import { useContext, FC } from "react";
+import { UserContext } from "../App";
 
-const NavigationBar = ({ user }: Props) => {
+const NavigationBar: FC = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+
+  const { user } = context;
   const googleAuth = () => {
     window.open(`http://localhost:3000/auth/google/`, "_self");
   };
@@ -42,7 +49,7 @@ const NavigationBar = ({ user }: Props) => {
                   Contact
                 </Nav.Link>
               </Link>
-              <Link to={"/profile"}>
+              {user == null ? (
                 <Nav.Link
                   className="text-black  hover:font-bold"
                   href="#pricing"
@@ -54,9 +61,25 @@ const NavigationBar = ({ user }: Props) => {
                       : googleAuth
                   }
                 >
-                  {user == null ? "Login/Signup" : "Profile"}
+                  Login/Sign Up
                 </Nav.Link>
-              </Link>
+              ) : (
+                <Link to={"/profile"}>
+                  <Nav.Link
+                    className="text-black  hover:font-bold"
+                    href="#pricing"
+                    onClick={
+                      user
+                        ? () => {
+                            return;
+                          }
+                        : googleAuth
+                    }
+                  >
+                    Profile
+                  </Nav.Link>
+                </Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
