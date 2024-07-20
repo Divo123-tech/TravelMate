@@ -6,7 +6,6 @@ import locationRouter from "./routes/locations.router.js";
 import authRouter from "./routes/auth.router.js";
 import usersRouter from "./routes/users.router.js";
 import { Server } from "socket.io";
-import tripsService from "./services/trips.service.js";
 import http from "http";
 import sockets from "./utils/sockets.js";
 const server = http.createServer(app);

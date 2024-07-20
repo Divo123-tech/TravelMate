@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import usersService from "../services/users.service.js";
-
+interface User {
+  id: string;
+}
 const editUserDetails = async (req: Request, res: Response) => {
   try {
+    // const user = req.user as User & { id: string };
     //find the req.user and pass it into the googleId
     res
       .status(200)
@@ -11,7 +14,7 @@ const editUserDetails = async (req: Request, res: Response) => {
           req.body.googleId,
           req.body.name,
           req.body.passport,
-          req.body.countryOfOrigin
+          req.body.currencyUsed
         )
       );
   } catch (err: any) {
@@ -32,10 +35,7 @@ const getCurrentUser = async (req: Request, res: Response) => {
     if (!req.user) {
       res.status(400).json({ message: "No user" });
     }
-    interface User {
-      id: string;
-      // Other properties
-    }
+
     const user = req.user as User & { id: string };
     res.status(200).json(await usersService.getUserDetails(user.id));
   } catch (err: any) {

@@ -24,8 +24,8 @@ const addUser = async (
 const editUserDetails = async (
   googleId: string,
   name: string,
-  passport: string,
-  countryOfOrigin: string
+  passport: object,
+  currencyUsed: string
 ) => {
   try {
     return await userModel.findOneAndUpdate(
@@ -34,7 +34,7 @@ const editUserDetails = async (
         $set: {
           name,
           passport,
-          countryOfOrigin,
+          currencyUsed,
         },
       },
       { new: true }

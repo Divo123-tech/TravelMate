@@ -1,12 +1,17 @@
 import mongoose, { Schema, Document, mongo } from "mongoose";
 
+interface PassportInterface {
+  code: string;
+  name: string;
+}
+
 export interface UserInterface {
   googleId: string;
   email: string;
   picture: string;
   name?: string;
-  passport?: string;
-  countryOfOrigin?: string;
+  passport?: PassportInterface;
+  currencyUsed?: string;
   trips?: [mongoose.Types.ObjectId];
 }
 
@@ -28,10 +33,10 @@ const userSchema: Schema<UserInterface> = new Schema<UserInterface>({
     default: "",
   },
   passport: {
-    type: String,
-    default: "",
+    type: Object,
+    default: {},
   },
-  countryOfOrigin: {
+  currencyUsed: {
     type: String,
     default: "",
   },

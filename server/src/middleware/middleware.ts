@@ -23,6 +23,7 @@ export const isAuthenticated = (
 
   jwt.verify(token, process.env.JWT_KEY as string, (err, user) => {
     if (err) {
+      console.log(err);
       return res.redirect("http://localhost:3000/auth/google");
     }
     req.user = user;
@@ -62,7 +63,7 @@ export const redirectToHome = async (
       expiresIn: "1h", // Token expires in 1 hour
     });
     req.session.token = token; // Store JWT in session
-    res.redirect(`http://localhost:5173/profile`);
+    res.redirect(`${process.env.REDIRECT_URI}/profile`);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -82,7 +83,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.REDIRECT_URI,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

@@ -16,13 +16,13 @@ const addUser = async (googleId, email, picture) => {
         throw new Error(err);
     }
 };
-const editUserDetails = async (googleId, name, passport, countryOfOrigin) => {
+const editUserDetails = async (googleId, name, passport, currencyUsed) => {
     try {
         return await userModel.findOneAndUpdate({ googleId }, {
             $set: {
                 name,
                 passport,
-                countryOfOrigin,
+                currencyUsed,
             },
         }, { new: true });
     }

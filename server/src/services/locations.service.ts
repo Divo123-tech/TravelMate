@@ -13,7 +13,10 @@ export type countryType = {
 
 //function that returns an array of countries within a given continent
 const getAllCountries = async (continent: string): Promise<countryType[]> => {
-  const url = `https://restfulcountries.com/api/v1/countries?continent=${continent}`;
+  let url = `https://restfulcountries.com/api/v1/countries`;
+  if (continent != "all") {
+    url += `?continent=${continent}`;
+  }
   try {
     const response = await axios.get(url, {
       headers: {

@@ -1,10 +1,11 @@
 import usersService from "../services/users.service.js";
 const editUserDetails = async (req, res) => {
     try {
+        // const user = req.user as User & { id: string };
         //find the req.user and pass it into the googleId
         res
             .status(200)
-            .json(await usersService.editUserDetails(req.body.googleId, req.body.name, req.body.passport, req.body.countryOfOrigin));
+            .json(await usersService.editUserDetails(req.body.googleId, req.body.name, req.body.passport, req.body.currencyUsed));
     }
     catch (err) {
         res.status(400).json({ message: err.message });

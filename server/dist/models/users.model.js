@@ -17,10 +17,10 @@ const userSchema = new Schema({
         default: "",
     },
     passport: {
-        type: String,
-        default: "",
+        type: Object,
+        default: {},
     },
-    countryOfOrigin: {
+    currencyUsed: {
         type: String,
         default: "",
     },
