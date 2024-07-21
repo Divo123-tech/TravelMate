@@ -9,7 +9,7 @@ import { Server } from "socket.io";
 import http from "http";
 import sockets from "./utils/sockets.js";
 const server = http.createServer(app);
-const io = new Server(server, {
+const io: Server = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -20,8 +20,8 @@ const port = 3000;
 
 app.use("/locations", locationRouter);
 app.use("/auth/google", authRouter);
-app.use("/users", isAuthenticated, usersRouter);
-// app.use("/users", usersRouter);
+// app.use("/users", isAuthenticated, usersRouter);
+app.use("/users", usersRouter);
 
 server.listen(port, async () => {
   try {

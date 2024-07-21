@@ -16,10 +16,6 @@ const getTripDetails = async (tripId) => {
         return await tripsModel
             .findById(tripId)
             .populate({ path: "owner", select: "googleId _id email picture name" })
-            .populate({
-            path: "collaborators",
-            select: "googleId _id email picture name",
-        })
             .exec();
     }
     catch (err) {
@@ -52,7 +48,7 @@ const removeCollaborator = async (tripId, collaboratorId) => {
 };
 const addLocationToTrip = async (tripId, location, locationType) => {
     try {
-        return await tripsModel.findByIdAndUpdate(tripId, { $push: { [locationType]: location } }, { new: true });
+        return await tripsModel.findByIdAndUpdate(tripId, { $addToSet: { [locationType]: location } }, { new: true });
     }
     catch (err) {
         throw new Error(err);

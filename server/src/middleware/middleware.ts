@@ -23,7 +23,6 @@ export const isAuthenticated = (
 
   jwt.verify(token, process.env.JWT_KEY as string, (err, user) => {
     if (err) {
-      console.log(err);
       return res.redirect("http://localhost:3000/auth/google");
     }
     req.user = user;

@@ -1,22 +1,14 @@
 import { Socket } from "dgram";
 import tripsService from "../services/trips.service.js";
-
 const listenForTrips = (io: any) => {
   io.on("connection", (socket: Socket) => {
     console.log("A user connected");
 
     socket.on(
       "AddLocationToTrip",
-      async (
-        tripId: string,
-        locationToAdd: { location: {}; locationType: string }
-      ) => {
+      async (tripId: string, data: { details: {}; type: string }) => {
         try {
-          const trip = await tripsService.addLocationToTrip(
-            tripId,
-            locationToAdd.location,
-            locationToAdd.locationType
-          );
+          await tripsService.addLocationToTrip(tripId, data.details, data.type);
           io.emit("tripUpdated", await tripsService.getTripDetails(tripId));
         } catch (err: any) {
           console.error(err);
@@ -27,15 +19,12 @@ const listenForTrips = (io: any) => {
 
     socket.on(
       "RemoveLocationFromTrip",
-      async (
-        tripId: string,
-        locationToRemove: { location: {}; locationType: string }
-      ) => {
+      async (tripId: string, data: { details: {}; type: string }) => {
         try {
-          const trip = await tripsService.removeLocationFromTrip(
+          await tripsService.removeLocationFromTrip(
             tripId,
-            locationToRemove.location,
-            locationToRemove.locationType
+            data.details,
+            data.type
           );
           io.emit("tripUpdated", await tripsService.getTripDetails(tripId));
         } catch (err: any) {
@@ -45,7 +34,7 @@ const listenForTrips = (io: any) => {
       }
     );
 
-    socket.on("GetTrip", async (tripId) => {
+    socket.on("GetTrip", async (tripId: string) => {
       try {
         const trip = await tripsService.getTripDetails(tripId);
         io.emit("TripGot", trip);
@@ -55,15 +44,23 @@ const listenForTrips = (io: any) => {
       }
     });
 
-    socket.on("EditTrip", async (tripId, name, startDate, endDate) => {
-      try {
-        await tripsService.editTripDetails(tripId, name, startDate, endDate);
-        io.emit("TripEdited", await tripsService.getTripDetails(tripId));
-      } catch (err) {
-        console.error(err);
-        socket.emit("error", "Error");
+    socket.on(
+      "EditTrip",
+      async (
+        tripId: string,
+        name: string,
+        startDate: string,
+        endDate: string
+      ) => {
+        try {
+          await tripsService.editTripDetails(tripId, name, startDate, endDate);
+          io.emit("TripEdited", await tripsService.getTripDetails(tripId));
+        } catch (err) {
+          console.error(err);
+          socket.emit("error", "Error");
+        }
       }
-    });
+    );
 
     socket.on("disconnect", () => {
       console.log("A user disconnected");

@@ -268,7 +268,7 @@ export type flightType = {
   origin: string;
   destination: string;
   duration: string;
-  stops: string;
+  stops: number;
   departureDate: string;
   arrivalDate: string;
   cabin: string;

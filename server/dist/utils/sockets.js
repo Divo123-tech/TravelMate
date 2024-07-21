@@ -2,9 +2,9 @@ import tripsService from "../services/trips.service.js";
 const listenForTrips = (io) => {
     io.on("connection", (socket) => {
         console.log("A user connected");
-        socket.on("AddLocationToTrip", async (tripId, locationToAdd) => {
+        socket.on("AddLocationToTrip", async (tripId, data) => {
             try {
-                const trip = await tripsService.addLocationToTrip(tripId, locationToAdd.location, locationToAdd.locationType);
+                await tripsService.addLocationToTrip(tripId, data.details, data.type);
                 io.emit("tripUpdated", await tripsService.getTripDetails(tripId));
             }
             catch (err) {
@@ -12,9 +12,9 @@ const listenForTrips = (io) => {
                 socket.emit("error", "Error updating trip");
             }
         });
-        socket.on("RemoveLocationFromTrip", async (tripId, locationToRemove) => {
+        socket.on("RemoveLocationFromTrip", async (tripId, data) => {
             try {
-                const trip = await tripsService.removeLocationFromTrip(tripId, locationToRemove.location, locationToRemove.locationType);
+                await tripsService.removeLocationFromTrip(tripId, data.details, data.type);
                 io.emit("tripUpdated", await tripsService.getTripDetails(tripId));
             }
             catch (err) {

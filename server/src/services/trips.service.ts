@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import tripsModel, { TripInterface } from "../models/trips.model.js";
+import tripsModel from "../models/trips.model.js";
 
 const addTrip = async (userId: mongoose.Types.ObjectId, tripName: string) => {
   try {
@@ -18,10 +18,6 @@ const getTripDetails = async (tripId: string) => {
     return await tripsModel
       .findById(tripId)
       .populate({ path: "owner", select: "googleId _id email picture name" })
-      .populate({
-        path: "collaborators",
-        select: "googleId _id email picture name",
-      })
       .exec();
   } catch (err: any) {
     throw new Error(err);
@@ -74,7 +70,7 @@ const addLocationToTrip = async (
   try {
     return await tripsModel.findByIdAndUpdate(
       tripId,
-      { $push: { [locationType]: location } },
+      { $addToSet: { [locationType]: location } },
       { new: true }
     );
   } catch (err: any) {
