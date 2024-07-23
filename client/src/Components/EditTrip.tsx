@@ -1,43 +1,62 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useContext, useState } from "react";
-import { UserContext } from "../App";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { getTripDetails, getUserDetails } from "../services/apiService";
 import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { TripType } from "../types/types";
+import {
+  TripType,
+  cityType,
+  countryType,
+  stateType,
+  hotelType,
+  activityType,
+  flightType,
+} from "../types/types";
+import Country from "./EditTripComponents/Country";
+import State from "./EditTripComponents/State";
+import City from "./EditTripComponents/City";
+import Hotel from "./EditTripComponents/Hotel";
+import Activity from "./EditTripComponents/Activity";
+import Flight from "./EditTripComponents/Flight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
+const container = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.3 },
+  },
+};
+
 const EditTrip = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("YourComponent must be used within a UserProvider");
-  }
-
-  const { user } = context;
+  const navigate = useNavigate();
   const { tripId } = useParams();
   const [trip, setTrip] = useState<TripType | null>(null);
 
   const handleUserDetails = (e: any) => {
     console.log(e.target.value);
   };
+
   useEffect(() => {
-    const getTrip = async () => {
+    const fetchUserAndTrip = async () => {
       try {
-        if (!user) {
-          throw new Error("user not found");
+        const userDetails = await getUserDetails();
+
+        if (!userDetails) {
+          throw new Error("User not found");
         }
         if (!tripId) {
-          throw new Error("trip not found");
+          throw new Error("Trip ID not found");
         }
-        console.log();
-        setTrip(await getTripDetails(user?._id, tripId)); // Set user state with the fetched data
+
+        const tripDetails = await getTripDetails(userDetails._id, tripId);
+        setTrip(tripDetails); // Set trip state with the fetched data
       } catch (err) {
         console.log(err);
       }
     };
-    getTrip(); // Call getUser when the component mounts
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+
+    fetchUserAndTrip(); // Call fetchUserAndTrip when the component mounts
+  }, [tripId]); // Depend on tripId so it refetches if the tripId changes
 
   return (
     <>
@@ -79,6 +98,244 @@ const EditTrip = () => {
                 ></input>
               </div>
             </form>
+          </section>
+          <section className="mb-12">
+            <div id="countries-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-oxford-blue font-medium">
+                    Countries
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  onClick={() => navigate("/explore/countries")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                className=""
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.countries?.map((country: countryType, index: number) => {
+                  return <Country key={index} country={country} />;
+                })}
+              </motion.div>
+            </div>
+
+            <div id="states-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-oxford-blue font-medium">
+                    States
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  onClick={() => navigate("/explore/countries")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                className=""
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.states?.map((state: stateType, index: number) => {
+                  return <State key={index} state={state} />;
+                })}
+              </motion.div>
+            </div>
+            <div id="cities-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-oxford-blue font-medium">
+                    Cities
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  onClick={() => navigate("/explore/countries")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                className=""
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.cities?.map((city: cityType, index: number) => {
+                  return <City city={city} key={index} />;
+                })}
+              </motion.div>
+            </div>
+            <div id="hotels-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-oxford-blue font-medium">
+                    Hotels
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  onClick={() => navigate("/explore/countries")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                className=""
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.hotels?.map((hotel: hotelType, index: number) => {
+                  return <Hotel key={index} hotel={hotel} />;
+                })}
+              </motion.div>
+            </div>
+            <div id="attractions-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-oxford-blue font-medium">
+                    Activities
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  onClick={() => navigate("/explore/countries")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                className=""
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.activities?.map(
+                  (activity: activityType, index: number) => {
+                    return <Activity key={index} activity={activity} />;
+                  }
+                )}
+              </motion.div>
+            </div>
+            <div id="flights-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-oxford-blue font-medium">
+                    Flights
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  onClick={() => navigate("/explore/countries")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.flights?.map((flight: flightType, index: number) => {
+                  return <Flight flight={flight} key={index} />;
+                })}
+              </motion.div>
+            </div>
           </section>
         </div>
       ) : (

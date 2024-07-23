@@ -41,3 +41,52 @@ export type ReviewType = {
   title: string;
   body: string;
 };
+
+export type countryType = {
+  name: string;
+  iso2: string;
+  flag: string;
+  currency: string;
+};
+
+export type stateType = {
+  name: string;
+  code: string;
+  countryName: string;
+  countryCode: string;
+};
+
+export type cityType = {
+  name: string;
+  country: string;
+  state: string;
+};
+
+export type hotelType = {
+  name: string;
+  id: string;
+  url: string;
+  city: string;
+  countryCode: string;
+};
+
+export type activityType = {
+  name: string;
+  id: string;
+  address: string;
+  city: string;
+  countryCode: string;
+  country: string;
+  url: string;
+};
+
+export type flightType = {
+  origin: string;
+  destination: string;
+  duration: string;
+  stops: number;
+  departureDate: string;
+  arrivalDate: string;
+  cabin: string;
+  url: string;
+};

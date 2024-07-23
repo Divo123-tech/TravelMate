@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import Trip from "./UserProfileComponents/Trip";
 import CreateNewTrip from "./UserProfileComponents/CreateNewTrip";
 import EditSuccessToast from "./UserProfileComponents/EditSuccessToast";
-import { getUserDetails } from "../services/apiService";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import Spinner from "react-bootstrap/Spinner";
@@ -28,17 +27,6 @@ const UserProfile: FC = () => {
   const { user, setUser } = context;
   const [countries, setCountries] = useState([]);
   const [editSuccess, setEditSuccess] = useState(false);
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        setUser(await getUserDetails()); // Set user state with the fetched data
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getUser(); // Call getUser when the component mounts
-  }, []); // Empty dependency array ensures this effect runs only once on mount
 
   useEffect(() => {
     const getCountries = async () => {

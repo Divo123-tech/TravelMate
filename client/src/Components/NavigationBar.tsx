@@ -19,7 +19,10 @@ const NavigationBar: FC = () => {
   };
   return (
     <>
-      <Navbar className="bg-baby-powder py-3 sticky top-0 z-50" expand="md">
+      <Navbar
+        className="bg-baby-powder py-3 sticky top-0 z-50 text-white"
+        expand="md"
+      >
         <Container className="flex justify-between">
           <Navbar.Brand href="#home">TM Logo</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
