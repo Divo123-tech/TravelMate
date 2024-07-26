@@ -1,21 +1,6 @@
 const ServerAPI = "http://localhost:3000";
 import axios from "axios";
 import { PassportType, TripType, UserType } from "../types/types";
-export const fetchCountries = async (continent: string) => {
-  const url = ServerAPI + `/locations/countries/${continent}`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching countries:", error);
-    throw error;
-  }
-};
 
 export const editUserDetails = async (
   googleId: string,
@@ -48,7 +33,10 @@ export const getUserDetails = async (): Promise<UserType> => {
   }
 };
 
-export const deleteTrip = async (userId: string, tripId: string) => {
+export const deleteTrip = async (
+  userId: string,
+  tripId: string
+): Promise<TripType> => {
   try {
     const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
     const { data } = await axios.delete(url, { withCredentials: true });
