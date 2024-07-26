@@ -7,18 +7,24 @@ import { getAmadeusToken } from "../utils/amadeusKey.js";
 export type countryType = {
   name: string;
   iso2: string;
-  flag: string;
   currency: string;
+  capital: string;
+  continent: string;
 };
 
 //function that returns an array of countries within a given continent
-const getAllCountries = async (continent: string): Promise<countryType[]> => {
+const getAllCountries = async (
+  continent: string,
+  page: number = 1,
+  searchQuery?: string,
+  limit: number = 10
+): Promise<{ total: number; data: countryType[] }> => {
   let url = `https://restfulcountries.com/api/v1/countries`;
   if (continent != "all") {
     url += `?continent=${continent}`;
   }
   try {
-    const response = await axios.get(url, {
+    const { data } = await axios.get(url, {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
@@ -26,18 +32,31 @@ const getAllCountries = async (continent: string): Promise<countryType[]> => {
     });
 
     //if data doesn't exist throw an error
-    if (!response.data.data) {
+    if (!data.data) {
       throw new Error("failed to get countries");
     }
-    //Map the data of the response to fit the country interface
-    return response.data.data.map((country: any) => {
-      return {
+    let countriesArray = data.data;
+
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+      countriesArray = countriesArray.filter((country: any) =>
+        country.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    // Slice and map the data in one pass
+    return {
+      total: countriesArray.length,
+      data: countriesArray.slice(startIndex, endIndex).map((country: any) => ({
         name: country.name,
         iso2: country.iso2,
-        flag: country.href.flag,
         currency: country.currency,
-      };
-    });
+        capital: country.capital,
+        continent: country.continent,
+      })),
+    };
     //error handling
   } catch (err: any) {
     throw new Error("No Countries Found");
@@ -52,7 +71,11 @@ export type stateType = {
 };
 
 //function to get all states within a given country
-const getAllStates = async (country: string): Promise<stateType[]> => {
+const getAllStates = async (
+  country: string,
+  page: number = 1,
+  searchQuery?: string
+): Promise<{ total: number; data: stateType[] }> => {
   const url = "https://countriesnow.space/api/v0.1/countries/states";
   try {
     const response = await axios.post(
@@ -69,15 +92,29 @@ const getAllStates = async (country: string): Promise<stateType[]> => {
     if (!response.data.data) {
       throw new Error("failed to get states");
     }
+    let statesArray = response.data.data.states;
+
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+      statesArray = statesArray.filter((state: any) =>
+        state.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
     //Map the data of the response to return just the name
-    return response.data.data.states.map((state: any) => {
-      return {
+    return {
+      total: statesArray.length,
+      data: statesArray.slice(startIndex, endIndex).map((state: any) => ({
         name: state.name,
         code: state.state_code,
-        countryName: response.data.name,
-        countryCode: response.data.iso3,
-      };
-    });
+        countryName: response.data.data.name,
+        countryCode: response.data.data.iso2,
+      })),
+    };
+
     //error handling
   } catch (err: any) {
     throw new Error("No States Found");
@@ -93,11 +130,13 @@ export type cityType = {
 //function to get all the cities within a given state and country
 const getAllCities = async (
   state: string,
-  country: string
+  country: string,
+  page: number = 1,
+  searchQuery?: string
 ): Promise<cityType[]> => {
   const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
   try {
-    const response = await axios.post(
+    const { data } = await axios.post(
       url,
       {
         country,
@@ -111,11 +150,24 @@ const getAllCities = async (
       }
     );
     //if data doesn't exist throw an error
-    if (!response.data.data) {
+    if (!data.data) {
       throw new Error("failed to get states");
     }
 
-    return response.data.data.map((city: any) => {
+    let citiesArray = data.data;
+
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+      citiesArray = citiesArray.filter((city: any) =>
+        city.includes(searchQuery)
+      );
+    }
+
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
+
+    return citiesArray.slice(startIndex, endIndex).map((city: any) => {
       return {
         name: city,
         country,
@@ -175,7 +227,6 @@ const getAllAirports = async (
     //if data doesn't exist throw an error
     if (airportsData.length == 0) throw new Error("No Airports found");
     //Map the data of the response to fit the airport interface
-    console.log(airportsData);
     return airportsData.map((airport: any) => {
       return {
         name: airport.name,
@@ -359,7 +410,11 @@ const getAllHotels = async (
     //Map the data of the response to fit the hotel interface
     return response.data.data.map((hotel: any) => {
       return {
-        name: hotel.name,
+        name: hotel.name
+          .toLowerCase()
+          .split(" ")
+          .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
         id: hotel.hotelId,
         url: `https://www.tripadvisor.com/Search?q=${hotel.name.replaceAll(
           " ",
@@ -469,37 +524,35 @@ const getYoutubeVideos = async (city: string): Promise<videoType[]> => {
 interface CountryDetailsInterface {
   visaStatus: string;
   visaDuration: string;
-  conversionRate: number;
-  holidays: [{ date: string; name: string }];
 }
 
 //function that returns details of a country
-const getCountryDetails = async (
+const getCountryVisa = async (
   countryCodeFrom: string,
-  countryCodeTo: string,
-  currencyFrom: string,
-  currencyTo: string
+  countryCodeTo: string
 ): Promise<CountryDetailsInterface> => {
   //get the current year
-  const currentYear = new Date().getFullYear();
-  const holidayURL = `https://date.nager.at/api/v3/publicholidays/${currentYear}/${countryCodeTo}`;
-  const visaURL = `https://rough-sun-2523.fly.dev/api/${countryCodeFrom}/${countryCodeTo}`;
-  const excRateURL = `https://v6.exchangerate-api.com/v6/${process.env.EXCRATE_KEY}/pair/${currencyFrom}/${currencyTo}`;
+  const visaURL = `https://rough-sun-2523.fly.dev/api/${countryCodeTo}/${countryCodeFrom}`;
+
   try {
-    const publicholidays = (await axios.get(holidayURL)).data.slice(0, 5);
     const visaStatus = (await axios.get(visaURL)).data;
-    const exchangeRate = (await axios.get(excRateURL)).data;
     return {
       visaStatus: visaStatus.category,
       visaDuration: visaStatus.dur,
-      conversionRate: exchangeRate.conversion_rate,
-      holidays: publicholidays.map((holiday: any) => {
-        return {
-          date: holiday.date,
-          name: `${holiday.localName} | ${holiday.name}`,
-        };
-      }),
     };
+  } catch (err) {
+    throw new Error("failed to get details");
+  }
+};
+
+const getCountryExchangeRate = async (
+  currencyFrom: string,
+  currencyTo: string
+) => {
+  const excRateURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencyFrom.toLowerCase()}.json`;
+  try {
+    const exchangeRate = (await axios.get(excRateURL)).data;
+    return exchangeRate[currencyFrom.toLowerCase()][currencyTo.toLowerCase()];
   } catch (err) {
     throw new Error("failed to get details");
   }
@@ -517,14 +570,6 @@ const getLocationTime = async (city: string, countryCode: string) => {
   };
 };
 
-const getImage = async (keyword: string) => {
-  const response = await axios.get(
-    `https://api.unsplash.com/search/photos?page=1&query=${keyword}`
-  );
-  console.log(response.data.results);
-  return response.data;
-};
-
 export default {
   getAllCountries,
   getAllStates,
@@ -535,7 +580,7 @@ export default {
   getAllHotels,
   getAllAttractions,
   getYoutubeVideos,
-  getCountryDetails,
+  getCountryVisa,
+  getCountryExchangeRate,
   getLocationTime,
-  getImage,
 };

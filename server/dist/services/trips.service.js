@@ -1,10 +1,7 @@
 import tripsModel from "../models/trips.model.js";
-const addTrip = async (userId, tripName) => {
+const addTrip = async (tripToAdd, userId) => {
     try {
-        const tripAdded = await tripsModel.create({
-            name: tripName,
-            owner: userId,
-        });
+        const tripAdded = await tripsModel.create({ ...tripToAdd, owner: userId });
         return tripAdded;
     }
     catch (err) {
@@ -16,6 +13,7 @@ const getTripDetails = async (tripId) => {
         return await tripsModel
             .findById(tripId)
             .populate({ path: "owner", select: "googleId _id email picture name" })
+            .sort({ startDate: -1 }) // Add this line to sort by startDate in descending order
             .exec();
     }
     catch (err) {

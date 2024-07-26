@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 import tripsModel from "../models/trips.model.js";
 
-const addTrip = async (userId: mongoose.Types.ObjectId, tripName: string) => {
+const addTrip = async (
+  tripToAdd: {
+    name: string;
+    startDate: string;
+    endDate: string;
+  },
+  userId: mongoose.Types.ObjectId
+) => {
   try {
-    const tripAdded = await tripsModel.create({
-      name: tripName,
-      owner: userId,
-    });
+    const tripAdded = await tripsModel.create({ ...tripToAdd, owner: userId });
     return tripAdded;
   } catch (err: any) {
     throw new Error(err);
@@ -18,6 +22,7 @@ const getTripDetails = async (tripId: string) => {
     return await tripsModel
       .findById(tripId)
       .populate({ path: "owner", select: "googleId _id email picture name" })
+      .sort({ startDate: -1 }) // Add this line to sort by startDate in descending order
       .exec();
   } catch (err: any) {
     throw new Error(err);

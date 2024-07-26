@@ -3,9 +3,24 @@ import { Request, Response } from "express";
 
 const getAllCountries = async (req: Request, res: Response): Promise<void> => {
   try {
+    const page =
+      typeof req.query.page === "string" ? Number(req.query.page) : undefined;
+    const searchQuery =
+      typeof req.query.searchQuery == "string"
+        ? req.query.searchQuery
+        : undefined;
+    const limit =
+      typeof req.query.limit == "string" ? Number(req.query.limit) : undefined;
     res
       .status(200)
-      .json(await locationsService.getAllCountries(req.params.continent));
+      .json(
+        await locationsService.getAllCountries(
+          req.params.continent,
+          page,
+          searchQuery,
+          limit
+        )
+      );
   } catch (err: any) {
     res.status(403).json({ message: err.message });
   }
@@ -13,9 +28,21 @@ const getAllCountries = async (req: Request, res: Response): Promise<void> => {
 
 const getAllStates = async (req: Request, res: Response): Promise<void> => {
   try {
+    const page =
+      typeof req.query.page === "string" ? Number(req.query.page) : undefined;
+    const searchQuery =
+      typeof req.query.searchQuery == "string"
+        ? req.query.searchQuery
+        : undefined;
     res
       .status(200)
-      .json(await locationsService.getAllStates(req.params.country));
+      .json(
+        await locationsService.getAllStates(
+          req.params.country,
+          page,
+          searchQuery
+        )
+      );
   } catch (err: any) {
     res.status(403).json({ message: err.message });
   }
@@ -23,12 +50,20 @@ const getAllStates = async (req: Request, res: Response): Promise<void> => {
 
 const getAllCities = async (req: Request, res: Response): Promise<void> => {
   try {
+    const page =
+      typeof req.query.page === "string" ? Number(req.query.page) : undefined;
+    const searchQuery =
+      typeof req.query.searchQuery == "string"
+        ? req.query.searchQuery
+        : undefined;
     res
       .status(200)
       .json(
         await locationsService.getAllCities(
           req.params.state,
-          req.params.country
+          req.params.country,
+          page,
+          searchQuery
         )
       );
   } catch (err: any) {
@@ -147,7 +182,22 @@ const getYoutubeVideos = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-const getCountryDetails = async (
+const getCountryVisa = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(
+        await locationsService.getCountryVisa(
+          req.params.countryCodeFrom,
+          req.params.countryCodeTo
+        )
+      );
+  } catch (err: any) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+const getCountryExchangeRate = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -155,9 +205,7 @@ const getCountryDetails = async (
     res
       .status(200)
       .json(
-        await locationsService.getCountryDetails(
-          req.params.countryCodeFrom,
-          req.params.countryCodeTo,
+        await locationsService.getCountryExchangeRate(
           req.params.currencyFrom,
           req.params.currencyTo
         )
@@ -182,14 +230,6 @@ const getLocationTime = async (req: Request, res: Response) => {
   }
 };
 
-const getImage = async (req: Request, res: Response) => {
-  try {
-    res.status(200).json(await locationsService.getImage(req.params.keyword));
-  } catch (err: any) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
 export default {
   getAllCountries,
   getAllStates,
@@ -199,7 +239,7 @@ export default {
   getAllHotels,
   getAllAttractions,
   getYoutubeVideos,
-  getCountryDetails,
+  getCountryVisa,
   getLocationTime,
-  getImage,
+  getCountryExchangeRate,
 };

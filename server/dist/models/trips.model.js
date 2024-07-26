@@ -16,8 +16,11 @@ const tripSchema = new Schema({
     },
     startDate: {
         required: true,
-        default: new Date(),
-        type: Date,
+        type: String,
+    },
+    endDate: {
+        type: String,
+        required: true,
     },
     countries: {
         default: [],

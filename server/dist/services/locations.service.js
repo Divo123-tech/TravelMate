@@ -3,31 +3,41 @@ import axios from "axios";
 //import getAmadeusToken as it refreshes every 30 minutes
 import { getAmadeusToken } from "../utils/amadeusKey.js";
 //function that returns an array of countries within a given continent
-const getAllCountries = async (continent) => {
+const getAllCountries = async (continent, page = 1, searchQuery, limit = 10) => {
     let url = `https://restfulcountries.com/api/v1/countries`;
     if (continent != "all") {
         url += `?continent=${continent}`;
     }
     try {
-        const response = await axios.get(url, {
+        const { data } = await axios.get(url, {
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
             },
         });
         //if data doesn't exist throw an error
-        if (!response.data.data) {
+        if (!data.data) {
             throw new Error("failed to get countries");
         }
-        //Map the data of the response to fit the country interface
-        return response.data.data.map((country) => {
-            return {
+        let countriesArray = data.data;
+        // Filter and map the data only if searchQuery is provided
+        if (searchQuery) {
+            countriesArray = countriesArray.filter((country) => country.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+        // Calculate the start and end indices for pagination
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        // Slice and map the data in one pass
+        return {
+            total: countriesArray.length,
+            data: countriesArray.slice(startIndex, endIndex).map((country) => ({
                 name: country.name,
                 iso2: country.iso2,
-                flag: country.href.flag,
                 currency: country.currency,
-            };
-        });
+                capital: country.capital,
+                continent: country.continent,
+            })),
+        };
         //error handling
     }
     catch (err) {
@@ -35,7 +45,7 @@ const getAllCountries = async (continent) => {
     }
 };
 //function to get all states within a given country
-const getAllStates = async (country) => {
+const getAllStates = async (country, page = 1, searchQuery) => {
     const url = "https://countriesnow.space/api/v0.1/countries/states";
     try {
         const response = await axios.post(url, { country }, {
@@ -48,15 +58,24 @@ const getAllStates = async (country) => {
         if (!response.data.data) {
             throw new Error("failed to get states");
         }
+        let statesArray = response.data.data.states;
+        // Filter and map the data only if searchQuery is provided
+        if (searchQuery) {
+            statesArray = statesArray.filter((state) => state.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+        // Calculate the start and end indices for pagination
+        const startIndex = (page - 1) * 10;
+        const endIndex = startIndex + 10;
         //Map the data of the response to return just the name
-        return response.data.data.states.map((state) => {
-            return {
+        return {
+            total: statesArray.length,
+            data: statesArray.slice(startIndex, endIndex).map((state) => ({
                 name: state.name,
                 code: state.state_code,
-                countryName: response.data.name,
-                countryCode: response.data.iso3,
-            };
-        });
+                countryName: response.data.data.name,
+                countryCode: response.data.data.iso2,
+            })),
+        };
         //error handling
     }
     catch (err) {
@@ -64,10 +83,10 @@ const getAllStates = async (country) => {
     }
 };
 //function to get all the cities within a given state and country
-const getAllCities = async (state, country) => {
+const getAllCities = async (state, country, page = 1, searchQuery) => {
     const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
     try {
-        const response = await axios.post(url, {
+        const { data } = await axios.post(url, {
             country,
             state,
         }, {
@@ -77,10 +96,18 @@ const getAllCities = async (state, country) => {
             maxBodyLength: Infinity,
         });
         //if data doesn't exist throw an error
-        if (!response.data.data) {
+        if (!data.data) {
             throw new Error("failed to get states");
         }
-        return response.data.data.map((city) => {
+        let citiesArray = data.data;
+        // Filter and map the data only if searchQuery is provided
+        if (searchQuery) {
+            citiesArray = citiesArray.filter((city) => city.includes(searchQuery));
+        }
+        // Calculate the start and end indices for pagination
+        const startIndex = (page - 1) * 10;
+        const endIndex = startIndex + 10;
+        return citiesArray.slice(startIndex, endIndex).map((city) => {
             return {
                 name: city,
                 country,
@@ -125,7 +152,6 @@ const getAllAirports = async (city, countryCode) => {
         if (airportsData.length == 0)
             throw new Error("No Airports found");
         //Map the data of the response to fit the airport interface
-        console.log(airportsData);
         return airportsData.map((airport) => {
             return {
                 name: airport.name,
@@ -249,7 +275,11 @@ const getAllHotels = async (city, countryCode) => {
         //Map the data of the response to fit the hotel interface
         return response.data.data.map((hotel) => {
             return {
-                name: hotel.name,
+                name: hotel.name
+                    .toLowerCase()
+                    .split(" ")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" "),
                 id: hotel.hotelId,
                 url: `https://www.tripadvisor.com/Search?q=${hotel.name.replaceAll(" ", "+")}`,
                 city,
@@ -320,27 +350,25 @@ const getYoutubeVideos = async (city) => {
     }
 };
 //function that returns details of a country
-const getCountryDetails = async (countryCodeFrom, countryCodeTo, currencyFrom, currencyTo) => {
+const getCountryVisa = async (countryCodeFrom, countryCodeTo) => {
     //get the current year
-    const currentYear = new Date().getFullYear();
-    const holidayURL = `https://date.nager.at/api/v3/publicholidays/${currentYear}/${countryCodeTo}`;
-    const visaURL = `https://rough-sun-2523.fly.dev/api/${countryCodeFrom}/${countryCodeTo}`;
-    const excRateURL = `https://v6.exchangerate-api.com/v6/${process.env.EXCRATE_KEY}/pair/${currencyFrom}/${currencyTo}`;
+    const visaURL = `https://rough-sun-2523.fly.dev/api/${countryCodeTo}/${countryCodeFrom}`;
     try {
-        const publicholidays = (await axios.get(holidayURL)).data.slice(0, 5);
         const visaStatus = (await axios.get(visaURL)).data;
-        const exchangeRate = (await axios.get(excRateURL)).data;
         return {
             visaStatus: visaStatus.category,
             visaDuration: visaStatus.dur,
-            conversionRate: exchangeRate.conversion_rate,
-            holidays: publicholidays.map((holiday) => {
-                return {
-                    date: holiday.date,
-                    name: `${holiday.localName} | ${holiday.name}`,
-                };
-            }),
         };
+    }
+    catch (err) {
+        throw new Error("failed to get details");
+    }
+};
+const getCountryExchangeRate = async (currencyFrom, currencyTo) => {
+    const excRateURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencyFrom.toLowerCase()}.json`;
+    try {
+        const exchangeRate = (await axios.get(excRateURL)).data;
+        return exchangeRate[currencyFrom.toLowerCase()][currencyTo.toLowerCase()];
     }
     catch (err) {
         throw new Error("failed to get details");
@@ -355,11 +383,6 @@ const getLocationTime = async (city, countryCode) => {
         timeZone: response.data.timeZone,
     };
 };
-const getImage = async (keyword) => {
-    const response = await axios.get(`https://api.unsplash.com/search/photos?page=1&query=${keyword}`);
-    console.log(response.data.results);
-    return response.data;
-};
 export default {
     getAllCountries,
     getAllStates,
@@ -370,8 +393,8 @@ export default {
     getAllHotels,
     getAllAttractions,
     getYoutubeVideos,
-    getCountryDetails,
+    getCountryVisa,
+    getCountryExchangeRate,
     getLocationTime,
-    getImage,
 };
 //# sourceMappingURL=locations.service.js.map

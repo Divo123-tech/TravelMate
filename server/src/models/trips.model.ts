@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import {
   countryType,
   stateType,
@@ -12,8 +12,8 @@ export interface TripInterface {
   name: string;
   owner: mongoose.Types.ObjectId;
   collaborators?: mongoose.Types.ObjectId[];
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   countries?: countryType[];
   states?: stateType[];
   cities?: cityType[];
@@ -39,8 +39,11 @@ const tripSchema: Schema<TripInterface> = new Schema<TripInterface>({
   },
   startDate: {
     required: true,
-    default: new Date(),
-    type: Date,
+    type: String,
+  },
+  endDate: {
+    type: String,
+    required: true,
   },
   countries: {
     default: [],

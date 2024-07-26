@@ -14,7 +14,7 @@ const addTrip = async (req: Request, res: Response): Promise<void> => {
       throw new Error("User Not Found");
     }
     //add the trip and get the newly created trip
-    const trip = await tripsService.addTrip(user._id, req.body.name);
+    const trip = await tripsService.addTrip(req.body, user._id);
     //add a trip to the given user's trips array
     await usersService.addTrip(req.params.id, trip._id);
     res.status(200).json(trip);

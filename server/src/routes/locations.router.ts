@@ -13,10 +13,13 @@ router.get(
   locationsController.getAllAttractions
 );
 router.get(
-  "/details/:countryCodeFrom/:countryCodeTo/:currencyFrom/:currencyTo",
-  locationsController.getCountryDetails
+  "/exchange/:currencyFrom/:currencyTo",
+  locationsController.getCountryExchangeRate
+);
+router.get(
+  "/visa/:countryCodeFrom/:countryCodeTo",
+  locationsController.getCountryVisa
 );
 router.get("/videos/:city", locationsController.getYoutubeVideos);
 router.get("/time/:city/:countryCode", locationsController.getLocationTime);
-router.get("/image/:keyword", locationsController.getImage);
 export default router;
