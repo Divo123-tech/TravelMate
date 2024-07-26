@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { fetchCountries, editUserDetails } from "../services/apiService";
+import { getAllCountries, editUserDetails } from "../services/apiService";
 import { motion } from "framer-motion";
 import Trip from "./UserProfileComponents/Trip";
 import CreateNewTrip from "./UserProfileComponents/CreateNewTrip";
@@ -23,7 +23,6 @@ const UserProfile: FC = () => {
   if (!context) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-
   const { user, setUser } = context;
   const [countries, setCountries] = useState([]);
   const [editSuccess, setEditSuccess] = useState(false);
@@ -31,7 +30,13 @@ const UserProfile: FC = () => {
   useEffect(() => {
     const getCountries = async () => {
       try {
-        const countriesData = await fetchCountries("all");
+        const response = await getAllCountries(
+          "all",
+          undefined,
+          undefined,
+          1000
+        );
+        const countriesData = response.data;
         setCountries(countriesData);
       } catch (err) {
         console.error(err);
@@ -161,7 +166,6 @@ const UserProfile: FC = () => {
                             <option
                               key={user.passport.code}
                               value={user.passport.code}
-                              selected
                             >
                               {user.passport.name}
                             </option>
@@ -199,6 +203,10 @@ const UserProfile: FC = () => {
                   </Row>
                 </Container>
               </form>
+              <p className="mt-4 text-center italic">
+                Fill in these fields to get personalized visa and exchange
+                information when exploring!
+              </p>
             </div>
           </div>
           <EditSuccessToast
@@ -228,11 +236,14 @@ const UserProfile: FC = () => {
               variants={container}
             >
               {user.trips.map((trip: any, index: number) => {
+                //role, id, name, startDate, endDate, userId
                 return (
                   <Trip
-                    {...trip}
                     role={trip.owner == user._id ? "Owner" : "Collaborator"}
                     id={trip._id}
+                    name={trip.name}
+                    startDate={trip.startDate}
+                    endDate={trip.endDate}
                     key={index}
                     userId={user.googleId}
                   />

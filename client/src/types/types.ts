@@ -45,8 +45,9 @@ export type ReviewType = {
 export type countryType = {
   name: string;
   iso2: string;
-  flag: string;
   currency: string;
+  capital: string;
+  continent: string;
 };
 
 export type stateType = {
@@ -89,4 +90,12 @@ export type flightType = {
   arrivalDate: string;
   cabin: string;
   url: string;
+};
+export type CountryExchangeType = {
+  conversionRate: number;
+};
+
+export type VisaRequirementsType = {
+  visaStatus: string;
+  visaDuration: string;
 };

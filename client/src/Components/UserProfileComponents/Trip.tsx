@@ -63,7 +63,7 @@ const Trip = ({ role, id, name, startDate, endDate, userId }: Props) => {
         <p className="text-xl md:text-3xl">{name}</p>
         <p className="text-md md:text-lg">
           <FontAwesomeIcon icon={faCalendarDays} /> {startDate.slice(0, 10)} -{" "}
-          {endDate || "present"}
+          {endDate}
         </p>
       </div>
       <div className="flex flex-col gap-3 ml-auto mt-3 justify-center">

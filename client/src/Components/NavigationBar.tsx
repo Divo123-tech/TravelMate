@@ -36,9 +36,9 @@ const NavigationBar: FC = () => {
                   Home
                 </Nav.Link>
               </Link>
-              <Link to={"/explore/countries"}>
+              <Link to={"/explore"}>
                 <Nav.Link
-                  className="text-black  hover:font-bold"
+                  className="text-black hover:font-bold"
                   href="#features"
                 >
                   Explore
@@ -46,7 +46,7 @@ const NavigationBar: FC = () => {
               </Link>
               <Link to={"/contact"}>
                 <Nav.Link
-                  className="text-black  hover:font-bold"
+                  className="text-black hover:font-bold"
                   href="#features"
                 >
                   Contact
@@ -54,7 +54,7 @@ const NavigationBar: FC = () => {
               </Link>
               {user == null ? (
                 <Nav.Link
-                  className="text-black  hover:font-bold"
+                  className="text-black hover:font-bold"
                   href="#pricing"
                   onClick={
                     user
@@ -69,7 +69,7 @@ const NavigationBar: FC = () => {
               ) : (
                 <Link to={"/profile"}>
                   <Nav.Link
-                    className="text-black  hover:font-bold"
+                    className="text-black hover:font-bold"
                     href="#pricing"
                     onClick={
                       user

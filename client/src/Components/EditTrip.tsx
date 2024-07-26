@@ -57,7 +57,6 @@ const EditTrip = () => {
 
     fetchUserAndTrip(); // Call fetchUserAndTrip when the component mounts
   }, [tripId]); // Depend on tripId so it refetches if the tripId changes
-
   return (
     <>
       {trip ? (
@@ -72,12 +71,15 @@ const EditTrip = () => {
               {trip.collaborators?.length})
             </motion.button>
           </div>
-          <header className="text-center">
+          <header className="text-center flex flex-col gap-4 items-center">
             <input
               className="text-5xl font-medium text-center border-b-2 py-2 w-2/3 md:w-1/3 border-oxford-blue focus:outline-none"
               defaultValue={trip.name}
               onBlur={handleUserDetails}
             ></input>
+            <p className="text-lg">
+              Owner: {trip.owner.name} ({trip.owner.googleId})
+            </p>
           </header>
           <section>
             <form className="flex justify-center text-center text-2xl md:gap-72 py-8 px-24 flex-wrap gap-8">
@@ -87,14 +89,16 @@ const EditTrip = () => {
                   type="date"
                   defaultValue={String(trip.startDate).slice(0, 10)}
                   className="py-2 px-3 border-1 border-black focus:outline-none rounded-full"
+                  min={String(trip.startDate).slice(0, 10)}
                 ></input>
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-medium">To</label>
                 <input
                   type="date"
-                  defaultValue={String(trip.startDate).slice(0, 10)}
+                  defaultValue={String(trip.endDate).slice(0, 10)}
                   className="py-2 px-3 border-1 border-black focus:outline-none rounded-full"
+                  min={String(trip.startDate).slice(0, 10)}
                 ></input>
               </div>
             </form>

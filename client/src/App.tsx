@@ -7,7 +7,7 @@ import {
 } from "react";
 import NavigationBar from "./Components/NavigationBar";
 import UserProfile from "./Components/UserProfile";
-import Countries from "./Components/Countries";
+import ExploreLocations from "./Components/ExploreLocations";
 import Contact from "./Components/Contact";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
@@ -51,7 +51,7 @@ function App() {
             >
               <Routes location={location}>
                 <Route path={"/"} element={<HomePage />}></Route>
-                <Route path={"/explore/countries"} element={<Countries />} />
+                <Route path={"/explore"} element={<ExploreLocations />} />
                 <Route path={"/profile"} element={<UserProfile />} />
                 <Route path={"trip/:tripId"} element={<EditTrip />} />
                 <Route path={"/contact"} element={<Contact />} />
