@@ -68,15 +68,24 @@ export type hotelType = {
   id: string;
   url: string;
   city: string;
-  countryCode: string;
+  country: string;
 };
-
+//delete later
 export type activityType = {
   name: string;
   id: string;
   address: string;
   city: string;
   countryCode: string;
+  country: string;
+  url: string;
+};
+
+export type attractionType = {
+  name: string;
+  id: string;
+  address: string;
+  city: string;
   country: string;
   url: string;
 };
@@ -98,4 +107,27 @@ export type CountryExchangeType = {
 export type VisaRequirementsType = {
   visaStatus: string;
   visaDuration: string;
+};
+
+export type timeZoneType = {
+  date: string;
+  time: string;
+  timeZone: string;
+};
+
+//create AirportInterface for the output
+export type airportType = {
+  name: string;
+  region: string;
+  city: string;
+  iata: string;
+};
+
+export type videoType = {
+  url: string;
+  title: string;
+  views: string;
+  channel: string;
+  date: string;
+  length: string;
 };

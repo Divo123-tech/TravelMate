@@ -15,8 +15,9 @@ import loading from "../../assets/loading.png";
 type CountryProps = {
   country: countryType;
   setCurrentCountry: (country: countryType) => void;
+  setSearch: (searchQuery: string) => void;
 };
-const Country = ({ country, setCurrentCountry }: CountryProps) => {
+const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
@@ -29,6 +30,7 @@ const Country = ({ country, setCurrentCountry }: CountryProps) => {
   const { user } = context;
   const goToStates = () => {
     setCurrentCountry(country);
+    setSearch("");
     navigate(`/explore?location=state&country=${country.name}`);
   };
   useEffect(() => {

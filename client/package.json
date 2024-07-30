@@ -17,6 +17,7 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "framer-motion": "^11.2.13",
+    "lodash.debounce": "^4.0.8",
     "react": "^18.3.1",
     "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-bootstrap": "^2.10.4",
@@ -25,6 +26,7 @@
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/react": "^18.3.3",
     "@types/react-anchor-link-smooth-scroll": "^1.0.5",
     "@types/react-dom": "^18.3.0",

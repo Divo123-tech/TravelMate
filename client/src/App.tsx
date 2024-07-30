@@ -12,6 +12,7 @@ import Contact from "./Components/Contact";
 import HomePage from "./Components/HomePage";
 import Footer from "./Components/Footer";
 import EditTrip from "./Components/EditTrip";
+import Flights from "./Components/Flights";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { UserType } from "./types/types";
@@ -30,7 +31,7 @@ function App() {
       try {
         setUser(await getUserDetails()); // Set user state with the fetched data
       } catch (err) {
-        console.log(err);
+        setUser(null);
       }
     };
 
@@ -52,6 +53,7 @@ function App() {
               <Routes location={location}>
                 <Route path={"/"} element={<HomePage />}></Route>
                 <Route path={"/explore"} element={<ExploreLocations />} />
+                <Route path={"/flights"} element={<Flights />} />
                 <Route path={"/profile"} element={<UserProfile />} />
                 <Route path={"trip/:tripId"} element={<EditTrip />} />
                 <Route path={"/contact"} element={<Contact />} />

@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useContext, FC } from "react";
 import { UserContext } from "../App";
-
+import { googleAuthenticate, logOutAPI } from "../services/apiService";
 const NavigationBar: FC = () => {
   const context = useContext(UserContext);
 
@@ -13,9 +13,13 @@ const NavigationBar: FC = () => {
     throw new Error("YourComponent must be used within a UserProvider");
   }
 
-  const { user } = context;
-  const googleAuth = () => {
-    window.open(`http://localhost:3000/auth/google/`, "_self");
+  const { user, setUser } = context;
+
+  const logOut = async () => {
+    try {
+      await logOutAPI();
+      setUser(null);
+    } catch (err) {}
   };
   return (
     <>
@@ -30,7 +34,7 @@ const NavigationBar: FC = () => {
             id="basic-navbar-nav"
             className="justify-content-end"
           >
-            <Nav className="text-black flex gap-4 text-lg">
+            <Nav className="text-black flex gap-3 text-lg">
               <Link to={"/"}>
                 <Nav.Link className="text-black hover:font-bold" href="#home">
                   Home
@@ -41,7 +45,17 @@ const NavigationBar: FC = () => {
                   className="text-black hover:font-bold"
                   href="#features"
                 >
+                  Locations
+                </Nav.Link>
+              </Link>
+              <Link to={"/explore?location=activity"}>
+                <Nav.Link className="text-black hover:font-bold" href="#home">
                   Explore
+                </Nav.Link>
+              </Link>
+              <Link to={"/flights"}>
+                <Nav.Link className="text-black hover:font-bold" href="#home">
+                  Flights
                 </Nav.Link>
               </Link>
               <Link to={"/contact"}>
@@ -56,32 +70,22 @@ const NavigationBar: FC = () => {
                 <Nav.Link
                   className="text-black hover:font-bold"
                   href="#pricing"
-                  onClick={
-                    user
-                      ? () => {
-                          return;
-                        }
-                      : googleAuth
-                  }
+                  onClick={googleAuthenticate}
                 >
                   Login/Sign Up
                 </Nav.Link>
               ) : (
-                <Link to={"/profile"}>
-                  <Nav.Link
-                    className="text-black hover:font-bold"
-                    href="#pricing"
-                    onClick={
-                      user
-                        ? () => {
-                            return;
-                          }
-                        : googleAuth
-                    }
-                  >
-                    Profile
-                  </Nav.Link>
-                </Link>
+                <Nav.Link className="text-black hover:font-bold">
+                  <Link to={"/profile"}>Profile</Link>
+                </Nav.Link>
+              )}
+              {user && (
+                <Nav.Link
+                  className="text-black hover:font-bold"
+                  onClick={logOut}
+                >
+                  <Link to={"/"}> Log Out</Link>
+                </Nav.Link>
               )}
             </Nav>
           </Navbar.Collapse>

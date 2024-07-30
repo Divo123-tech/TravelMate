@@ -1,18 +1,24 @@
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { stateType } from "../../types/types";
-import { UserContext } from "../../App";
 import loading from "../../assets/loading.png";
 
 type Props = {
   state: stateType;
+  setCurrentState: (state: stateType) => void;
+  setSearch: (searchQuery: string) => void;
 };
-const State = ({ state }: Props) => {
+const State = ({ state, setCurrentState, setSearch }: Props) => {
+  const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+  const goToCities = () => {
+    setCurrentState(state);
+    setSearch("");
+    navigate(
+      `/explore?location=city&country=${state.countryName}&state=${state.name}`
+    );
+  };
   return (
     <>
       <div className="bg-teal flex items-center gap-8 mr-auto ">
@@ -21,7 +27,7 @@ const State = ({ state }: Props) => {
           src={`https://picsum.photos/seed/${state.name}/200/150`}
           onLoad={() => setIsImageLoaded(true)}
         ></img>
-        <div className="flex flex-col md:text-left">
+        <div className="flex flex-col md:text-left" onClick={goToCities}>
           <p className="text-white text-base text-lg whitespace-nowrap">
             Country: {state.countryName}, {state.countryCode}
           </p>
