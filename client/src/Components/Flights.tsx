@@ -1,5 +1,7 @@
 import FlightsWP from "../assets/FlightsWP.jpg";
 import { useState, FC } from "react";
+import { getAllFlights } from "../services/apiService";
+import { flightType } from "../types/types";
 const Flights: FC = () => {
   const [flightDetails, setFlightDetails] = useState({
     origin: "",
@@ -10,10 +12,39 @@ const Flights: FC = () => {
     children: 0,
     cabin: "ECONOMY",
   });
-
-  const handleSubmit = (e: any) => {
+  const [flights, setFlights] = useState<flightType[] | null>(null);
+  const [showFlights, setShowFlights] = useState(false);
+  const [totalFlights, setTotalFlights] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(flightDetails);
+    const {
+      origin,
+      destination,
+      departureDate,
+      adults,
+      nonstop,
+      children,
+      cabin,
+    } = flightDetails;
+    try {
+      const fetchedFlights = await getAllFlights(
+        origin,
+        destination,
+        departureDate,
+        adults,
+        nonstop,
+        children,
+        cabin
+      );
+      setFlights(fetchedFlights.data);
+      setTotalFlights(fetchedFlights.total);
+      console.log(fetchedFlights);
+    } catch (err) {
+      setFlights([]);
+      setTotalFlights(0);
+      setCurrentPage(0);
+    }
   };
   const handleChange = (event: any) => {
     const { value, name } = event.target;

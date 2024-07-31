@@ -284,14 +284,24 @@ export const getAllVideos = (
   });
 };
 
-const getAllFlights = async (
+export const getAllFlights = async (
   origin: string,
   destination: string,
   departureDate: string,
   adults: number,
   nonstop: boolean,
   children: number,
-  travelClass: string
+  travelClass: string,
+  page?: number
 ) => {
   let url = `${ServerAPI}/locations/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&adults=${adults}&nonstop=${nonstop}&children=${children}&travelClass=${travelClass}`;
+  const cacheKey = `airports_${origin}_${destination}_${departureDate}_${adults}_${nonstop}_${children}_${travelClass}_${page}`;
+  if (page) {
+    url += `page=${page}&`;
+  }
+  return cachedApiCall(cacheKey, async () => {
+    const { data } = await axios.get(url, { withCredentials: true });
+    console.log(data);
+    return data;
+  });
 };
