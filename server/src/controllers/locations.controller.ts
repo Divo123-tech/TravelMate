@@ -26,6 +26,16 @@ const getAllCountries = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getCountryByName = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(await locationsService.getCountryByName(req.params.name));
+  } catch (err: any) {
+    res.status(403).json({ message: err.message });
+  }
+};
+
 const getAllStates = async (req: Request, res: Response): Promise<void> => {
   try {
     const page =
@@ -41,6 +51,21 @@ const getAllStates = async (req: Request, res: Response): Promise<void> => {
           req.params.country,
           page,
           searchQuery
+        )
+      );
+  } catch (err: any) {
+    res.status(403).json({ message: err.message });
+  }
+};
+
+const getStateByName = async (req: Request, res: Response) => {
+  try {
+    res
+      .status(200)
+      .json(
+        await locationsService.getStateByName(
+          req.params.name,
+          req.params.country
         )
       );
   } catch (err: any) {
@@ -64,6 +89,22 @@ const getAllCities = async (req: Request, res: Response): Promise<void> => {
           req.params.country,
           page,
           searchQuery
+        )
+      );
+  } catch (err: any) {
+    res.status(403).json({ message: err.message });
+  }
+};
+
+const getCityByName = async (req: Request, res: Response): Promise<void> => {
+  try {
+    res
+      .status(200)
+      .json(
+        await locationsService.getCityByName(
+          req.params.name,
+          req.params.country,
+          req.params.state
         )
       );
   } catch (err: any) {
@@ -101,10 +142,12 @@ interface FlightInterface {
   departureDate: string;
   adults: number;
   nonstop: boolean;
+  currency: string;
   children?: number;
   infants?: number;
   maxPrice?: number;
   travelClass?: travelClassType;
+  page?: number;
 }
 const getAllFlights = async (
   req: Request<any, any, any, FlightInterface>,
@@ -116,11 +159,14 @@ const getAllFlights = async (
     departureDate,
     adults,
     nonstop,
+    currency,
     children,
     infants,
     maxPrice,
     travelClass,
   } = req.query;
+  const page =
+    typeof req.query.page === "string" ? Number(req.query.page) : undefined;
   try {
     res
       .status(200)
@@ -131,10 +177,12 @@ const getAllFlights = async (
           departureDate,
           adults,
           nonstop,
+          currency,
           children,
           infants,
           maxPrice,
-          travelClass
+          travelClass,
+          page
         )
       );
   } catch (err: any) {
@@ -260,8 +308,11 @@ const getLocationTime = async (req: Request, res: Response) => {
 
 export default {
   getAllCountries,
+  getCountryByName,
   getAllStates,
+  getStateByName,
   getAllCities,
+  getCityByName,
   getAllAirports,
   getAllFlights,
   getAllHotels,

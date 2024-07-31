@@ -1,10 +1,12 @@
 import locationsController from "../controllers/locations.controller.js";
 import { Router } from "express";
 const router = Router();
-
+router.get("/country/:name", locationsController.getCountryByName);
 router.get("/countries/:continent", locationsController.getAllCountries);
 router.get("/states/:country", locationsController.getAllStates);
+router.get("/state/:country/:name", locationsController.getStateByName);
 router.get("/cities/:state/:country", locationsController.getAllCities);
+router.get("/city/:country/:state/:name", locationsController.getCityByName);
 router.get(
   "/airports/:region/:countryCode",
   locationsController.getAllAirports

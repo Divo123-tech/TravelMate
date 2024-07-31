@@ -14,6 +14,16 @@ const getAllCountries = async (req, res) => {
         res.status(403).json({ message: err.message });
     }
 };
+const getCountryByName = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getCountryByName(req.params.name));
+    }
+    catch (err) {
+        res.status(403).json({ message: err.message });
+    }
+};
 const getAllStates = async (req, res) => {
     try {
         const page = typeof req.query.page === "string" ? Number(req.query.page) : undefined;
@@ -28,6 +38,16 @@ const getAllStates = async (req, res) => {
         res.status(403).json({ message: err.message });
     }
 };
+const getStateByName = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getStateByName(req.params.name, req.params.country));
+    }
+    catch (err) {
+        res.status(403).json({ message: err.message });
+    }
+};
 const getAllCities = async (req, res) => {
     try {
         const page = typeof req.query.page === "string" ? Number(req.query.page) : undefined;
@@ -37,6 +57,16 @@ const getAllCities = async (req, res) => {
         res
             .status(200)
             .json(await locationsService.getAllCities(req.params.state, req.params.country, page, searchQuery));
+    }
+    catch (err) {
+        res.status(403).json({ message: err.message });
+    }
+};
+const getCityByName = async (req, res) => {
+    try {
+        res
+            .status(200)
+            .json(await locationsService.getCityByName(req.params.name, req.params.country, req.params.state));
     }
     catch (err) {
         res.status(403).json({ message: err.message });
@@ -57,11 +87,12 @@ const getAllAirports = async (req, res) => {
     }
 };
 const getAllFlights = async (req, res) => {
-    const { origin, destination, departureDate, adults, nonstop, children, infants, maxPrice, travelClass, } = req.query;
+    const { origin, destination, departureDate, adults, nonstop, currency, children, infants, maxPrice, travelClass, } = req.query;
+    const page = typeof req.query.page === "string" ? Number(req.query.page) : undefined;
     try {
         res
             .status(200)
-            .json(await locationsService.getAllFlights(origin, destination, departureDate, adults, nonstop, children, infants, maxPrice, travelClass));
+            .json(await locationsService.getAllFlights(origin, destination, departureDate, adults, nonstop, currency, children, infants, maxPrice, travelClass, page));
     }
     catch (err) {
         res.status(400).json({ message: err.message });
@@ -137,8 +168,11 @@ const getLocationTime = async (req, res) => {
 };
 export default {
     getAllCountries,
+    getCountryByName,
     getAllStates,
+    getStateByName,
     getAllCities,
+    getCityByName,
     getAllAirports,
     getAllFlights,
     getAllHotels,

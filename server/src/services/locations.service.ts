@@ -63,6 +63,29 @@ const getAllCountries = async (
   }
 };
 
+const getCountryByName = async (name: string): Promise<countryType> => {
+  let url = `https://restfulcountries.com/api/v1/countries/${name}`;
+  const { data } = await axios.get(url, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
+    },
+  });
+
+  //if data doesn't exist throw an error
+  if (!data.data) {
+    throw new Error("failed to get countries");
+  }
+  const country = data.data;
+  return {
+    name: country.name,
+    iso2: country.iso2,
+    currency: country.currency,
+    capital: country.capital,
+    continent: country.continent,
+  };
+};
+
 export type stateType = {
   name: string;
   code: string;
@@ -118,6 +141,63 @@ const getAllStates = async (
     //error handling
   } catch (err: any) {
     throw new Error("No States Found");
+  }
+};
+const binarySearch = (arr: any[], target: string): any => {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const comparison = target.localeCompare(
+      arr[mid].name || arr[mid],
+      undefined,
+      {
+        sensitivity: "base",
+      }
+    );
+
+    if (comparison === 0) {
+      return arr[mid]; // Found the target
+    } else if (comparison < 0) {
+      right = mid - 1; // Target is in the left half
+    } else {
+      left = mid + 1; // Target is in the right half
+    }
+  }
+
+  return null; // Target not found
+};
+const getStateByName = async (
+  name: string,
+  country: string
+): Promise<stateType> => {
+  const url = "https://countriesnow.space/api/v0.1/countries/states";
+
+  const response = await axios.post(
+    url,
+    { country },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      maxBodyLength: Infinity,
+    }
+  );
+  //if data doesn't exist throw an error
+  if (!response.data.data) {
+    throw new Error("failed to get states");
+  }
+  const state = binarySearch(response.data.data.states, name);
+  if (state) {
+    return {
+      name: state.name,
+      code: state.state_code,
+      countryName: response.data.data.name,
+      countryCode: response.data.data.iso2,
+    };
+  } else {
+    throw new Error("failed to get states");
   }
 };
 
@@ -177,6 +257,37 @@ const getAllCities = async (
     //error handling
   } catch (err: any) {
     throw new Error("No Cities Found");
+  }
+};
+
+const getCityByName = async (name: string, country: string, state: string) => {
+  const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
+  const { data } = await axios.post(
+    url,
+    {
+      country,
+      state,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      maxBodyLength: Infinity,
+    }
+  );
+  //if data doesn't exist throw an error
+  if (!data.data) {
+    throw new Error("failed to get states");
+  }
+  let citiesArray = data.data;
+  if (citiesArray) {
+    return {
+      city: binarySearch(citiesArray, name),
+      state,
+      country,
+    };
+  } else {
+    throw new Error("failed to fetch city");
   }
 };
 
@@ -361,6 +472,9 @@ export type flightType = {
   arrivalDate: string;
   cabin: string;
   url: string;
+  price: number;
+  airline: string;
+  currency: string;
 };
 //function that gets all flights on various parameters
 const getAllFlights = async (
@@ -369,13 +483,14 @@ const getAllFlights = async (
   departureDate: string,
   adults: number = 1,
   nonstop: boolean = false,
+  currencyCode: string,
   children?: number,
   infants?: number,
   maxPrice?: number,
   travelClass?: travelClassType,
   page: number = 1
 ): Promise<{ total: number; data: flightType[] }> => {
-  let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=SGD`;
+  let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=${currencyCode}`;
 
   //update the url
   const updatedUrl = populateURLWithOptionalParams(
@@ -416,6 +531,12 @@ const getAllFlights = async (
             ].arrival.at,
           cabin: flight.travelerPricings[0].fareDetailsBySegment[0].cabin,
           url: getFlightURL(flight, children || 0, infants || 0),
+          price: Number(flight.price.grandTotal),
+          airline:
+            data.dictionaries.carriers[
+              flight.itineraries[0].segments[0].carrierCode
+            ],
+          currency: currencyCode,
         };
       }),
     };
@@ -688,8 +809,11 @@ const getLocationTime = async (
 
 export default {
   getAllCountries,
+  getCountryByName,
   getAllStates,
+  getStateByName,
   getAllCities,
+  getCityByName,
   getCoords,
   getAllAirports,
   getAllFlights,
