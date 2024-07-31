@@ -94,7 +94,7 @@ const NewTripModal = ({ show, onHide }: Props) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={onHide} variant="secondary" className="">
+          <Button onClick={onHide} variant="secondary">
             Close
           </Button>
           <Button

@@ -1,5 +1,4 @@
 import CreateTripImage from "../../assets/CreateTripImage.png";
-// import { Link } from "react-router-dom";
 import { useState } from "react";
 import NewTripModal from "./NewTripModal";
 const CreateNewTrip = () => {

@@ -17,6 +17,9 @@ import {
   getAllAirports,
   getAllRestaurants,
   getAllVideos,
+  getCountryByName,
+  getStateByName,
+  getCityByName,
 } from "../services/apiService";
 import { countryType, stateType, cityType } from "../types/types";
 import { UserContext } from "../App";
@@ -28,6 +31,7 @@ import Hotel from "./ExploreLocationsComponents/Hotel";
 import Airport from "./ExploreLocationsComponents/Airport";
 import Restaurant from "./ExploreLocationsComponents/Restaurant";
 import Video from "./ExploreLocationsComponents/Video";
+import AddToTrip from "./AddToTrip";
 const container = {
   hidden: {},
   visible: {
@@ -55,6 +59,7 @@ const ExploreLocations = () => {
   const [currentLocations, setCurrentLocations] = useState<string>("");
   const exploreNewLocation = (e: any) => {
     e.preventDefault();
+    setActivities(null);
     setActivityType("Hotels");
     const locations = currentLocations.split(",");
     navigate(
@@ -114,12 +119,10 @@ const ExploreLocations = () => {
             setStates(null);
             try {
               if (currentCountry == null) {
-                const { data } = await getAllCountries(
-                  "all",
-                  1,
-                  searchParams.get("country") || "United States"
+                const country = await getCountryByName(
+                  searchParams.get("country") || ""
                 );
-                setCurrentCountry(data);
+                setCurrentCountry(country);
               }
               response = await getAllStates(
                 currentCountry?.name || searchParams.get("country") || "",
@@ -138,22 +141,19 @@ const ExploreLocations = () => {
             setCities(null);
             try {
               if (currentCountry == null) {
-                const { data } = await getAllCountries(
-                  "all",
-                  1,
-                  searchParams.get("country") || "United States"
+                const country = await getCountryByName(
+                  searchParams.get("country") || ""
                 );
-                setCurrentCountry(data);
+                setCurrentCountry(country);
               }
               if (currentState == null) {
-                const { data } = await getAllStates(
+                const state = await getStateByName(
+                  searchParams.get("state") || "",
                   currentCountry?.name ||
-                    searchParams.get("country") ||
-                    "United States",
-                  1,
-                  searchParams.get("state") || "California"
+                    searchParams.get("") ||
+                    "United States"
                 );
-                setCurrentState(data);
+                setCurrentState(state);
               }
             } catch (e) {
               setCurrentCountry(null);
@@ -181,33 +181,28 @@ const ExploreLocations = () => {
             setActivities(null);
             try {
               if (currentCountry == null) {
-                const { data } = await getAllCountries(
-                  "all",
-                  1,
+                const country = await getCountryByName(
                   searchParams.get("country") || ""
                 );
-                setCurrentCountry(data);
+                setCurrentCountry(country);
               }
               if (currentState == null) {
-                const { data } = await getAllStates(
-                  currentCountry?.name ||
-                    searchParams.get("") ||
-                    "United States",
-                  1,
-                  searchParams.get("state") || ""
+                const state = await getStateByName(
+                  searchParams.get("state") || "",
+                  currentCountry?.name || searchParams.get("country") || ""
                 );
-                setCurrentState(data);
+                setCurrentState(state);
               }
               if (currentCity == null) {
-                const { data } = await getAllCities(
-                  searchParams.get("state") || "",
+                const city = await getCityByName(
+                  searchParams.get("city") || "",
                   currentCountry?.name || searchParams.get("country") || "",
-                  1,
-                  searchParams.get("city") || ""
+                  currentState?.name || searchParams.get("state") || ""
                 );
-                setCurrentCity(data);
+                setCurrentCity(city);
               }
             } catch (e) {
+              console.log(e);
               setCurrentCountry(null);
               setCurrentState(null);
               setCurrentCity(null);
@@ -364,16 +359,7 @@ const ExploreLocations = () => {
                             setCurrentCountry={setCurrentCountry}
                             setSearch={setSearch}
                           />
-                          <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
-                            <motion.button
-                              className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() => console.log([country])}
-                            >
-                              Add to Trip
-                            </motion.button>
-                          </div>
+                          <AddToTrip itineraries={[country]} />
                         </motion.div>
                       );
                     })}
@@ -476,18 +462,7 @@ const ExploreLocations = () => {
                             setCurrentState={setCurrentState}
                             setSearch={setSearch}
                           />
-                          <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
-                            <motion.button
-                              className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() =>
-                                console.log([currentCountry, state])
-                              }
-                            >
-                              Add to Trip
-                            </motion.button>
-                          </div>
+                          <AddToTrip itineraries={[currentCountry, state]} />
                         </motion.div>
                       );
                     })}
@@ -590,22 +565,9 @@ const ExploreLocations = () => {
                           key={city.name}
                         >
                           <City city={city} setCurrentCity={setCurrentCity} />
-                          <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
-                            <motion.button
-                              className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={() =>
-                                console.log([
-                                  currentCountry,
-                                  currentState,
-                                  city,
-                                ])
-                              }
-                            >
-                              Add to Trip
-                            </motion.button>
-                          </div>
+                          <AddToTrip
+                            itineraries={[currentCountry, currentState, city]}
+                          />
                         </motion.div>
                       );
                     })}
@@ -670,7 +632,7 @@ const ExploreLocations = () => {
         return (
           <div className="flex flex-col items-center p-16 gap-8">
             <h1 className="text-6xl font-medium text-oxford-blue text-center">
-              Explore {currentCity?.name || "..."}
+              Explore {currentCity?.name || searchParams.get("city") || "..."}
             </h1>
             <form className="flex items-center" onSubmit={exploreNewLocation}>
               <input
@@ -774,15 +736,16 @@ const ExploreLocations = () => {
                             {activityType == "Videos" && (
                               <Video video={activity} />
                             )}
-                            <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
-                              <motion.button
-                                className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.9 }}
-                              >
-                                Add to Trip
-                              </motion.button>
-                            </div>
+                            {activityType != "Airports" && (
+                              <AddToTrip
+                                itineraries={[
+                                  currentCountry,
+                                  currentState,
+                                  currentCity,
+                                  activity,
+                                ]}
+                              />
+                            )}
                           </motion.div>
                         );
                       })}

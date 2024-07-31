@@ -60,6 +60,8 @@ const UserProfile: FC = () => {
         });
       }
     } else {
+      console.log(e.target.name);
+      console.log(e.target.name, e.target.value);
       if (user) {
         setUser({
           ...user,
@@ -81,6 +83,7 @@ const UserProfile: FC = () => {
           user.passport,
           user.currencyUsed
         );
+        console.log(userData);
         setUser({
           ...user,
           ["name"]: userData.name,
@@ -133,6 +136,7 @@ const UserProfile: FC = () => {
                           defaultValue={user.currencyUsed}
                           className="border-oxford-blue border-2 rounded-lg w-80 h-8"
                           onChange={handleChange}
+                          name="currencyUsed"
                         >
                           {user.currencyUsed ? (
                             <option

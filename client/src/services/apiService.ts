@@ -113,6 +113,20 @@ export const getAllCountries = async (
   });
 };
 
+export const getCountryByName = (countryName: string) => {
+  try {
+    const cacheKey = `country_${countryName}`;
+    const url = `${ServerAPI}/locations/country/${countryName}`;
+    console.log(url);
+    return cachedApiCall(cacheKey, async () => {
+      const { data } = await axios.get(url, { withCredentials: true });
+      return data;
+    });
+  } catch (err: any) {
+    return null;
+  }
+};
+
 export const getCountryVisa = async (
   countryCodeFrom: string,
   countryCodeTo: string
@@ -159,6 +173,15 @@ export const getAllStates = async (
   });
 };
 
+export const getStateByName = (name: string, country: string) => {
+  const cacheKey = `state_${country}_${name}`;
+  const url = `${ServerAPI}/locations/state/${country}/${name}`;
+  return cachedApiCall(cacheKey, async () => {
+    const { data } = await axios.get(url, { withCredentials: true });
+    return data;
+  });
+};
+
 export type cityType = {
   name: string;
   country: string;
@@ -183,6 +206,15 @@ export const getAllCities = async (
   if (limit) {
     url += `limit=${limit}&`;
   }
+  return cachedApiCall(cacheKey, async () => {
+    const { data } = await axios.get(url, { withCredentials: true });
+    return data;
+  });
+};
+
+export const getCityByName = (name: string, country: string, state: string) => {
+  const cacheKey = `city_${country}_${state}_${name}`;
+  const url = `${ServerAPI}/locations/city/${country}/${state}/${name}`;
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
     return data;
@@ -292,10 +324,12 @@ export const getAllFlights = async (
   nonstop: boolean,
   children: number,
   travelClass: string,
+  currency: string,
+  maxPrice: number,
   page?: number
 ) => {
-  let url = `${ServerAPI}/locations/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&adults=${adults}&nonstop=${nonstop}&children=${children}&travelClass=${travelClass}`;
-  const cacheKey = `airports_${origin}_${destination}_${departureDate}_${adults}_${nonstop}_${children}_${travelClass}_${page}`;
+  let url = `${ServerAPI}/locations/flights?origin=${origin}&destination=${destination}&departureDate=${departureDate}&adults=${adults}&nonstop=${nonstop}&children=${children}&travelClass=${travelClass}&currency=${currency}&maxPrice=${maxPrice}&`;
+  const cacheKey = `flights_${origin}_${destination}_${departureDate}_${adults}_${nonstop}_${children}_${travelClass}__${currency}_${maxPrice}_${page}`;
   if (page) {
     url += `page=${page}&`;
   }

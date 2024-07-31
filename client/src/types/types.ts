@@ -94,11 +94,15 @@ export type flightType = {
   origin: string;
   destination: string;
   duration: string;
+  adults: number;
   stops: number;
   departureDate: string;
   arrivalDate: string;
   cabin: string;
   url: string;
+  price: number;
+  airline: string;
+  currency: string;
 };
 export type CountryExchangeType = {
   conversionRate: number;
