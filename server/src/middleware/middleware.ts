@@ -38,11 +38,7 @@ export const googleAuthCallback = passport.authenticate("google", {
   failureRedirect: "/failure",
 });
 
-export const redirectToHome = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const redirectToHome = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       throw new Error("failed to verify user");
@@ -66,6 +62,16 @@ export const redirectToHome = async (
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
+};
+
+export const logOut = (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      res.status(500).send("Could not log out");
+    } else {
+      res.redirect(process.env.REDIRECT_URI || "http://localhost:5173");
+    }
+  });
 };
 
 const app = express();

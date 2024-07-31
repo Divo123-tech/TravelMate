@@ -43,10 +43,14 @@ const getAllCities = async (req, res) => {
     }
 };
 const getAllAirports = async (req, res) => {
+    const page = typeof req.query.page === "string" ? Number(req.query.page) : undefined;
+    const searchQuery = typeof req.query.searchQuery == "string"
+        ? req.query.searchQuery
+        : undefined;
     try {
         res
             .status(200)
-            .json(await locationsService.getAllAirports(req.params.city, req.params.countryCode));
+            .json(await locationsService.getAllAirports(req.params.region, req.params.countryCode, page, searchQuery));
     }
     catch (err) {
         res.status(403).json({ message: "No Airports found" });
@@ -64,10 +68,14 @@ const getAllFlights = async (req, res) => {
     }
 };
 const getAllHotels = async (req, res) => {
+    const page = typeof req.query.page === "string" ? Number(req.query.page) : undefined;
+    const searchQuery = typeof req.query.searchQuery == "string"
+        ? req.query.searchQuery
+        : undefined;
     try {
         res
             .status(200)
-            .json(await locationsService.getAllHotels(req.params.city, req.params.countryCode));
+            .json(await locationsService.getAllHotels(req.params.city, req.params.countryCode, page, searchQuery));
     }
     catch (err) {
         res.status(400).json({ message: err.message });
@@ -84,10 +92,14 @@ const getAllAttractions = async (req, res) => {
     }
 };
 const getYoutubeVideos = async (req, res) => {
+    const page = typeof req.query.page === "string" ? Number(req.query.page) : undefined;
+    const searchQuery = typeof req.query.searchQuery == "string"
+        ? req.query.searchQuery
+        : undefined;
     try {
         res
             .status(200)
-            .json(await locationsService.getYoutubeVideos(req.params.city));
+            .json(await locationsService.getYoutubeVideos(req.params.city, page, searchQuery));
     }
     catch (err) {
         res.status(400).json({ message: err.message });
