@@ -16,7 +16,7 @@ const State = ({ state, setCurrentState, setSearch }: Props) => {
     setCurrentState(state);
     setSearch("");
     navigate(
-      `/explore?location=city&country=${state.countryName}&state=${state.name}`
+      `/explore?locationType=cities&country=${state.countryName}&state=${state.name}`
     );
   };
   return (

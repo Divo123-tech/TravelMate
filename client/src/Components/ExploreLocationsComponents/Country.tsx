@@ -14,8 +14,8 @@ import loading from "../../assets/loading.png";
 
 type CountryProps = {
   country: countryType;
-  setCurrentCountry: (country: countryType) => void;
-  setSearch: (searchQuery: string) => void;
+  setCurrentCountry?: (country: countryType) => void;
+  setSearch?: (searchQuery: string) => void;
 };
 const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
   const navigate = useNavigate();
@@ -29,9 +29,11 @@ const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
 
   const { user } = context;
   const goToStates = () => {
-    setCurrentCountry(country);
-    setSearch("");
-    navigate(`/explore?location=state&country=${country.name}`);
+    if (setCurrentCountry && setSearch) {
+      setCurrentCountry(country);
+      setSearch("");
+    }
+    navigate(`/explore?locationType=states&country=${country.name}`);
   };
   useEffect(() => {
     // Reset visaShown when the country prop changes

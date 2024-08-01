@@ -1,25 +1,38 @@
 import { FC, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { UserContext } from "../App";
+import { UserContext, SocketContext } from "../App";
 import { TripType } from "../types/types";
 import { motion } from "framer-motion";
 type Props = {
   show: boolean;
   onHide: () => void;
   itineraries: any[];
+  itineraryType: string;
 };
 
-const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
-  const context = useContext(UserContext);
-
-  if (!context) {
+const AddToTripModal: FC<Props> = ({
+  show,
+  onHide,
+  itineraries,
+  itineraryType,
+}: Props) => {
+  const userContext = useContext(UserContext);
+  const socketContext = useContext(SocketContext);
+  if (!userContext || !socketContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-  const { user } = context;
-  const addItinerearies = () => {
+  const { user } = userContext;
+  const { socket, emitEvent } = socketContext;
+  const addItinereariesToTrip = (tripId: string) => {
+    console.log(itineraryType);
+    console.log(tripId);
     itineraries.map((itinerary: any) => {
-      console.log(itinerary);
+      emitEvent("AddLocationToTrip", {
+        tripId,
+        data: { details: itinerary, type: itinerary.type },
+      });
+      // console.log(itinerary, itinerary.type);
     });
   };
   return (
@@ -47,7 +60,7 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
                       className="text-4xl font-bold text-oxford-blue hover:cursor-pointer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.9 }}
-                      onClick={() => addItinerearies()}
+                      onClick={() => addItinereariesToTrip(trip._id)}
                     >
                       +
                     </motion.p>

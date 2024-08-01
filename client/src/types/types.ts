@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+import { Dispatch, SetStateAction } from "react";
 export type UserType = {
   _id: string;
   googleId: string;
@@ -9,6 +11,14 @@ export type UserType = {
   trips: TripType[];
 };
 
+export type UserContextType = {
+  user: UserType | null;
+  setUser: Dispatch<SetStateAction<UserType | null>>;
+};
+export type SocketContextType = {
+  socket: Socket | null;
+  emitEvent: (eventName: string, data: any) => void;
+};
 export type PassportType = {
   name: string;
   code: string;
@@ -27,6 +37,8 @@ export type TripType = {
   activities?: [];
   flights?: [];
   hotels?: [];
+  videos?: [];
+  type: string;
 };
 
 export type ItineraryType = {
@@ -48,6 +60,7 @@ export type countryType = {
   currency: string;
   capital: string;
   continent: string;
+  type: string;
 };
 
 export type stateType = {
@@ -55,12 +68,14 @@ export type stateType = {
   code: string;
   countryName: string;
   countryCode: string;
+  type: string;
 };
 
 export type cityType = {
   name: string;
   country: string;
   state: string;
+  type: string;
 };
 
 export type hotelType = {
@@ -69,6 +84,7 @@ export type hotelType = {
   url: string;
   city: string;
   country: string;
+  type: string;
 };
 //delete later
 export type activityType = {
@@ -88,6 +104,7 @@ export type attractionType = {
   city: string;
   country: string;
   url: string;
+  type: string;
 };
 
 export type flightType = {
@@ -103,6 +120,7 @@ export type flightType = {
   price: number;
   airline: string;
   currency: string;
+  type: string;
 };
 export type CountryExchangeType = {
   conversionRate: number;
@@ -134,4 +152,5 @@ export type videoType = {
   channel: string;
   date: string;
   length: string;
+  type: string;
 };

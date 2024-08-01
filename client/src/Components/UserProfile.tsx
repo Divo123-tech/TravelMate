@@ -2,7 +2,11 @@ import { FC, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { getAllCountries, editUserDetails } from "../services/apiService";
+import {
+  getAllCountries,
+  editUserDetails,
+  getUserDetails,
+} from "../services/apiService";
 import { motion } from "framer-motion";
 import Trip from "./UserProfileComponents/Trip";
 import CreateNewTrip from "./UserProfileComponents/CreateNewTrip";
@@ -26,7 +30,13 @@ const UserProfile: FC = () => {
   const { user, setUser } = context;
   const [countries, setCountries] = useState([]);
   const [editSuccess, setEditSuccess] = useState(false);
+  useEffect(() => {
+    const getUser = async () => {
+      setUser(await getUserDetails()); // Set user state with the fetched data
+    };
 
+    getUser(); // Call getUser when the component mounts
+  }, []); // Empty dependency array ensures this effect runs only once on mount
   useEffect(() => {
     const getCountries = async () => {
       try {
@@ -60,8 +70,6 @@ const UserProfile: FC = () => {
         });
       }
     } else {
-      console.log(e.target.name);
-      console.log(e.target.name, e.target.value);
       if (user) {
         setUser({
           ...user,

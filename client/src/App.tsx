@@ -1,10 +1,4 @@
-import {
-  useState,
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-} from "react";
+import { useState, createContext, useEffect } from "react";
 import NavigationBar from "./Components/NavigationBar";
 import UserProfile from "./Components/UserProfile";
 import ExploreLocations from "./Components/ExploreLocations";
@@ -17,51 +11,67 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { UserType } from "./types/types";
 import { getUserDetails } from "./services/apiService";
+import io, { Socket } from "socket.io-client";
+import { SocketContextType, UserContextType } from "./types/types";
 import "./App.css";
 
 export const UserContext = createContext<UserContextType | null>(null);
-type UserContextType = {
-  user: UserType | null;
-  setUser: Dispatch<SetStateAction<UserType | null>>;
-};
+
+export const SocketContext = createContext<SocketContextType | null>(null);
 function App() {
   const [user, setUser] = useState<UserType | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
+
   useEffect(() => {
     const getUser = async () => {
-      try {
-        setUser(await getUserDetails()); // Set user state with the fetched data
-      } catch (err) {
-        setUser(null);
-      }
+      setUser(await getUserDetails()); // Set user state with the fetched data
     };
 
     getUser(); // Call getUser when the component mounts
   }, []); // Empty dependency array ensures this effect runs only once on mount
+
+  useEffect(() => {
+    const newSocket: Socket = io("http://localhost:3000");
+    setSocket(newSocket);
+    socket?.on("connect", () => {
+      console.log("Connected to server");
+    });
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  const emitEvent = (eventName: string, data: any) => {
+    if (socket) socket.emit(eventName, data);
+  };
+
   const location = useLocation();
   return (
     <>
       <UserContext.Provider value={{ user, setUser }}>
-        <div className="flex flex-col min-h-screen">
-          <NavigationBar />
-          <SwitchTransition>
-            <CSSTransition
-              key={location.pathname}
-              classNames="fade"
-              timeout={300}
-              unmountOnExit
-            >
-              <Routes location={location}>
-                <Route path={"/"} element={<HomePage />}></Route>
-                <Route path={"/explore"} element={<ExploreLocations />} />
-                <Route path={"/flights"} element={<Flights />} />
-                <Route path={"/profile"} element={<UserProfile />} />
-                <Route path={"trip/:tripId"} element={<EditTrip />} />
-                <Route path={"/contact"} element={<Contact />} />
-              </Routes>
-            </CSSTransition>
-          </SwitchTransition>
-          <Footer />
-        </div>
+        <SocketContext.Provider value={{ socket, emitEvent }}>
+          <div className="flex flex-col min-h-screen">
+            <NavigationBar />
+            <SwitchTransition>
+              <CSSTransition
+                key={location.pathname}
+                classNames="fade"
+                timeout={300}
+                unmountOnExit
+              >
+                <Routes location={location}>
+                  <Route path={"/"} element={<HomePage />}></Route>
+                  <Route path={"/explore"} element={<ExploreLocations />} />
+                  <Route path={"/flights"} element={<Flights />} />
+                  <Route path={"/profile"} element={<UserProfile />} />
+                  <Route path={"trip/:tripId"} element={<EditTrip />} />
+                  <Route path={"/contact"} element={<Contact />} />
+                </Routes>
+              </CSSTransition>
+            </SwitchTransition>
+            <Footer />
+          </div>
+        </SocketContext.Provider>
       </UserContext.Provider>
     </>
   );

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getTripDetails, getUserDetails } from "../services/apiService";
-import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faUserGroup, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import {
   TripType,
   cityType,
@@ -11,7 +11,7 @@ import {
   activityType,
   flightType,
 } from "../types/types";
-import Country from "./EditTripComponents/Country";
+import Country from "./ExploreLocationsComponents/Country";
 import State from "./EditTripComponents/State";
 import City from "./EditTripComponents/City";
 import Hotel from "./EditTripComponents/Hotel";
@@ -19,7 +19,7 @@ import Activity from "./EditTripComponents/Activity";
 import Flight from "./EditTripComponents/Flight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-
+import { SocketContext } from "../App";
 const container = {
   hidden: {},
   visible: {
@@ -31,9 +31,59 @@ const EditTrip = () => {
   const navigate = useNavigate();
   const { tripId } = useParams();
   const [trip, setTrip] = useState<TripType | null>(null);
+  const socketContext = useContext(SocketContext);
 
-  const handleUserDetails = (e: any) => {
-    console.log(e.target.value);
+  if (!socketContext) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const { socket, emitEvent } = socketContext;
+
+  useEffect(() => {
+    if (socket) {
+      // Set up the listener for 'tripUpdated' event
+      const handleTripUpdate = (updatedTrip: TripType) => {
+        console.log("Received updated trip:", updatedTrip);
+        setTrip(updatedTrip);
+      };
+
+      const handleEditTripDetails = (updatedTrip: TripType) => {
+        console.log("Received updated trip details:", updatedTrip);
+        setTrip(updatedTrip);
+      };
+
+      socket.on("tripUpdated", handleTripUpdate);
+      // socket.on("tripEdited", handleEditTripDetails);
+      // Clean up the event listener when the component unmounts
+      return () => {
+        // socket.off("tripEdited", handleEditTripDetails);
+        socket.off("tripUpdated", handleTripUpdate);
+      };
+    }
+  }, [socket]);
+
+  const handleChange = (e: any) => {
+    setTrip((prevTrip: any) => {
+      return {
+        ...prevTrip,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const editDetails = () => {
+    emitEvent("EditTrip", {
+      tripId: trip?._id,
+      name: trip?.name,
+      startDate: trip?.startDate,
+      endDate: trip?.endDate,
+    });
+  };
+
+  const deleteFromTrip = (itineraryItem: any) => {
+    emitEvent("RemoveLocationFromTrip", {
+      tripId: trip?._id,
+      data: { details: itineraryItem, type: itineraryItem.type },
+    });
   };
 
   useEffect(() => {
@@ -56,7 +106,7 @@ const EditTrip = () => {
     };
 
     fetchUserAndTrip(); // Call fetchUserAndTrip when the component mounts
-  }, [tripId]); // Depend on tripId so it refetches if the tripId changes
+  }, [tripId, socket]); // Depend on tripId so it refetches if the tripId changes
   return (
     <>
       {trip ? (
@@ -75,7 +125,9 @@ const EditTrip = () => {
             <input
               className="text-5xl font-medium text-center border-b-2 py-2 w-2/3 md:w-1/3 border-oxford-blue focus:outline-none"
               defaultValue={trip.name}
-              onBlur={handleUserDetails}
+              name="name"
+              onChange={handleChange}
+              onBlur={() => editDetails()}
             ></input>
             <p className="text-lg">
               Owner: {trip.owner.name} ({trip.owner.googleId})
@@ -90,6 +142,9 @@ const EditTrip = () => {
                   defaultValue={String(trip.startDate).slice(0, 10)}
                   className="py-2 px-3 border-1 border-black focus:outline-none rounded-full"
                   min={String(trip.startDate).slice(0, 10)}
+                  name="startDate"
+                  onChange={handleChange}
+                  onBlur={() => editDetails()}
                 ></input>
               </div>
               <div className="flex flex-col gap-2">
@@ -99,6 +154,9 @@ const EditTrip = () => {
                   defaultValue={String(trip.endDate).slice(0, 10)}
                   className="py-2 px-3 border-1 border-black focus:outline-none rounded-full"
                   min={String(trip.startDate).slice(0, 10)}
+                  name="endDate"
+                  onChange={handleChange}
+                  onBlur={() => editDetails()}
                 ></input>
               </div>
             </form>
@@ -139,7 +197,26 @@ const EditTrip = () => {
                 variants={container}
               >
                 {trip.countries?.map((country: countryType, index: number) => {
-                  return <Country key={index} country={country} />;
+                  return (
+                    <motion.div
+                      layout
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                      key={country.iso2}
+                    >
+                      <Country key={index} country={country} />
+                      <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
+                        <motion.button
+                          className="text-red-700 md:bg-red-200 ml-auto rounded-full md:px-9 md:py-2 md:rounded-full text-2xl mr-2 md:mr-0"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => deleteFromTrip(country)}
+                        >
+                          <FontAwesomeIcon icon={faTrashCan} />
+                          <span className="hidden md:inline"> Remove</span>
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  );
                 })}
               </motion.div>
             </div>

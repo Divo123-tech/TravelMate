@@ -32,6 +32,7 @@ import Airport from "./ExploreLocationsComponents/Airport";
 import Restaurant from "./ExploreLocationsComponents/Restaurant";
 import Video from "./ExploreLocationsComponents/Video";
 import AddToTrip from "./AddToTrip";
+import Itinerary from "./HomePageComponents/Itinerary";
 const container = {
   hidden: {},
   visible: {
@@ -40,7 +41,7 @@ const container = {
 };
 
 const ExploreLocations = () => {
-  const [locationType, setLocationType] = useState<string | null>("country");
+  const [locationType, setLocationType] = useState<string | null>("countries");
   const [searchParams] = useSearchParams();
   const [continent, setContinent] = useState<string>("all");
   const [countries, setCountries] = useState<countryType[] | null>(null);
@@ -63,7 +64,7 @@ const ExploreLocations = () => {
     setActivityType("Hotels");
     const locations = currentLocations.split(",");
     navigate(
-      `/explore?location=activity&country=${locations[2]}&state=${locations[1]}&city=${locations[0]}`
+      `/explore?locationType=activity&country=${locations[2]}&state=${locations[1]}&city=${locations[0]}`
     );
   };
   const navigate = useNavigate();
@@ -90,10 +91,10 @@ const ExploreLocations = () => {
   };
 
   useEffect(() => {
-    if (searchParams.get("location") != null) {
-      setLocationType(searchParams.get("location"));
+    if (searchParams.get("locationType") != null) {
+      setLocationType(searchParams.get("locationType"));
     } else {
-      setLocationType("country");
+      setLocationType("countries");
     }
     setCurrentPage(1);
   }, [searchParams]);
@@ -102,8 +103,9 @@ const ExploreLocations = () => {
     const fetchData = async () => {
       try {
         let response;
+        console.log(locationType);
         switch (locationType) {
-          case "country":
+          case "countries":
             setCountries(null);
             try {
               response = await getAllCountries(continent, currentPage, search);
@@ -115,7 +117,7 @@ const ExploreLocations = () => {
               setCurrentPage(0);
             }
             break;
-          case "state":
+          case "states":
             setStates(null);
             try {
               if (currentCountry == null) {
@@ -137,7 +139,7 @@ const ExploreLocations = () => {
               setCurrentPage(0);
             }
             break;
-          case "city":
+          case "cities":
             setCities(null);
             try {
               if (currentCountry == null) {
@@ -305,7 +307,7 @@ const ExploreLocations = () => {
 
   const renderLocations = () => {
     switch (locationType) {
-      case "country":
+      case "countries":
         return (
           <div>
             <header className="flex items-center align-center py-8 px-12 flex-wrap justify-center gap-4">
@@ -359,7 +361,10 @@ const ExploreLocations = () => {
                             setCurrentCountry={setCurrentCountry}
                             setSearch={setSearch}
                           />
-                          <AddToTrip itineraries={[country]} />
+                          <AddToTrip
+                            itineraries={[country]}
+                            itineraryType={locationType}
+                          />
                         </motion.div>
                       );
                     })}
@@ -420,7 +425,7 @@ const ExploreLocations = () => {
             </div>
           </div>
         );
-      case "state":
+      case "states":
         return (
           <div>
             <p
@@ -462,7 +467,10 @@ const ExploreLocations = () => {
                             setCurrentState={setCurrentState}
                             setSearch={setSearch}
                           />
-                          <AddToTrip itineraries={[currentCountry, state]} />
+                          <AddToTrip
+                            itineraries={[currentCountry, state]}
+                            itineraryType={locationType}
+                          />
                         </motion.div>
                       );
                     })}
@@ -523,14 +531,14 @@ const ExploreLocations = () => {
             </div>
           </div>
         );
-      case "city":
+      case "cities":
         return (
           <div>
             <p
               className="pt-4 pb-2 px-12 hover:cursor-pointer"
               onClick={() => {
                 navigate(
-                  `/explore?location=state&country=${searchParams.get(
+                  `/explore?locationType=states&country=${searchParams.get(
                     "country"
                   )}`
                 );
@@ -567,6 +575,7 @@ const ExploreLocations = () => {
                           <City city={city} setCurrentCity={setCurrentCity} />
                           <AddToTrip
                             itineraries={[currentCountry, currentState, city]}
+                            itineraryType={locationType}
                           />
                         </motion.div>
                       );
@@ -744,6 +753,7 @@ const ExploreLocations = () => {
                                   currentCity,
                                   activity,
                                 ]}
+                                itineraryType={activityType}
                               />
                             )}
                           </motion.div>

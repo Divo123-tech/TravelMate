@@ -3,7 +3,11 @@ import axios from "axios";
 import { PassportType, TripType, UserType, timeZoneType } from "../types/types";
 import { cachedApiCall } from "../utils/apiCache";
 export const googleAuthenticate = () => {
-  window.open(`http://localhost:3000/auth/google/`, "_self");
+  try {
+    window.open(`http://localhost:3000/auth/google/`, "_self");
+  } catch (err) {
+    return;
+  }
 };
 
 export const logOutAPI = async () => {
@@ -36,13 +40,13 @@ export const editUserDetails = async (
   }
 };
 
-export const getUserDetails = async (): Promise<UserType> => {
+export const getUserDetails = async (): Promise<UserType | null> => {
   try {
     const url = `${ServerAPI}/users/current`;
     const { data } = await axios.get(url, { withCredentials: true });
     return data;
   } catch (err: any) {
-    throw new Error(err);
+    return null;
   }
 };
 

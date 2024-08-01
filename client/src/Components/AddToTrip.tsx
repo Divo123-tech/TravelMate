@@ -3,14 +3,11 @@ import { motion } from "framer-motion";
 import AddToTripModal from "./AddToTripModal";
 type Props = {
   itineraries: any[];
+  itineraryType: string;
 };
-const AddToTrip: FC<Props> = ({ itineraries }: Props) => {
+const AddToTrip: FC<Props> = ({ itineraries, itineraryType }: Props) => {
   const [modalShow, setModalShow] = useState(false);
-  const addItinerearies = () => {
-    itineraries.map((itinerary: any) => {
-      console.log(itinerary);
-    });
-  };
+
   return (
     <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
       <motion.button
@@ -25,6 +22,7 @@ const AddToTrip: FC<Props> = ({ itineraries }: Props) => {
         show={modalShow}
         onHide={() => setModalShow(false)}
         itineraries={itineraries}
+        itineraryType={itineraryType}
       />
     </div>
   );
