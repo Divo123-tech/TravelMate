@@ -290,14 +290,15 @@ export const getAllAirports = async (
   });
 };
 
-export const getAllRestaurants = (
+export const getAllAttractions = (
   city: string,
   country: string,
+  category: string,
   page?: number,
   searchQuery?: string
 ) => {
-  const cacheKey = `restaurants_${city}_${country}_${page}_${searchQuery}`;
-  let url = `${ServerAPI}/locations/attractions/${city}/${country}?category=restaurants&`;
+  const cacheKey = `${category}_${city}_${country}_${page}_${searchQuery}`;
+  let url = `${ServerAPI}/locations/attractions/${city}/${country}?category=${category}&`;
   if (page) {
     url += `page=${page}&`;
   }

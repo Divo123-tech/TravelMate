@@ -15,7 +15,7 @@ import {
   getAllCities,
   getAllHotels,
   getAllAirports,
-  getAllRestaurants,
+  getAllAttractions,
   getAllVideos,
   getCountryByName,
   getStateByName,
@@ -250,16 +250,31 @@ const ExploreLocations = () => {
                 break;
               case "Restaurants":
                 try {
-                  response = await getAllRestaurants(
-                    currentCity?.name ||
-                      searchParams.get("city") ||
-                      "Los Angeles",
-                    currentState?.name ||
-                      searchParams.get("state") ||
-                      "California",
+                  response = await getAllAttractions(
+                    currentCity?.name || searchParams.get("city") || "",
+                    currentState?.name || searchParams.get("state") || "",
+                    "restaurants",
                     currentPage,
                     search
                   );
+                  setActivities(response.data);
+                  setTotal(response.total);
+                } catch (e) {
+                  setActivities([]);
+                  setTotal(0);
+                  setCurrentPage(0);
+                }
+                break;
+              case "Things To Do":
+                try {
+                  response = await getAllAttractions(
+                    currentCity?.name || searchParams.get("city") || "",
+                    currentState?.name || searchParams.get("state") || "",
+                    "attractions",
+                    currentPage,
+                    search
+                  );
+                  console.log("nigga");
                   setActivities(response.data);
                   setTotal(response.total);
                 } catch (e) {
@@ -733,6 +748,9 @@ const ExploreLocations = () => {
                               <Airport airport={activity} />
                             )}
                             {activityType == "Restaurants" && (
+                              <Attraction attraction={activity} />
+                            )}
+                            {activityType == "Things To Do" && (
                               <Attraction attraction={activity} />
                             )}
                             {activityType == "Videos" && (
