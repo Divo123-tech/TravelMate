@@ -44,9 +44,12 @@ const editUserDetails = async (
   }
 };
 
-const getUserDetails = async (googleId: string) => {
+const getUserDetails = async (collaboratorInfo: string, searchBy: string) => {
   try {
-    return await userModel.findOne({ googleId }).populate("trips").exec();
+    return await userModel
+      .findOne({ [`${searchBy}`]: collaboratorInfo })
+      .populate("trips")
+      .exec();
   } catch (err: any) {
     throw new Error(err.message);
   }

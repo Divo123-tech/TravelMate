@@ -36,6 +36,7 @@ const getAllCountries = async (continent, page = 1, searchQuery, limit = 10) => 
                 currency: country.currency,
                 capital: country.capital,
                 continent: country.continent,
+                type: "countries",
             })),
         };
         //error handling
@@ -63,6 +64,7 @@ const getCountryByName = async (name) => {
         currency: country.currency,
         capital: country.capital,
         continent: country.continent,
+        type: "countries",
     };
 };
 //function to get all states within a given country
@@ -95,6 +97,7 @@ const getAllStates = async (country, page = 1, searchQuery) => {
                 code: state.state_code,
                 countryName: response.data.data.name,
                 countryCode: response.data.data.iso2,
+                type: "states",
             })),
         };
         //error handling
@@ -142,6 +145,7 @@ const getStateByName = async (name, country) => {
             code: state.state_code,
             countryName: response.data.data.name,
             countryCode: response.data.data.iso2,
+            type: "states",
         };
     }
     else {
@@ -179,6 +183,7 @@ const getAllCities = async (state, country, page = 1, searchQuery) => {
                 name: city,
                 country,
                 state,
+                type: "cities",
             })),
         };
         //error handling
@@ -205,9 +210,10 @@ const getCityByName = async (name, country, state) => {
     let citiesArray = data.data;
     if (citiesArray) {
         return {
-            city: binarySearch(citiesArray, name),
+            name: binarySearch(citiesArray, name),
             state,
             country,
+            type: "cities",
         };
     }
     else {
@@ -384,6 +390,7 @@ const getAllFlights = async (origin, destination, departureDate, adults = 1, non
                     price: Number(flight.price.grandTotal),
                     airline: data.dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode],
                     currency: currencyCode,
+                    type: "flights",
                 };
             }),
         };
@@ -429,6 +436,7 @@ const getAllHotels = async (city, country, page = 1, searchQuery) => {
                     url: `https://www.tripadvisor.com/Search?q=${hotel.name.replaceAll(" ", "+")}`,
                     city,
                     country,
+                    type: "hotels",
                 };
             }),
         };
@@ -472,6 +480,7 @@ const getAllAttractions = async (city, country, category, page = 1, searchQuery)
                     city,
                     country: destination.address_obj.country,
                     url: `https://www.tripadvisor.com/Search?q=${destination.name.replaceAll(" ", "+")}+${city}`,
+                    type: "activities",
                 };
             }),
         };
@@ -513,6 +522,7 @@ const getYoutubeVideos = async (city, page = 1, searchQuery) => {
                     views: video.video.viewCountText,
                     date: video.video.publishedTimeText,
                     length: video.video.lengthText,
+                    type: "videos",
                 };
             }),
         };

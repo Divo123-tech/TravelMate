@@ -10,6 +10,7 @@ export type countryType = {
   currency: string;
   capital: string;
   continent: string;
+  type: string;
 };
 
 //function that returns an array of countries within a given continent
@@ -55,6 +56,7 @@ const getAllCountries = async (
         currency: country.currency,
         capital: country.capital,
         continent: country.continent,
+        type: "countries",
       })),
     };
     //error handling
@@ -83,6 +85,7 @@ const getCountryByName = async (name: string): Promise<countryType> => {
     currency: country.currency,
     capital: country.capital,
     continent: country.continent,
+    type: "countries",
   };
 };
 
@@ -91,6 +94,7 @@ export type stateType = {
   code: string;
   countryName: string;
   countryCode: string;
+  type: string;
 };
 
 //function to get all states within a given country
@@ -135,6 +139,7 @@ const getAllStates = async (
         code: state.state_code,
         countryName: response.data.data.name,
         countryCode: response.data.data.iso2,
+        type: "states",
       })),
     };
 
@@ -195,6 +200,7 @@ const getStateByName = async (
       code: state.state_code,
       countryName: response.data.data.name,
       countryCode: response.data.data.iso2,
+      type: "states",
     };
   } else {
     throw new Error("failed to get states");
@@ -205,6 +211,7 @@ export type cityType = {
   name: string;
   country: string;
   state: string;
+  type: string;
 };
 
 //function to get all the cities within a given state and country
@@ -252,6 +259,7 @@ const getAllCities = async (
         name: city,
         country,
         state,
+        type: "cities",
       })),
     };
     //error handling
@@ -282,9 +290,10 @@ const getCityByName = async (name: string, country: string, state: string) => {
   let citiesArray = data.data;
   if (citiesArray) {
     return {
-      city: binarySearch(citiesArray, name),
+      name: binarySearch(citiesArray, name),
       state,
       country,
+      type: "cities",
     };
   } else {
     throw new Error("failed to fetch city");
@@ -475,6 +484,7 @@ export type flightType = {
   price: number;
   airline: string;
   currency: string;
+  type: string;
 };
 //function that gets all flights on various parameters
 const getAllFlights = async (
@@ -537,6 +547,7 @@ const getAllFlights = async (
               flight.itineraries[0].segments[0].carrierCode
             ],
           currency: currencyCode,
+          type: "flights",
         };
       }),
     };
@@ -552,6 +563,7 @@ export type hotelType = {
   url: string;
   city: string;
   country: string;
+  type: string;
 };
 
 //function that returns an array of all hotels within a city and country code
@@ -606,6 +618,7 @@ const getAllHotels = async (
           )}`,
           city,
           country,
+          type: "hotels",
         };
       }),
     };
@@ -623,6 +636,7 @@ export type attractionType = {
   city: string;
   country: string;
   url: string;
+  type: string;
 };
 
 //function that returns an array of attractions from a given city or country
@@ -678,6 +692,7 @@ const getAllAttractions = async (
               " ",
               "+"
             )}+${city}`,
+            type: "activities",
           };
         }),
     };
@@ -688,13 +703,14 @@ const getAllAttractions = async (
 };
 
 //create an interface for the videos output
-type videoType = {
+export type videoType = {
   url: string;
   title: string;
   views: string;
   channel: string;
   date: string;
   length: string;
+  type: string;
 };
 
 //function that returns an array of videos
@@ -741,6 +757,7 @@ const getYoutubeVideos = async (
           views: video.video.viewCountText,
           date: video.video.publishedTimeText,
           length: video.video.lengthText,
+          type: "videos",
         };
       }),
     };

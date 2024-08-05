@@ -6,9 +6,14 @@ const listenForTrips = (io: any) => {
 
     socket.on(
       "AddLocationToTrip",
-      async (tripId: string, data: { details: {}; type: string }) => {
+      async (payload: {
+        tripId: string;
+        data: { details: {}; type: string };
+      }) => {
+        const { tripId, data } = payload;
         try {
           await tripsService.addLocationToTrip(tripId, data.details, data.type);
+
           io.emit("tripUpdated", await tripsService.getTripDetails(tripId));
         } catch (err: any) {
           console.error(err);
@@ -19,7 +24,12 @@ const listenForTrips = (io: any) => {
 
     socket.on(
       "RemoveLocationFromTrip",
-      async (tripId: string, data: { details: {}; type: string }) => {
+      async (payload: {
+        tripId: string;
+        data: { details: {}; type: string };
+      }) => {
+        const { tripId, data } = payload;
+
         try {
           await tripsService.removeLocationFromTrip(
             tripId,
@@ -46,19 +56,34 @@ const listenForTrips = (io: any) => {
 
     socket.on(
       "EditTrip",
-      async (
-        tripId: string,
-        name: string,
-        startDate: string,
-        endDate: string
-      ) => {
+      async (payload: {
+        tripId: string;
+        name: string;
+        startDate: string;
+        endDate: string;
+      }) => {
+        const { tripId, name, startDate, endDate } = payload;
         try {
-          await tripsService.editTripDetails(tripId, name, startDate, endDate);
-          io.emit("TripEdited", await tripsService.getTripDetails(tripId));
+          console.log(
+            await tripsService.editTripDetails(tripId, name, startDate, endDate)
+          );
+          io.emit("tripUpdated", await tripsService.getTripDetails(tripId));
         } catch (err) {
           console.error(err);
           socket.emit("error", "Error");
         }
+      }
+    );
+
+    // socket.on("test", (tripId: string, data: { details: {}; type: string }) => {
+    //   console.log(tripId);
+    // });
+    socket.on(
+      "test",
+      (payload: { tripId: string; data: { details: {}; type: string } }) => {
+        console.log(payload.tripId);
+        console.log(payload.data.details);
+        console.log(payload.data.type);
       }
     );
 

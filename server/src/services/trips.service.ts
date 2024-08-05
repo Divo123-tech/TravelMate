@@ -22,6 +22,10 @@ const getTripDetails = async (tripId: string) => {
     return await tripsModel
       .findById(tripId)
       .populate({ path: "owner", select: "googleId _id email picture name" })
+      .populate({
+        path: "collaborators",
+        select: "googleId _id email picture name",
+      })
       .sort({ startDate: -1 }) // Add this line to sort by startDate in descending order
       .exec();
   } catch (err: any) {
@@ -42,11 +46,18 @@ const addCollaborator = async (
   collaboratorId: mongoose.Types.ObjectId
 ) => {
   try {
-    return await tripsModel.findByIdAndUpdate(
-      tripId,
-      { $push: { collaborators: collaboratorId } },
-      { new: true }
-    );
+    const trip = await tripsModel
+      .findByIdAndUpdate(
+        tripId,
+        { $push: { collaborators: collaboratorId } },
+        { new: true }
+      )
+      .populate({ path: "owner", select: "googleId _id email picture name" })
+      .populate({
+        path: "collaborators",
+        select: "googleId _id email picture name",
+      });
+    return trip;
   } catch (err: any) {
     throw new Error(err);
   }
@@ -57,11 +68,18 @@ const removeCollaborator = async (
   collaboratorId: mongoose.Types.ObjectId
 ) => {
   try {
-    return await tripsModel.findByIdAndUpdate(
-      tripId,
-      { $pull: { collaborators: collaboratorId } },
-      { new: true }
-    );
+    const trip = await tripsModel
+      .findByIdAndUpdate(
+        tripId,
+        { $pull: { collaborators: collaboratorId } },
+        { new: true }
+      )
+      .populate({ path: "owner", select: "googleId _id email picture name" })
+      .populate({
+        path: "collaborators",
+        select: "googleId _id email picture name",
+      });
+    return trip;
   } catch (err: any) {
     throw new Error(err);
   }

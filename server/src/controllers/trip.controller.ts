@@ -8,7 +8,7 @@ import { UserInterface } from "../models/users.model.js";
 const addTrip = async (req: Request, res: Response): Promise<void> => {
   try {
     //get the user
-    const user = await usersService.getUserDetails(req.params.id);
+    const user = await usersService.getUserDetails(req.params.id, "googleId");
     //check if the user exists
     if (!user) {
       throw new Error("User Not Found");
@@ -74,7 +74,10 @@ const deleteTrip = async (req: Request, res: Response): Promise<void> => {
     }
     //else remove the collaborator from the trip
     else {
-      const user: any = await usersService.getUserDetails(req.params.id);
+      const user: any = await usersService.getUserDetails(
+        req.params.id,
+        "googleId"
+      );
       res
         .status(200)
         .json(
@@ -90,12 +93,13 @@ const deleteTrip = async (req: Request, res: Response): Promise<void> => {
 const addCollaborator = async (req: Request, res: Response): Promise<void> => {
   try {
     const collaborator = await usersService.getUserDetails(
-      req.body.collaborator
+      req.body.collaborator,
+      req.body.searchBy
     );
     if (!collaborator) {
       throw new Error("User not found");
     }
-    await usersService.addTrip(req.body.collaborator, req.params.tripId);
+    await usersService.addTrip(collaborator.googleId, req.params.tripId);
     res
       .status(200)
       .json(
@@ -113,7 +117,8 @@ const removeCollaborator = async (
   try {
     const collaborator = await usersService.getUserDetails(
       //googleId string
-      req.body.collaborator
+      req.body.collaborator,
+      req.body.searchBy
     );
     if (!collaborator) {
       throw new Error("User not found");

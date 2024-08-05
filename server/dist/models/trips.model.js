@@ -46,6 +46,10 @@ const tripSchema = new Schema({
         default: [],
         type: [{}],
     },
+    videos: {
+        default: [],
+        type: [{}],
+    },
 });
 export default mongoose.model("trips", tripSchema);
 //# sourceMappingURL=trips.model.js.map

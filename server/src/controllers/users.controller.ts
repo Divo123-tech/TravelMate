@@ -24,7 +24,11 @@ const editUserDetails = async (req: Request, res: Response) => {
 
 const getUserDetails = async (req: Request, res: Response) => {
   try {
-    res.status(200).json(await usersService.getUserDetails(req.params.id));
+    const searchBy =
+      typeof req.query.searchBy === "string" ? req.query.searchBy : "googleId";
+    res
+      .status(200)
+      .json(await usersService.getUserDetails(req.params.id, searchBy));
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -37,7 +41,9 @@ const getCurrentUser = async (req: Request, res: Response) => {
     }
 
     const user = req.user as User & { id: string };
-    res.status(200).json(await usersService.getUserDetails(user.id));
+    res
+      .status(200)
+      .json(await usersService.getUserDetails(user.id, "googleId"));
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }

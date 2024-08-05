@@ -6,6 +6,7 @@ import {
   flightType,
   hotelType,
   attractionType,
+  videoType,
 } from "../services/locations.service.js";
 
 export interface TripInterface {
@@ -20,6 +21,7 @@ export interface TripInterface {
   activities?: attractionType[];
   flights?: flightType[];
   hotels?: hotelType[];
+  videos?: videoType[];
 }
 
 const tripSchema: Schema<TripInterface> = new Schema<TripInterface>({
@@ -66,6 +68,10 @@ const tripSchema: Schema<TripInterface> = new Schema<TripInterface>({
     type: [{}],
   },
   hotels: {
+    default: [],
+    type: [{}],
+  },
+  videos: {
     default: [],
     type: [{}],
   },

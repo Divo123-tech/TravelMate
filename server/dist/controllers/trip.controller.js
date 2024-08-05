@@ -4,7 +4,7 @@ import usersService from "../services/users.service.js";
 const addTrip = async (req, res) => {
     try {
         //get the user
-        const user = await usersService.getUserDetails(req.params.id);
+        const user = await usersService.getUserDetails(req.params.id, "googleId");
         //check if the user exists
         if (!user) {
             throw new Error("User Not Found");
@@ -60,7 +60,7 @@ const deleteTrip = async (req, res) => {
         }
         //else remove the collaborator from the trip
         else {
-            const user = await usersService.getUserDetails(req.params.id);
+            const user = await usersService.getUserDetails(req.params.id, "googleId");
             res
                 .status(200)
                 .json(await tripsService.removeCollaborator(req.params.tripId, user?._id));
@@ -73,11 +73,11 @@ const deleteTrip = async (req, res) => {
 //
 const addCollaborator = async (req, res) => {
     try {
-        const collaborator = await usersService.getUserDetails(req.body.collaborator);
+        const collaborator = await usersService.getUserDetails(req.body.collaborator, req.body.searchBy);
         if (!collaborator) {
             throw new Error("User not found");
         }
-        await usersService.addTrip(req.body.collaborator, req.params.tripId);
+        await usersService.addTrip(collaborator.googleId, req.params.tripId);
         res
             .status(200)
             .json(await tripsService.addCollaborator(req.params.tripId, collaborator._id));
@@ -90,7 +90,7 @@ const removeCollaborator = async (req, res) => {
     try {
         const collaborator = await usersService.getUserDetails(
         //googleId string
-        req.body.collaborator);
+        req.body.collaborator, req.body.searchBy);
         if (!collaborator) {
             throw new Error("User not found");
         }

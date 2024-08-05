@@ -30,9 +30,12 @@ const editUserDetails = async (googleId, name, passport, currencyUsed) => {
         throw new Error(err.message);
     }
 };
-const getUserDetails = async (googleId) => {
+const getUserDetails = async (collaboratorInfo, searchBy) => {
     try {
-        return await userModel.findOne({ googleId }).populate("trips").exec();
+        return await userModel
+            .findOne({ [`${searchBy}`]: collaboratorInfo })
+            .populate("trips")
+            .exec();
     }
     catch (err) {
         throw new Error(err.message);

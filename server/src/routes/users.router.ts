@@ -10,7 +10,7 @@ router.post("/:id/trips", tripController.addTrip);
 router.get("/:id/trips/:tripId", tripController.getTripDetails);
 router.delete("/:id/trips/:tripId", tripController.deleteTrip);
 router.post("/:id/trips/:tripId/collaborator", tripController.addCollaborator);
-router.delete(
+router.put(
   "/:id/trips/:tripId/collaborator",
   tripController.removeCollaborator
 );

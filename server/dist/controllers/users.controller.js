@@ -13,7 +13,10 @@ const editUserDetails = async (req, res) => {
 };
 const getUserDetails = async (req, res) => {
     try {
-        res.status(200).json(await usersService.getUserDetails(req.params.id));
+        const searchBy = typeof req.query.searchBy === "string" ? req.query.searchBy : "googleId";
+        res
+            .status(200)
+            .json(await usersService.getUserDetails(req.params.id, searchBy));
     }
     catch (err) {
         res.status(400).json({ message: err.message });
@@ -25,7 +28,9 @@ const getCurrentUser = async (req, res) => {
             res.status(400).json({ message: "No user" });
         }
         const user = req.user;
-        res.status(200).json(await usersService.getUserDetails(user.id));
+        res
+            .status(200)
+            .json(await usersService.getUserDetails(user.id, "googleId"));
     }
     catch (err) {
         res.status(400).json({ message: err.message });

@@ -9,6 +9,6 @@ router.post("/:id/trips", tripController.addTrip);
 router.get("/:id/trips/:tripId", tripController.getTripDetails);
 router.delete("/:id/trips/:tripId", tripController.deleteTrip);
 router.post("/:id/trips/:tripId/collaborator", tripController.addCollaborator);
-router.delete("/:id/trips/:tripId/collaborator", tripController.removeCollaborator);
+router.put("/:id/trips/:tripId/collaborator", tripController.removeCollaborator);
 export default router;
 //# sourceMappingURL=users.router.js.map
