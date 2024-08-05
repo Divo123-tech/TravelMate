@@ -263,7 +263,6 @@ export const getAllHotels = async (
   }
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
-    console.log(data);
     return data;
   });
 };
@@ -285,7 +284,6 @@ export const getAllAirports = async (
   console.log(url);
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
-    console.log(data);
     return data;
   });
 };
@@ -307,7 +305,6 @@ export const getAllAttractions = (
   }
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
-    console.log(data);
     return data;
   });
 };
@@ -318,7 +315,6 @@ export const getAllVideos = (
   searchQuery?: string
 ) => {
   const cacheKey = `videos_${city}_${page}_${searchQuery}`;
-  console.log(city);
   let url = `${ServerAPI}/locations/videos/${city}?`;
   if (page) {
     url += `page=${page}&`;
@@ -326,7 +322,6 @@ export const getAllVideos = (
   if (searchQuery) {
     url += `searchQuery=${searchQuery}&`;
   }
-  console.log(url);
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
     console.log(data);

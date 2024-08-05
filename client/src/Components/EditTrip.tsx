@@ -203,7 +203,7 @@ const EditTrip = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={country.iso2}
                     >
                       <Country key={index} country={country} />
@@ -255,7 +255,7 @@ const EditTrip = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={state.code}
                     >
                       <State state={state} />
@@ -305,7 +305,7 @@ const EditTrip = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={city.name}
                     >
                       <City city={city} />
@@ -355,7 +355,7 @@ const EditTrip = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20  "
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
                       key={hotel.id}
                     >
                       <Hotel hotel={hotel} />
@@ -405,7 +405,7 @@ const EditTrip = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20  "
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
                       key={activity.id}
                     >
                       <Attraction attraction={activity} />

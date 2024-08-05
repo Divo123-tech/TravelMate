@@ -6,6 +6,7 @@ import {
   getAllCountries,
   editUserDetails,
   getCurrentUser,
+  deleteTrip,
 } from "../services/apiService";
 import { motion } from "framer-motion";
 import Trip from "./UserProfileComponents/Trip";
@@ -14,14 +15,23 @@ import EditSuccessToast from "./UserProfileComponents/EditSuccessToast";
 import { useContext } from "react";
 import { UserContext } from "../App";
 import Spinner from "react-bootstrap/Spinner";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { TripType } from "../types/types";
+import DeleteButton from "./DeleteButton";
 const container = {
   hidden: {},
   visible: {
     transition: { staggerChildren: 0.3 },
   },
 };
-
+const childVariant = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
 const UserProfile: FC = () => {
+  const navigate = useNavigate();
   const context = useContext(UserContext);
 
   if (!context) {
@@ -55,7 +65,14 @@ const UserProfile: FC = () => {
 
     getCountries();
   }, []);
-
+  const handleDelete = async (tripId: string) => {
+    try {
+      await deleteTrip(user?.googleId || "", tripId);
+      setUser(await getCurrentUser());
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleChange = (e: any) => {
     if (e.target.name == "passport") {
       let code = e.target.value.split(",")[0];
@@ -248,17 +265,35 @@ const UserProfile: FC = () => {
               variants={container}
             >
               {user.trips.map((trip: any, index: number) => {
-                //role, id, name, startDate, endDate, userId
                 return (
-                  <Trip
-                    role={trip.owner == user._id ? "Owner" : "Collaborator"}
-                    id={trip._id}
-                    name={trip.name}
-                    startDate={trip.startDate}
-                    endDate={trip.endDate}
-                    key={index}
-                    userId={user.googleId}
-                  />
+                  <motion.div
+                    className="bg-oxford-blue flex gap-4 md:gap-12 pr-4 md:pr-24 items-center"
+                    variants={childVariant}
+                  >
+                    <Trip
+                      role={trip.owner == user._id ? "Owner" : "Collaborator"}
+                      id={trip._id}
+                      name={trip.name}
+                      startDate={trip.startDate}
+                      endDate={trip.endDate}
+                      key={index}
+                      userId={user.googleId}
+                    />
+                    <div className="flex flex-col gap-3 ml-auto items-center justify-center">
+                      <motion.button
+                        className="text-baby-powder md:text-oxford-blue md:bg-baby-powder rounded-full md:px-12 md:py-2 md:rounded-full text-2xl"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => navigate(`/trip/${trip._id}`)}
+                      >
+                        <FontAwesomeIcon icon={faFilePen} />
+                        <span className="hidden md:inline"> Edit</span>
+                      </motion.button>
+                      <DeleteButton
+                        deleteFunction={() => handleDelete(trip._id)}
+                      />
+                    </div>
+                  </motion.div>
                 );
               })}
             </motion.div>

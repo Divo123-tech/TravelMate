@@ -274,7 +274,6 @@ const ExploreLocations = () => {
                     currentPage,
                     search
                   );
-                  console.log("nigga");
                   setActivities(response.data);
                   setTotal(response.total);
                 } catch (e) {

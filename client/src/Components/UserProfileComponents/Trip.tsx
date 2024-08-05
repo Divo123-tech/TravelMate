@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
 import { deleteTrip, getCurrentUser } from "../../services/apiService";
 import loading from "../../assets/loading.png";
+import DeleteButton from "../DeleteButton";
 type Props = {
   role: string;
   id: string;
@@ -46,10 +47,7 @@ const Trip = ({ role, id, name, startDate, endDate, userId }: Props) => {
     navigate(`/trip/${id}`);
   };
   return (
-    <motion.div
-      className="bg-oxford-blue flex gap-4 md:gap-12 pr-4 md:pr-24 items-center"
-      variants={childVariant}
-    >
+    <>
       {!isImageLoaded && <img src={loading} alt="Loading..." />}
       <img
         src={`https://picsum.photos/seed/${id}/200/150`}
@@ -66,27 +64,7 @@ const Trip = ({ role, id, name, startDate, endDate, userId }: Props) => {
           {endDate}
         </p>
       </div>
-      <div className="flex flex-col gap-3 ml-auto mt-3 justify-center">
-        <motion.button
-          className="text-baby-powder md:text-oxford-blue md:bg-baby-powder ml-auto rounded-full md:px-12 md:py-2 md:rounded-full text-2xl"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={handleEdit}
-        >
-          <FontAwesomeIcon icon={faFilePen} />
-          <span className="hidden md:inline"> Edit</span>
-        </motion.button>
-        <motion.button
-          className="text-red-700 md:bg-red-200 ml-auto rounded-full md:px-9 md:py-2 md:rounded-full text-2xl mr-2 md:mr-0"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={handleDelete}
-        >
-          <FontAwesomeIcon icon={faTrashCan} />
-          <span className="hidden md:inline"> Delete</span>
-        </motion.button>
-      </div>
-    </motion.div>
+    </>
   );
 };
 
