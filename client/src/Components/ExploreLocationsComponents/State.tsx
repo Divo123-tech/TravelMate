@@ -6,15 +6,17 @@ import loading from "../../assets/loading.png";
 
 type Props = {
   state: stateType;
-  setCurrentState: (state: stateType) => void;
-  setSearch: (searchQuery: string) => void;
+  setCurrentState?: (state: stateType) => void;
+  setSearch?: (searchQuery: string) => void;
 };
 const State = ({ state, setCurrentState, setSearch }: Props) => {
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const goToCities = () => {
-    setCurrentState(state);
-    setSearch("");
+    if (setCurrentState && setSearch) {
+      setCurrentState(state);
+      setSearch("");
+    }
     navigate(
       `/explore?locationType=cities&country=${state.countryName}&state=${state.name}`
     );

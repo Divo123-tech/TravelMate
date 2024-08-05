@@ -8,15 +8,9 @@ type Props = {
   show: boolean;
   onHide: () => void;
   itineraries: any[];
-  itineraryType: string;
 };
 
-const AddToTripModal: FC<Props> = ({
-  show,
-  onHide,
-  itineraries,
-  itineraryType,
-}: Props) => {
+const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
   const userContext = useContext(UserContext);
   const socketContext = useContext(SocketContext);
   if (!userContext || !socketContext) {
@@ -25,7 +19,6 @@ const AddToTripModal: FC<Props> = ({
   const { user } = userContext;
   const { socket, emitEvent } = socketContext;
   const addItinereariesToTrip = (tripId: string) => {
-    console.log(itineraryType);
     console.log(tripId);
     itineraries.map((itinerary: any) => {
       emitEvent("AddLocationToTrip", {

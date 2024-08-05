@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import {
   getAllCountries,
   editUserDetails,
-  getUserDetails,
+  getCurrentUser,
 } from "../services/apiService";
 import { motion } from "framer-motion";
 import Trip from "./UserProfileComponents/Trip";
@@ -32,7 +32,7 @@ const UserProfile: FC = () => {
   const [editSuccess, setEditSuccess] = useState(false);
   useEffect(() => {
     const getUser = async () => {
-      setUser(await getUserDetails()); // Set user state with the fetched data
+      setUser(await getCurrentUser()); // Set user state with the fetched data
     };
 
     getUser(); // Call getUser when the component mounts

@@ -40,9 +40,22 @@ export const editUserDetails = async (
   }
 };
 
-export const getUserDetails = async (): Promise<UserType | null> => {
+export const getCurrentUser = async (): Promise<UserType | null> => {
   try {
     const url = `${ServerAPI}/users/current`;
+    const { data } = await axios.get(url, { withCredentials: true });
+    return data;
+  } catch (err: any) {
+    return null;
+  }
+};
+
+export const searchUserDetails = async (
+  email: string,
+  searchBy: string
+): Promise<UserType | null> => {
+  try {
+    const url = `${ServerAPI}/users/${email}?searchBy=${searchBy}`;
     const { data } = await axios.get(url, { withCredentials: true });
     return data;
   } catch (err: any) {
@@ -342,4 +355,39 @@ export const getAllFlights = async (
     console.log(data);
     return data;
   });
+};
+
+export const addCollaborator = async (
+  userId: string,
+  tripId: string,
+  collaborator: string,
+  searchBy: string
+): Promise<TripType | null> => {
+  let url = `${ServerAPI}/users/${userId}/trips/${tripId}/collaborator`;
+  const body = {
+    collaborator,
+    searchBy,
+  };
+  const { data } = await axios.post(url, body, { withCredentials: true });
+  return data;
+};
+
+export const deleteCollaborator = async (
+  userId: string,
+  tripId: string,
+  collaborator: string,
+  searchBy: string
+): Promise<TripType | null> => {
+  try {
+    let url = `${ServerAPI}/users/${userId}/trips/${tripId}/collaborator`;
+    const body = {
+      collaborator,
+      searchBy,
+    };
+    const { data } = await axios.put(url, body, { withCredentials: true });
+    return data;
+  } catch (err: any) {
+    console.log(err);
+    return null;
+  }
 };

@@ -10,7 +10,7 @@ import Flights from "./Components/Flights";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { UserType } from "./types/types";
-import { getUserDetails } from "./services/apiService";
+import { getCurrentUser } from "./services/apiService";
 import io, { Socket } from "socket.io-client";
 import { SocketContextType, UserContextType } from "./types/types";
 import "./App.css";
@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     const getUser = async () => {
-      setUser(await getUserDetails()); // Set user state with the fetched data
+      setUser(await getCurrentUser()); // Set user state with the fetched data
     };
 
     getUser(); // Call getUser when the component mounts

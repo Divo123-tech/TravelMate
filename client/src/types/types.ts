@@ -28,7 +28,7 @@ export type TripType = {
   _id: string;
   name: string;
   owner: UserType;
-  collaborators?: [];
+  collaborators: [];
   startDate: Date;
   endDate?: Date;
   countries?: [];

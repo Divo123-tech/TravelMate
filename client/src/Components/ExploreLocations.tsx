@@ -29,10 +29,9 @@ import State from "./ExploreLocationsComponents/State";
 import City from "./ExploreLocationsComponents/City";
 import Hotel from "./ExploreLocationsComponents/Hotel";
 import Airport from "./ExploreLocationsComponents/Airport";
-import Restaurant from "./ExploreLocationsComponents/Restaurant";
+import Attraction from "./ExploreLocationsComponents/Attraction";
 import Video from "./ExploreLocationsComponents/Video";
 import AddToTrip from "./AddToTrip";
-import Itinerary from "./HomePageComponents/Itinerary";
 const container = {
   hidden: {},
   visible: {
@@ -64,7 +63,7 @@ const ExploreLocations = () => {
     setActivityType("Hotels");
     const locations = currentLocations.split(",");
     navigate(
-      `/explore?locationType=activity&country=${locations[2]}&state=${locations[1]}&city=${locations[0]}`
+      `/explore?locationType=activities&country=${locations[2]}&state=${locations[1]}&city=${locations[0]}`
     );
   };
   const navigate = useNavigate();
@@ -103,7 +102,6 @@ const ExploreLocations = () => {
     const fetchData = async () => {
       try {
         let response;
-        console.log(locationType);
         switch (locationType) {
           case "countries":
             setCountries(null);
@@ -179,13 +177,14 @@ const ExploreLocations = () => {
               setCurrentPage(0);
             }
             break;
-          case "activity":
+          case "activities":
             setActivities(null);
             try {
               if (currentCountry == null) {
                 const country = await getCountryByName(
                   searchParams.get("country") || ""
                 );
+                console.log(country);
                 setCurrentCountry(country);
               }
               if (currentState == null) {
@@ -201,6 +200,7 @@ const ExploreLocations = () => {
                   currentCountry?.name || searchParams.get("country") || "",
                   currentState?.name || searchParams.get("state") || ""
                 );
+                console.log(city);
                 setCurrentCity(city);
               }
             } catch (e) {
@@ -361,10 +361,7 @@ const ExploreLocations = () => {
                             setCurrentCountry={setCurrentCountry}
                             setSearch={setSearch}
                           />
-                          <AddToTrip
-                            itineraries={[country]}
-                            itineraryType={locationType}
-                          />
+                          <AddToTrip itineraries={[country]} />
                         </motion.div>
                       );
                     })}
@@ -467,10 +464,7 @@ const ExploreLocations = () => {
                             setCurrentState={setCurrentState}
                             setSearch={setSearch}
                           />
-                          <AddToTrip
-                            itineraries={[currentCountry, state]}
-                            itineraryType={locationType}
-                          />
+                          <AddToTrip itineraries={[currentCountry, state]} />
                         </motion.div>
                       );
                     })}
@@ -575,7 +569,6 @@ const ExploreLocations = () => {
                           <City city={city} setCurrentCity={setCurrentCity} />
                           <AddToTrip
                             itineraries={[currentCountry, currentState, city]}
-                            itineraryType={locationType}
                           />
                         </motion.div>
                       );
@@ -637,7 +630,7 @@ const ExploreLocations = () => {
             </div>
           </div>
         );
-      case "activity":
+      case "activities":
         return (
           <div className="flex flex-col items-center p-16 gap-8">
             <h1 className="text-6xl font-medium text-oxford-blue text-center">
@@ -740,7 +733,7 @@ const ExploreLocations = () => {
                               <Airport airport={activity} />
                             )}
                             {activityType == "Restaurants" && (
-                              <Restaurant restaurant={activity} />
+                              <Attraction attraction={activity} />
                             )}
                             {activityType == "Videos" && (
                               <Video video={activity} />
@@ -753,7 +746,6 @@ const ExploreLocations = () => {
                                   currentCity,
                                   activity,
                                 ]}
-                                itineraryType={activityType}
                               />
                             )}
                           </motion.div>
@@ -762,7 +754,7 @@ const ExploreLocations = () => {
                     </div>
                   ) : (
                     <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
-                      No Hotels Matched your search {":("}
+                      No {activityType} Matched your search {":("}
                     </h1>
                   )
                 ) : (

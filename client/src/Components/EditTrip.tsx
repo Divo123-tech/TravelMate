@@ -1,25 +1,28 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import { getTripDetails, getUserDetails } from "../services/apiService";
-import { faUserGroup, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { getTripDetails, getCurrentUser } from "../services/apiService";
+import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import {
   TripType,
   cityType,
   countryType,
   stateType,
   hotelType,
-  activityType,
   flightType,
+  attractionType,
 } from "../types/types";
 import Country from "./ExploreLocationsComponents/Country";
-import State from "./EditTripComponents/State";
-import City from "./EditTripComponents/City";
-import Hotel from "./EditTripComponents/Hotel";
-import Activity from "./EditTripComponents/Activity";
-import Flight from "./EditTripComponents/Flight";
+import State from "./ExploreLocationsComponents/State";
+import City from "./ExploreLocationsComponents/City";
+import Hotel from "./ExploreLocationsComponents/Hotel";
+import Flight from "./FlightsComponents/Flight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { SocketContext } from "../App";
+import { SocketContext, UserContext } from "../App";
+import DeleteButton from "./DeleteButton";
+import { Spinner } from "react-bootstrap";
+import CollaboratorsModal from "./CollaboratorsModal";
+import Attraction from "./ExploreLocationsComponents/Attraction";
 const container = {
   hidden: {},
   visible: {
@@ -28,8 +31,15 @@ const container = {
 };
 
 const EditTrip = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const { user } = context;
   const navigate = useNavigate();
   const { tripId } = useParams();
+  const [modalShow, setModalShow] = useState(false);
   const [trip, setTrip] = useState<TripType | null>(null);
   const socketContext = useContext(SocketContext);
 
@@ -42,20 +52,12 @@ const EditTrip = () => {
     if (socket) {
       // Set up the listener for 'tripUpdated' event
       const handleTripUpdate = (updatedTrip: TripType) => {
-        console.log("Received updated trip:", updatedTrip);
-        setTrip(updatedTrip);
-      };
-
-      const handleEditTripDetails = (updatedTrip: TripType) => {
-        console.log("Received updated trip details:", updatedTrip);
         setTrip(updatedTrip);
       };
 
       socket.on("tripUpdated", handleTripUpdate);
-      // socket.on("tripEdited", handleEditTripDetails);
       // Clean up the event listener when the component unmounts
       return () => {
-        // socket.off("tripEdited", handleEditTripDetails);
         socket.off("tripUpdated", handleTripUpdate);
       };
     }
@@ -89,7 +91,7 @@ const EditTrip = () => {
   useEffect(() => {
     const fetchUserAndTrip = async () => {
       try {
-        const userDetails = await getUserDetails();
+        const userDetails = await getCurrentUser();
 
         if (!userDetails) {
           throw new Error("User not found");
@@ -116,6 +118,7 @@ const EditTrip = () => {
               className="bg-oxford-blue text-xl px-8 py-3 rounded-full text-baby-powder hover:bg-teal"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => setModalShow(true)}
             >
               Collaborators <FontAwesomeIcon icon={faUserGroup} /> (
               {trip.collaborators?.length})
@@ -130,7 +133,7 @@ const EditTrip = () => {
               onBlur={() => editDetails()}
             ></input>
             <p className="text-lg">
-              Owner: {trip.owner.name} ({trip.owner.googleId})
+              Owner: {trip.owner.name || trip.owner.email} ({trip.owner.email})
             </p>
           </header>
           <section>
@@ -204,17 +207,10 @@ const EditTrip = () => {
                       key={country.iso2}
                     >
                       <Country key={index} country={country} />
-                      <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
-                        <motion.button
-                          className="text-red-700 md:bg-red-200 ml-auto rounded-full md:px-9 md:py-2 md:rounded-full text-2xl mr-2 md:mr-0"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => deleteFromTrip(country)}
-                        >
-                          <FontAwesomeIcon icon={faTrashCan} />
-                          <span className="hidden md:inline"> Remove</span>
-                        </motion.button>
-                      </div>
+
+                      <DeleteButton
+                        deleteFunction={() => deleteFromTrip(country)}
+                      />
                     </motion.div>
                   );
                 })}
@@ -255,8 +251,19 @@ const EditTrip = () => {
                 transition={{ duration: 1 }}
                 variants={container}
               >
-                {trip.states?.map((state: stateType, index: number) => {
-                  return <State key={index} state={state} />;
+                {trip.states?.map((state: stateType) => {
+                  return (
+                    <motion.div
+                      layout
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                      key={state.code}
+                    >
+                      <State state={state} />
+                      <DeleteButton
+                        deleteFunction={() => deleteFromTrip(state)}
+                      />
+                    </motion.div>
+                  );
                 })}
               </motion.div>
             </div>
@@ -294,8 +301,19 @@ const EditTrip = () => {
                 transition={{ duration: 1 }}
                 variants={container}
               >
-                {trip.cities?.map((city: cityType, index: number) => {
-                  return <City city={city} key={index} />;
+                {trip.cities?.map((city: cityType) => {
+                  return (
+                    <motion.div
+                      layout
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                      key={city.name}
+                    >
+                      <City city={city} />
+                      <DeleteButton
+                        deleteFunction={() => deleteFromTrip(city)}
+                      />
+                    </motion.div>
+                  );
                 })}
               </motion.div>
             </div>
@@ -333,8 +351,19 @@ const EditTrip = () => {
                 transition={{ duration: 1 }}
                 variants={container}
               >
-                {trip.hotels?.map((hotel: hotelType, index: number) => {
-                  return <Hotel key={index} hotel={hotel} />;
+                {trip.hotels?.map((hotel: hotelType) => {
+                  return (
+                    <motion.div
+                      layout
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20  "
+                      key={hotel.id}
+                    >
+                      <Hotel hotel={hotel} />
+                      <DeleteButton
+                        deleteFunction={() => deleteFromTrip(hotel)}
+                      />
+                    </motion.div>
+                  );
                 })}
               </motion.div>
             </div>
@@ -372,11 +401,20 @@ const EditTrip = () => {
                 transition={{ duration: 1 }}
                 variants={container}
               >
-                {trip.activities?.map(
-                  (activity: activityType, index: number) => {
-                    return <Activity key={index} activity={activity} />;
-                  }
-                )}
+                {trip.activities?.map((activity: attractionType) => {
+                  return (
+                    <motion.div
+                      layout
+                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20  "
+                      key={activity.id}
+                    >
+                      <Attraction attraction={activity} />
+                      <DeleteButton
+                        deleteFunction={() => deleteFromTrip(activity)}
+                      />
+                    </motion.div>
+                  );
+                })}
               </motion.div>
             </div>
             <div id="flights-div">
@@ -412,15 +450,40 @@ const EditTrip = () => {
                 transition={{ duration: 1 }}
                 variants={container}
               >
-                {trip.flights?.map((flight: flightType, index: number) => {
-                  return <Flight flight={flight} key={index} />;
+                {trip.flights?.map((flight: flightType) => {
+                  return (
+                    <Flight
+                      flight={flight}
+                      Button={
+                        <DeleteButton
+                          deleteFunction={() => deleteFromTrip(flight)}
+                        />
+                      }
+                    />
+                  );
                 })}
               </motion.div>
             </div>
           </section>
+          <CollaboratorsModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            collaborators={trip?.collaborators}
+            tripId={tripId || ""}
+            userId={user?.googleId || ""}
+            setTrip={setTrip}
+            isOwner={trip.owner.googleId == user?.googleId}
+          />
         </div>
       ) : (
-        <h1>loading....</h1>
+        <div className="flex flex-col gap-8 justify-center items-center my-auto text-2xl">
+          <Spinner
+            animation="border"
+            role="status"
+            className="mb-auto text-center"
+          ></Spinner>
+          <h1>Loading.......</h1>
+        </div>
       )}
     </>
   );

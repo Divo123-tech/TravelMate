@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewTrip } from "../../services/apiService";
 import { UserContext } from "../../App";
+import { UserType } from "../../types/types";
 type Props = {
   show: boolean;
   onHide: () => void;
@@ -15,7 +16,7 @@ const NewTripModal = ({ show, onHide }: Props) => {
   if (!context) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-
+  const { user, setUser } = context;
   const navigate = useNavigate();
   const [tripDetails, setTripDetails] = useState({
     name: "",
@@ -37,9 +38,15 @@ const NewTripModal = ({ show, onHide }: Props) => {
           tripDetails.name,
           tripDetails.startDate,
           tripDetails.endDate,
-          "117921967958221394769"
+          user?.googleId || ""
         );
         navigate(`/trip/${newTrip._id}`);
+        setUser((prevUser: any) => {
+          return {
+            ...prevUser,
+            trips: [...prevUser.trips, newTrip],
+          };
+        });
       } catch (err: any) {
         console.log(err);
       }

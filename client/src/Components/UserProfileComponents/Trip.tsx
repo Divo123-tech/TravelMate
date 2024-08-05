@@ -9,7 +9,7 @@ import {
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
-import { deleteTrip, getUserDetails } from "../../services/apiService";
+import { deleteTrip, getCurrentUser } from "../../services/apiService";
 import loading from "../../assets/loading.png";
 type Props = {
   role: string;
@@ -37,7 +37,7 @@ const Trip = ({ role, id, name, startDate, endDate, userId }: Props) => {
   const handleDelete = async () => {
     try {
       await deleteTrip(userId, id);
-      setUser(await getUserDetails());
+      setUser(await getCurrentUser());
     } catch (err) {
       console.log(err);
     }

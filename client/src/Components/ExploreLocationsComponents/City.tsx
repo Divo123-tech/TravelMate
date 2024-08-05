@@ -8,7 +8,7 @@ import loading from "../../assets/loading.png";
 import { getLocationTime } from "../../services/apiService";
 type Props = {
   city: cityType;
-  setCurrentCity: (city: cityType) => void;
+  setCurrentCity?: (city: cityType) => void;
 };
 const City = ({ city, setCurrentCity }: Props) => {
   const navigate = useNavigate();
@@ -19,9 +19,11 @@ const City = ({ city, setCurrentCity }: Props) => {
   );
 
   const goToActivities = () => {
-    setCurrentCity(city);
+    if (setCurrentCity) {
+      setCurrentCity(city);
+    }
     navigate(
-      `/explore?location=activity&country=${city.country}&state=${city.state}&city=${city.name}`
+      `/explore?locationType=activities&country=${city.country}&state=${city.state}&city=${city.name}`
     );
   };
 

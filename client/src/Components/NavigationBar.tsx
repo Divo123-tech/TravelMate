@@ -48,7 +48,7 @@ const NavigationBar: FC = () => {
                   Locations
                 </Nav.Link>
               </Link>
-              <Link to={"/explore?locationType=activity"}>
+              <Link to={"/explore?locationType=activities"}>
                 <Nav.Link className="text-black hover:font-bold" href="#home">
                   Explore
                 </Nav.Link>

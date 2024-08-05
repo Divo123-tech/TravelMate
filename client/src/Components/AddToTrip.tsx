@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import AddToTripModal from "./AddToTripModal";
 type Props = {
   itineraries: any[];
-  itineraryType: string;
 };
-const AddToTrip: FC<Props> = ({ itineraries, itineraryType }: Props) => {
+const AddToTrip: FC<Props> = ({ itineraries }: Props) => {
   const [modalShow, setModalShow] = useState(false);
 
   return (
@@ -22,7 +21,6 @@ const AddToTrip: FC<Props> = ({ itineraries, itineraryType }: Props) => {
         show={modalShow}
         onHide={() => setModalShow(false)}
         itineraries={itineraries}
-        itineraryType={itineraryType}
       />
     </div>
   );
