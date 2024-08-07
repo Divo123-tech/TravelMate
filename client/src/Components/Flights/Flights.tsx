@@ -1,15 +1,15 @@
-import FlightsWP from "../assets/FlightsWP.jpg";
+import FlightsWP from "../../assets/FlightsWP.jpg";
 import { useState, FC, useEffect, useContext } from "react";
-import { getAllFlights } from "../services/apiService";
-import { flightType } from "../types/types";
-import loading from "../assets/loading.png";
-import { UserContext, PageContext } from "../App";
+import { getAllFlights } from "../../services/locations.service";
+import { flightType } from "../../types/types";
+import loading from "../../assets/loading.png";
+import { UserContext, PageContext } from "../../App";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Placeholder from "react-bootstrap/Placeholder";
-import DetailsModal from "./FlightsComponents/DetailsModal";
-import Flight from "./FlightsComponents/Flight";
-import AddToTrip from "./AddToTrip";
+import DetailsModal from "./DetailsModal";
+import Flight from "./Flight";
+import AddToTrip from "../ExploreLocations/AddToTrip";
 const Flights: FC = () => {
   const [flightDetails, setFlightDetails] = useState({
     origin: "",
@@ -65,7 +65,6 @@ const Flights: FC = () => {
       );
       setFlights(fetchedFlights.data);
       settotalFlights(fetchedFlights.total);
-      console.log(fetchedFlights);
     } catch (err) {
       setFlights([]);
       settotalFlights(0);

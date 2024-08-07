@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import { getTripDetails, getCurrentUser } from "../services/apiService";
+import { getTripDetails, getCurrentUser } from "../../services/users.service";
 import { faUserGroup, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import {
   TripType,
@@ -10,20 +10,20 @@ import {
   hotelType,
   flightType,
   attractionType,
-} from "../types/types";
-import Country from "./ExploreLocationsComponents/Country";
-import State from "./ExploreLocationsComponents/State";
-import City from "./ExploreLocationsComponents/City";
-import Hotel from "./ExploreLocationsComponents/Hotel";
-import Flight from "./FlightsComponents/Flight";
+} from "../../types/types";
+import Country from "../ExploreLocations/Country";
+import State from "../ExploreLocations/State";
+import City from "../ExploreLocations/City";
+import Hotel from "../ExploreLocations/Hotel";
+import Flight from "../Flights/Flight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { SocketContext, UserContext } from "../App";
-import DeleteButton from "./DeleteButton";
+import { SocketContext, UserContext } from "../../App";
+import DeleteButton from "../DeleteButton";
 import { Spinner } from "react-bootstrap";
 import CollaboratorsModal from "./CollaboratorsModal";
-import CustomActivityModal from "./EditTripComponents/CustomActivityModal";
-import Attraction from "./ExploreLocationsComponents/Attraction";
+import CustomActivityModal from "./CustomActivityModal";
+import Attraction from "../ExploreLocations/Attraction";
 const container = {
   hidden: {},
   visible: {

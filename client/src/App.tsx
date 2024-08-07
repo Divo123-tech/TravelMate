@@ -10,7 +10,7 @@ import Flights from "./Components/Flights";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { UserType } from "./types/types";
-import { getCurrentUser } from "./services/apiService";
+import { getCurrentUser } from "./services/users.service";
 import io, { Socket } from "socket.io-client";
 import {
   SocketContextType,

@@ -20,17 +20,17 @@ import {
   getCountryByName,
   getStateByName,
   getCityByName,
-} from "../services/apiService";
-import { countryType, stateType, cityType } from "../types/types";
-import { PageContext } from "../App";
-import loading from "../assets/loading.png";
-import Country from "./ExploreLocationsComponents/Country";
-import State from "./ExploreLocationsComponents/State";
-import City from "./ExploreLocationsComponents/City";
-import Hotel from "./ExploreLocationsComponents/Hotel";
-import Airport from "./ExploreLocationsComponents/Airport";
-import Attraction from "./ExploreLocationsComponents/Attraction";
-import Video from "./ExploreLocationsComponents/Video";
+} from "../../services/locations.service";
+import { countryType, stateType, cityType } from "../../types/types";
+import { PageContext } from "../../App";
+import loading from "../../assets/loading.png";
+import Country from "./Country";
+import State from "./State";
+import City from "./City";
+import Hotel from "./Hotel";
+import Airport from "./Airport";
+import Attraction from "./Attraction";
+import Video from "./Video";
 import AddToTrip from "./AddToTrip";
 const container = {
   hidden: {},

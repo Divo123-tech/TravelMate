@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import { cityType, timeZoneType } from "../../types/types";
 import loading from "../../assets/loading.png";
-import { getLocationTime } from "../../services/apiService";
+import { getLocationTime } from "../../services/locations.service";
+
 type Props = {
   city: cityType;
   setCurrentCity?: (city: cityType) => void;

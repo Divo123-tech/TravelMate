@@ -3,22 +3,22 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {
-  getAllCountries,
   editUserDetails,
   getCurrentUser,
   deleteTrip,
-} from "../services/apiService";
+} from "../../services/users.service";
+import { getAllCountries } from "../../services/locations.service";
 import { motion } from "framer-motion";
-import Trip from "./UserProfileComponents/Trip";
-import CreateNewTrip from "./UserProfileComponents/CreateNewTrip";
-import EditSuccessToast from "./UserProfileComponents/EditSuccessToast";
+import Trip from "./Trip";
+import CreateNewTrip from "./CreateNewTrip";
+import EditSuccessToast from "./EditSuccessToast";
 import { useContext } from "react";
-import { UserContext, PageContext } from "../App";
+import { UserContext, PageContext } from "../../App";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePen } from "@fortawesome/free-solid-svg-icons";
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "../DeleteButton";
 const container = {
   hidden: {},
   visible: {

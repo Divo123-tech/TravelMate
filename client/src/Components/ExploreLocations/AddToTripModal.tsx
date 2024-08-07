@@ -1,10 +1,10 @@
 import { FC, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { UserContext, SocketContext } from "../App";
-import { TripType } from "../types/types";
-import { googleAuthenticate } from "../services/apiService";
-import Trip from "./ExploreLocationsComponents/Trip";
+import { UserContext, SocketContext } from "../../App";
+import { TripType } from "../../types/types";
+import { googleAuthenticate } from "../../services/users.service";
+import Trip from "./Trip";
 type Props = {
   show: boolean;
   onHide: () => void;

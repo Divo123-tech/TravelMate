@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useContext, FC } from "react";
 import { UserContext, PageContext } from "../App";
-import { googleAuthenticate, logOutAPI } from "../services/apiService";
+import { googleAuthenticate, logOutAPI } from "../services/users.service";
 import logo from "../assets/logo.png";
 const NavigationBar: FC = () => {
   const userContext = useContext(UserContext);

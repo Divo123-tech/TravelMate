@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import Itinerary from "./HomePageComponents/Itinerary";
-import Review from "./HomePageComponents/Review";
-import CarouselComponent from "./HomePageComponents/Carousel";
-import { itineraries, reviews } from "../data/homepage";
-import { ItineraryType, ReviewType } from "../types/types";
+import Itinerary from "./Itinerary";
+import Review from "./Review";
+import CarouselComponent from "./Carousel";
+import { itineraries, reviews } from "../../data/homepage";
+import { ItineraryType, ReviewType } from "../../types/types";
 import { FC, useContext, useEffect } from "react";
-import { PageContext } from "../App";
+import { PageContext } from "../../App";
 const container = {
   hidden: {},
   visible: {

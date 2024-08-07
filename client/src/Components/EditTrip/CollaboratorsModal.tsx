@@ -1,11 +1,11 @@
 import { Modal, Button } from "react-bootstrap";
 import { useState } from "react";
-import { TripType, UserType } from "../types/types";
+import { TripType, UserType } from "../../types/types";
 import {
   searchUserDetails,
   addCollaborator,
   deleteCollaborator,
-} from "../services/apiService";
+} from "../../services/users.service";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

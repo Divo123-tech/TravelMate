@@ -7,7 +7,10 @@ import {
   faGlobe,
   faPassport,
 } from "@fortawesome/free-solid-svg-icons";
-import { getCountryVisa, getCountryExchange } from "../../services/apiService";
+import {
+  getCountryVisa,
+  getCountryExchange,
+} from "../../services/locations.service";
 import { countryType, VisaRequirementsType } from "../../types/types";
 import { UserContext } from "../../App";
 import loading from "../../assets/loading.png";

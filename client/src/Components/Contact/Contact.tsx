@@ -1,4 +1,4 @@
-import contactUsImage from "../assets/Contact-us.jpg";
+import contactUsImage from "../../assets/Contact-us.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPhoneVolume,
@@ -6,8 +6,8 @@ import {
   faHourglassEnd,
 } from "@fortawesome/free-solid-svg-icons";
 import Accordion from "react-bootstrap/Accordion";
-import FAQAccordion from "./ContactComponents/Accordion";
-import { FAQInformation } from "../data/faq";
+import FAQAccordion from "./Accordion";
+import { FAQInformation } from "../../data/faq";
 import { FC } from "react";
 const Contact: FC = () => {
   return (

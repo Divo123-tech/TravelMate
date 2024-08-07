@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { createNewTrip } from "../../services/apiService";
+import { createNewTrip } from "../../services/users.service";
 import { UserContext } from "../../App";
 import { UserType } from "../../types/types";
 type Props = {
