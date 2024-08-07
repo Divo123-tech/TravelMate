@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import { UserContext, SocketContext } from "../App";
 import { TripType } from "../types/types";
 import { motion } from "framer-motion";
+import { googleAuthenticate } from "../services/apiService";
+import { useNavigate } from "react-router-dom";
 type Props = {
   show: boolean;
   onHide: () => void;
@@ -17,9 +19,9 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
     throw new Error("YourComponent must be used within a UserProvider");
   }
   const { user } = userContext;
-  const { socket, emitEvent } = socketContext;
+  const { emitEvent } = socketContext;
+  const navigate = useNavigate();
   const addItinereariesToTrip = (tripId: string) => {
-    console.log(tripId);
     itineraries.map((itinerary: any) => {
       emitEvent("AddLocationToTrip", {
         tripId,
@@ -39,14 +41,14 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
       {user != null ? (
         <div>
           <Modal.Header closeButton>
-            <Modal.Title>Select Trip!</Modal.Title>
+            <Modal.Title className="font-FatFace">Select Trip!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="flex flex-col gap-2">
               {user.trips.map((trip: TripType) => {
                 return (
                   <div className="bg-teal px-4 py-2 rounded-full flex items-center justify-between">
-                    <h1 className="text-xl font-medium text-baby-powder">
+                    <h1 className="text-xl font-medium text-baby-powder font-Oswald">
                       {trip.name}
                     </h1>
                     <motion.p
@@ -73,12 +75,13 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
           <Modal.Header closeButton>
             <Modal.Title>Log In To Make a Trip!</Modal.Title>
           </Modal.Header>
-          <Modal.Body></Modal.Body>
           <Modal.Footer>
             <Button onClick={onHide} variant="secondary">
               Close
             </Button>
-            <Button type="submit">Create!</Button>
+            <Button type="button" onClick={googleAuthenticate}>
+              Log In/Sign Up!
+            </Button>
           </Modal.Footer>
         </div>
       )}

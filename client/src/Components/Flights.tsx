@@ -93,56 +93,56 @@ const Flights: FC = () => {
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
           <h1
-            className="text-4xl font-bold text-white mb-8 text-center"
+            className="text-4xl text-white mb-8 text-center font-FatFace"
             id="title-header"
           >
-            Millions of cheap flights. One simple search.
+            Millions of Cheap Flights. One Simple Search.
           </h1>
           <form className="bg-teal flex py-3 px-4 gap-4 justify-center rounded-full flex-wrap">
             <div className="flex flex-col justify-center items-center gap-1">
-              <label className="text-baby-powder font-medium text-xl">
+              <label className="text-baby-powder font-medium text-xl font-Oswald">
                 Origin
               </label>
               <input
                 type="text"
-                className="bg-baby-powder p-2 rounded-full text-md"
+                className="bg-baby-powder p-2 rounded-full text-md font-Rethink"
                 placeholder="Airport Code eg.CGK, LHR, LAX"
                 name="origin"
                 onChange={handleChange}
               ></input>
             </div>
             <div className="flex flex-col justify-center items-center gap-1">
-              <label className="text-baby-powder font-medium text-xl">
+              <label className="text-baby-powder font-medium text-xl font-Oswald">
                 Destination
               </label>
               <input
                 type="text"
-                className="bg-baby-powder p-2 rounded-full text-md"
+                className="bg-baby-powder p-2 rounded-full text-md font-Rethink"
                 placeholder="Airport Code eg.CGK, LHR, LAX"
                 name="destination"
                 onChange={handleChange}
               ></input>
             </div>
             <div className="flex flex-col justify-center items-center">
-              <label className="text-baby-powder font-medium text-xl">
+              <label className="text-baby-powder font-medium text-xl font-Oswald">
                 Departure Date
               </label>
               <input
                 type="date"
-                className="bg-baby-powder p-2 rounded-full text-md text-gray-400"
+                className="bg-baby-powder p-2 rounded-full text-md text-gray-400 font-Rethink"
                 name="departureDate"
                 onChange={handleChange}
               ></input>
             </div>
             <button
-              className="bg-baby-powder text-md px-2 rounded-full text-oxford-blue font-medium"
+              className="bg-baby-powder text-md px-2 rounded-full text-oxford-blue font-medium font-Oswald"
               type="button"
               onClick={() => setModalShow(true)}
             >
               Advanced Filters
             </button>
             <button
-              className="bg-oxford-blue text-lg px-4 py-2 rounded-full text-baby-powder font-medium disabled:opacity-80 disabled:cursor-not-allowed"
+              className="bg-oxford-blue text-lg px-4 py-2 rounded-full text-baby-powder font-Oswald font-medium disabled:opacity-80 disabled:cursor-not-allowed"
               disabled={flightDetails.origin == ""}
               type="button"
               onClick={() => {

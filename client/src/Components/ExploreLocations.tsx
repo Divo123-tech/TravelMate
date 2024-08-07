@@ -204,7 +204,6 @@ const ExploreLocations = () => {
                 setCurrentCity(city);
               }
             } catch (e) {
-              console.log(e);
               setCurrentCountry(null);
               setCurrentState(null);
               setCurrentCity(null);
@@ -325,11 +324,11 @@ const ExploreLocations = () => {
         return (
           <div>
             <header className="flex items-center align-center py-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold font-Oswald">
                 SELECT COUNTRY FROM
               </h1>
               <select
-                className="text-oxford-blue text-3xl md:text-4xl font-bold border-2 "
+                className="text-oxford-blue text-3xl md:text-4xl font-bold border-2 font-Oswald"
                 onChange={changeContinent}
                 defaultValue={continent}
               >
@@ -345,7 +344,7 @@ const ExploreLocations = () => {
                 <input
                   onChange={handleSearch}
                   placeholder={`Search Country...`}
-                  className="border-2 text-2xl px-1 rounded-md"
+                  className="border-2 text-2xl px-1 rounded-md font-Oswald"
                 ></input>
                 <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -381,8 +380,8 @@ const ExploreLocations = () => {
                     })}
                   </motion.div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
-                    No Countries Matched your search {":("}
+                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald">
+                    No Countries Matched Your Search {":("}
                   </h1>
                 )
               ) : (
@@ -408,10 +407,10 @@ const ExploreLocations = () => {
               )}
             </section>
             <div className="flex justify-end px-12 py-8 mb-auto">
-              <h1 className="text-xl">
+              <h1 className="text-xl font-Oswald">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
-                  className="text-2xl"
+                  className="text-2xl hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prevPage) =>
                       prevPage == 1
@@ -423,7 +422,7 @@ const ExploreLocations = () => {
                 Page: {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl"
+                  className="text-2xl hover:cursor-pointer hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prevPage) =>
                       prevPage == Math.ceil(total / 10)
@@ -440,7 +439,7 @@ const ExploreLocations = () => {
         return (
           <div>
             <p
-              className="pt-4 pb-2 px-12 hover:cursor-pointer"
+              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Rethink"
               onClick={() => {
                 navigate(`/explore`);
               }}
@@ -448,14 +447,14 @@ const ExploreLocations = () => {
               <FontAwesomeIcon icon={faCaretLeft} /> Back to Countries
             </p>
             <header className="flex items-center align-center pb-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold font-Oswald">
                 SELECT STATE
               </h1>
               <div className="md:ml-auto flex">
                 <input
                   onChange={handleSearch}
                   placeholder={`Search State...`}
-                  className="border-2 text-2xl px-1 rounded-md"
+                  className="border-2 text-2xl px-1 rounded-md font-Oswald"
                 ></input>
                 <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -484,7 +483,7 @@ const ExploreLocations = () => {
                     })}
                   </div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
+                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald">
                     No States Matched your search {":("}
                   </h1>
                 )
@@ -511,10 +510,10 @@ const ExploreLocations = () => {
               )}
             </section>
             <div className="flex justify-end px-12 py-8 mb-auto">
-              <h1 className="text-xl">
+              <h1 className="text-xl font-Oswald ">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
-                  className="text-2xl"
+                  className="text-2xl hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prevPage) =>
                       prevPage == 1
@@ -526,7 +525,7 @@ const ExploreLocations = () => {
                 Page: {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl"
+                  className="text-2xl hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prevPage) =>
                       prevPage == Math.ceil(total / 10)
@@ -543,7 +542,7 @@ const ExploreLocations = () => {
         return (
           <div>
             <p
-              className="pt-4 pb-2 px-12 hover:cursor-pointer"
+              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Oswald"
               onClick={() => {
                 navigate(
                   `/explore?locationType=states&country=${searchParams.get(
@@ -555,14 +554,14 @@ const ExploreLocations = () => {
               <FontAwesomeIcon icon={faCaretLeft} /> Back to States
             </p>
             <header className="flex items-center align-center pb-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold font-Oswald">
                 SELECT CITY
               </h1>
               <div className="md:ml-auto flex">
                 <input
                   onChange={handleSearch}
                   placeholder={`Search City...`}
-                  className="border-2 text-2xl px-1 rounded-md"
+                  className="border-2 text-2xl px-1 rounded-md font-Oswald"
                 ></input>
                 <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -589,7 +588,7 @@ const ExploreLocations = () => {
                     })}
                   </div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
+                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald">
                     No Cities Matched your search {":("}
                   </h1>
                 )
@@ -616,10 +615,10 @@ const ExploreLocations = () => {
               )}
             </section>
             <div className="flex justify-end px-12 py-8 mb-auto">
-              <h1 className="text-xl">
+              <h1 className="text-xl font-Oswald">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
-                  className="text-2xl"
+                  className="text-2xl hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prevPage) =>
                       prevPage == 1
@@ -631,7 +630,7 @@ const ExploreLocations = () => {
                 Page: {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl"
+                  className="text-2xl hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prevPage) =>
                       prevPage == Math.ceil(total / 10)
@@ -647,14 +646,14 @@ const ExploreLocations = () => {
       case "activities":
         return (
           <div className="flex flex-col items-center p-16 gap-8">
-            <h1 className="text-6xl font-medium text-oxford-blue text-center">
+            <h1 className="text-6xl font-medium text-oxford-blue text-center font-FatFace">
               Explore {currentCity?.name || searchParams.get("city") || "..."}
             </h1>
             <form className="flex items-center" onSubmit={exploreNewLocation}>
               <input
                 type="text"
                 placeholder="Search City,State,Country"
-                className="border-2 border-oxford-blue pr-10 py-1 pl-1 text-left"
+                className="border-2 border-oxford-blue pr-10 py-1 pl-1 text-left font-Rethink"
                 name="locations"
                 onChange={(e) => setCurrentLocations(e.target.value)}
               ></input>
@@ -667,51 +666,51 @@ const ExploreLocations = () => {
             </form>
             <div className="flex flex-col md:flex-row items-center gap-4 md:justify-between w-full text-4xl font-medium text-teal px-8 flex-wrap ">
               <p
-                className={
+                className={`${
                   activityType == "Hotels"
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
-                }
+                } font-Oswald`}
                 onClick={() => setActivityType("Hotels")}
               >
                 Hotels
               </p>
               <p
-                className={
+                className={`${
                   activityType == "Airports"
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
-                }
+                } font-Oswald`}
                 onClick={() => setActivityType("Airports")}
               >
                 Airports
               </p>
               <p
-                className={
+                className={`${
                   activityType == "Restaurants"
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
-                }
+                } font-Oswald`}
                 onClick={() => setActivityType("Restaurants")}
               >
                 Restaurants
               </p>
               <p
-                className={
+                className={`${
                   activityType == "Things To Do"
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
-                }
+                } font-Oswald`}
                 onClick={() => setActivityType("Things To Do")}
               >
                 Things To Do
               </p>
               <p
-                className={
+                className={`${
                   activityType == "Videos"
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
-                }
+                } font-Oswald`}
                 onClick={() => setActivityType("Videos")}
               >
                 Videos
@@ -723,7 +722,7 @@ const ExploreLocations = () => {
                   <input
                     onChange={handleSearch}
                     placeholder={`Search ${activityType}...`}
-                    className="border-2 text-2xl px-1 rounded-md"
+                    className="border-2 text-2xl px-1 rounded-md font-Oswald"
                   ></input>
                   <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -797,10 +796,10 @@ const ExploreLocations = () => {
                 )}
 
                 <div className="flex justify-end px-12 py-8 mb-auto">
-                  <h1 className="text-xl">
+                  <h1 className="text-xl font-Oswald">
                     <FontAwesomeIcon
                       icon={faCaretLeft}
-                      className="text-2xl"
+                      className="text-2xl hover:cursor-pointer"
                       onClick={() =>
                         setCurrentPage((prevPage) =>
                           prevPage == 1
@@ -813,7 +812,7 @@ const ExploreLocations = () => {
                     {Math.ceil(total / 10)}{" "}
                     <FontAwesomeIcon
                       icon={faCaretRight}
-                      className="text-2xl"
+                      className="text-2xl hover:cursor-pointer"
                       onClick={() =>
                         setCurrentPage((prevPage) =>
                           prevPage == Math.ceil(total / 10)
@@ -827,7 +826,7 @@ const ExploreLocations = () => {
               </section>
             ) : (
               <div className="flex items-center justify-center mt-12">
-                <h1 className="mb-auto text-4xl">
+                <h1 className="mb-auto text-4xl font-Oswald">
                   Find a City And Explore What it Has to Offer!
                 </h1>
               </div>

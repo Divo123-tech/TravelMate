@@ -135,12 +135,12 @@ const UserProfile: FC = () => {
           <div className="pt-16 pb-2 px-32 flex items-center justify-center gap-3 md:justify-around flex-wrap">
             <div className="flex items-center flex-col gap-2">
               <img src={user.picture} className="rounded-full" />
-              <p className="text-xl">User Id</p>
-              <p className="text-lg italic">{user.googleId}</p>
+              <p className="text-xl font-Oswald">User ID</p>
+              <p className="text-lg italic font-Rethink">{user.googleId}</p>
             </div>
             <div>
               <form onSubmit={handleSubmit}>
-                <Container className="flex flex-wrap md:grid">
+                <Container className="flex flex-wrap md:grid font-Rethink">
                   <Row className="mb-2">
                     <Col>
                       <div className="flex flex-col">
@@ -242,6 +242,7 @@ const UserProfile: FC = () => {
             editSuccess={editSuccess}
             setEditSuccess={setEditSuccess}
           />
+
           <section className="py-16">
             <motion.div
               className="bg-baby-powder w-48 text-center my-10 p-1"
@@ -254,7 +255,7 @@ const UserProfile: FC = () => {
                 visible: { opacity: 1, x: 0 },
               }}
             >
-              <p className="text-lg font-medium">MY TRIPS</p>
+              <p className="text-2xl font-medium font-Oswald">MY TRIPS</p>
             </motion.div>
             <motion.div
               className="flex flex-col gap-8"
@@ -279,7 +280,7 @@ const UserProfile: FC = () => {
                       key={index}
                       userId={user.googleId}
                     />
-                    <div className="flex flex-col gap-3 ml-auto items-center justify-center">
+                    <div className="flex flex-col gap-3 ml-auto items-center justify-center font-Rethink">
                       <motion.button
                         className="text-baby-powder md:text-oxford-blue md:bg-baby-powder rounded-full md:px-12 md:py-2 md:rounded-full text-2xl"
                         whileHover={{ scale: 1.05 }}

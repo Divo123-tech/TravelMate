@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useContext, FC } from "react";
 import { UserContext } from "../App";
 import { googleAuthenticate, logOutAPI } from "../services/apiService";
+import logo from "../assets/logo.png";
 const NavigationBar: FC = () => {
   const context = useContext(UserContext);
 
@@ -24,11 +25,13 @@ const NavigationBar: FC = () => {
   return (
     <>
       <Navbar
-        className="bg-baby-powder py-3 sticky top-0 z-50 text-white"
+        className="bg-baby-powder sticky top-0 z-50 text-white"
         expand="md"
       >
-        <Container className="flex justify-between">
-          <Navbar.Brand href="#home">TM Logo</Navbar.Brand>
+        <Container className="flex">
+          <Navbar.Brand href="#home">
+            <img src={logo} className="w-20"></img>
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
@@ -36,31 +39,40 @@ const NavigationBar: FC = () => {
           >
             <Nav className="text-black flex gap-3 text-lg">
               <Link to={"/"}>
-                <Nav.Link className="text-black hover:font-bold" href="#home">
+                <Nav.Link
+                  className="text-black hover:font-bold font-Rethink"
+                  href="#home"
+                >
                   Home
                 </Nav.Link>
               </Link>
               <Link to={"/explore"}>
                 <Nav.Link
-                  className="text-black hover:font-bold"
+                  className="text-black hover:font-bold font-Rethink"
                   href="#features"
                 >
                   Locations
                 </Nav.Link>
               </Link>
               <Link to={"/explore?locationType=activities"}>
-                <Nav.Link className="text-black hover:font-bold" href="#home">
+                <Nav.Link
+                  className="text-black hover:font-bold font-Rethink"
+                  href="#home"
+                >
                   Explore
                 </Nav.Link>
               </Link>
               <Link to={"/flights"}>
-                <Nav.Link className="text-black hover:font-bold" href="#home">
+                <Nav.Link
+                  className="text-black hover:font-bold font-Rethink"
+                  href="#home"
+                >
                   Flights
                 </Nav.Link>
               </Link>
               <Link to={"/contact"}>
                 <Nav.Link
-                  className="text-black hover:font-bold"
+                  className="text-black hover:font-bold font-Rethink"
                   href="#features"
                 >
                   Contact
@@ -68,20 +80,20 @@ const NavigationBar: FC = () => {
               </Link>
               {user == null ? (
                 <Nav.Link
-                  className="text-black hover:font-bold"
+                  className="text-black hover:font-bold font-Rethink"
                   href="#pricing"
                   onClick={googleAuthenticate}
                 >
                   Login/Sign Up
                 </Nav.Link>
               ) : (
-                <Nav.Link className="text-black hover:font-bold">
+                <Nav.Link className="text-black hover:font-bold font-Rethink">
                   <Link to={"/profile"}>Profile</Link>
                 </Nav.Link>
               )}
               {user && (
                 <Nav.Link
-                  className="text-black hover:font-bold"
+                  className="text-black hover:font-bold font-Rethink"
                   onClick={logOut}
                 >
                   <Link to={"/"}> Log Out</Link>

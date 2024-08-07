@@ -77,21 +77,21 @@ const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
           onLoad={() => setIsImageLoaded(true)}
         ></img>
         <div className="flex flex-col gap-2 md:text-left">
-          <p className="text-white text-base text-lg whitespace-nowrap">
+          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
             Region: {country.continent}
           </p>
           <h1
-            className="text-white text-3xl font-medium hover:cursor-pointer"
+            className="text-white text-3xl font-medium hover:cursor-pointer font-Oswald"
             onClick={goToStates}
           >
             {country.name}, {country.iso2}
           </h1>
-          <p className="text-white text-base md:text-lg whitespace-nowrap">
+          <p className="text-white text-base md:text-lg whitespace-nowrap font-Rethink">
             Capital: {country.capital}
           </p>
         </div>
       </div>
-      <div className="flex flex-col text-baby-powder text-center hover:cursor-pointer">
+      <div className="flex flex-col text-baby-powder text-center hover:cursor-pointer font-Oswald">
         <motion.h1
           className="text-baby-powder font-medium text-2xl"
           onClick={() => fetchCountryVisa(country)}
@@ -103,8 +103,10 @@ const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
         {visaShown ? (
           visaDetails ? (
             <div>
-              <p className="text-lg">Status: {visaDetails.visaStatus}</p>
-              <p className="text-lg">
+              <p className="text-lg font-Rethink">
+                Status: {visaDetails.visaStatus}
+              </p>
+              <p className="text-lg font-Rethink">
                 Duration: {visaDetails.visaDuration || 0} Days
               </p>
             </div>
@@ -115,7 +117,7 @@ const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
       </div>
       <div className="flex flex-col text-baby-powder text-center">
         <motion.h1
-          className="text-baby-powder font-medium text-2xl hover:cursor-pointer"
+          className="text-baby-powder font-medium text-2xl hover:cursor-pointer font-Oswald"
           onClick={() => fetchCountryExchange(country)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.9 }}
@@ -125,13 +127,13 @@ const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
         {currencyShown ? (
           exchangeRate ? (
             <div>
-              <p className="text-lg">
+              <p className="text-lg font-Rethink">
                 1 {user?.currencyUsed || "USD"}{" "}
                 <FontAwesomeIcon icon={faArrowRight} />{" "}
                 {exchangeRate.toString().slice(0, 7)}{" "}
                 {country.name == "Albania" ? "ALL" : country.currency}
               </p>
-              <p className="text-lg">
+              <p className="text-lg font-Rethink">
                 1 {country.name == "Albania" ? "ALL" : country.currency}{" "}
                 <FontAwesomeIcon icon={faArrowRight} />{" "}
                 {(1 / exchangeRate).toString().slice(0, 7)}{" "}

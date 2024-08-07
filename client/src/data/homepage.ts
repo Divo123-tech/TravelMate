@@ -1,6 +1,7 @@
-import ItalyImage from "../assets/Italy.jpg";
+import MelbourneImage from "../assets/Melbourne.jpg";
+import DenpasarImage from "../assets/Denpasar.jpg";
 import BrazilImage from "../assets/Brazil.jpg";
-import IndiaImage from "../assets/India.jpg";
+import GzImage from "../assets/Guangzhou.jpg";
 import JapanImage from "../assets/Japan.jpg";
 import headshot1 from "../assets/headshot1.jpg";
 import headshot2 from "../assets/headshot3.webp";
@@ -14,24 +15,24 @@ type itinerary = {
 
 export const itineraries: itinerary[] = [
   {
-    countryName: "ITALY",
-    desc: "Italy, with its rich historical landmarks, like the Colosseum in Rome, offers a captivating blend of ancient culture and breathtaking landscapes.",
-    imgSrc: ItalyImage,
+    countryName: "MELBOURNE",
+    desc: "Melbourne, Australia's vibrant cultural capital, enchants visitors with its diverse arts scene, iconic laneways, world-class dining, and picturesque waterfronts.",
+    imgSrc: MelbourneImage,
   },
   {
-    countryName: "INDIA",
-    desc: " India enchants tourists with its diverse cultural heritage, from the beautifully iconic Taj Mahal to the vibrant streets of Delhi and Mumbai.",
-    imgSrc: IndiaImage,
+    countryName: "DENPASAR",
+    desc: " Denpasar, the bustling capital of Bali, Indonesia, offers a rich blend of traditional Balinese culture, historic temples, vibrant markets, and stunning beaches.",
+    imgSrc: DenpasarImage,
   },
   {
-    countryName: "JAPAN",
-    desc: "Japan offers a unique fusion of ancient traditions and cutting-edge modernity like the historic temples of Kyoto and the metropolis of Tokyo.",
+    countryName: "TOKYO",
+    desc: "Tokyo offers a unique fusion of ancient traditions and cutting-edge modernity through their historic temples and bustling metropolis.",
     imgSrc: JapanImage,
   },
   {
-    countryName: "BRAZIL",
-    desc: " Brazil captivates visitors with its lively festivals, such as Rio de Janeiro's Carnival, and natural wonders like the Amazon Rainforest.",
-    imgSrc: BrazilImage,
+    countryName: "GUANGZHOU",
+    desc: " Guangzhou, a sprawling metropolis in southern China, captivates travelers with its rich history, modern architecture, and the beauty of the Pearl River.",
+    imgSrc: GzImage,
   },
 ];
 

@@ -86,16 +86,6 @@ export type hotelType = {
   country: string;
   type: string;
 };
-//delete later
-export type activityType = {
-  name: string;
-  id: string;
-  address: string;
-  city: string;
-  countryCode: string;
-  country: string;
-  url: string;
-};
 
 export type attractionType = {
   name: string;

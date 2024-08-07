@@ -62,16 +62,20 @@ const NewTripModal = ({ show, onHide }: Props) => {
       dialogClassName="w-fit"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Lets Start With a Name And Date!</Modal.Title>
+        <Modal.Title className="font-Oswald">
+          Start With a Name And Date!
+        </Modal.Title>
       </Modal.Header>
       <form onSubmit={handleSubmit}>
         <Modal.Body>
           <div className="flex flex-col px-2 gap-3">
             <div className="flex flex-col gap-1">
-              <label className="text-xl font-medium">Trip Name</label>
+              <label className="text-xl font-medium font-Oswald">
+                Trip Name
+              </label>
               <input
                 type="text"
-                className="border-1 rounded-full px-3 py-2 border-black text-lg"
+                className="border-1 rounded-full px-3 py-2 border-black text-lg font-Rethink"
                 placeholder="Name your trip!"
                 name="name"
                 onChange={handleChange}
@@ -79,20 +83,24 @@ const NewTripModal = ({ show, onHide }: Props) => {
               ></input>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xl font-medium">Start Date</label>
+              <label className="text-xl font-medium font-Oswald">
+                Start Date
+              </label>
               <input
                 type="date"
-                className="border-1 rounded-full px-2 py-2 border-black text-lg"
+                className="border-1 rounded-full px-2 py-2 border-black text-lg font-Rethink"
                 min={new Date().toISOString().split("T")[0]}
                 name="startDate"
                 onChange={handleChange}
               ></input>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xl font-medium">End Date</label>
+              <label className="text-xl font-medium font-Oswald">
+                End Date
+              </label>
               <input
                 type="date"
-                className="border-1 rounded-full px-2 py-2 border-black text-lg"
+                className="border-1 rounded-full px-2 py-2 border-black text-lg font-Rethink"
                 min={tripDetails.startDate}
                 onChange={handleChange}
                 name="endDate"

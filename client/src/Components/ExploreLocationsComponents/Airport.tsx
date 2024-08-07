@@ -18,10 +18,12 @@ const Airport = ({ airport }: Props) => {
           onLoad={() => setIsImageLoaded(true)}
         ></img>
         <div className="flex flex-col justify-start">
-          <p className="text-white text-md md:text-lg">
+          <p className="text-white text-md md:text-lg font-Rethink">
             Location: {airport.city} , {airport.region}
           </p>
-          <a className="text-white text-2xl md:text-3xl">{airport.name}</a>
+          <a className="text-white text-2xl md:text-3xl font-Oswald">
+            {airport.name}
+          </a>
         </div>
       </div>
     </>

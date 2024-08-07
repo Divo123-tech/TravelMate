@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { getTripDetails, getCurrentUser } from "../services/apiService";
-import { faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faUserGroup, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import {
   TripType,
   cityType,
@@ -22,6 +22,7 @@ import { SocketContext, UserContext } from "../App";
 import DeleteButton from "./DeleteButton";
 import { Spinner } from "react-bootstrap";
 import CollaboratorsModal from "./CollaboratorsModal";
+import CustomActivityModal from "./EditTripComponents/CustomActivityModal";
 import Attraction from "./ExploreLocationsComponents/Attraction";
 const container = {
   hidden: {},
@@ -39,8 +40,10 @@ const EditTrip = () => {
   const { user } = context;
   const navigate = useNavigate();
   const { tripId } = useParams();
-  const [modalShow, setModalShow] = useState(false);
+  const [collaboratorsModalShow, setCollaboratorsModalShow] =
+    useState<boolean>(false);
   const [trip, setTrip] = useState<TripType | null>(null);
+  const [activityModalShow, setActivityModalShow] = useState<boolean>(false);
   const socketContext = useContext(SocketContext);
 
   if (!socketContext) {
@@ -97,7 +100,7 @@ const EditTrip = () => {
           throw new Error("User not found");
         }
         if (!tripId) {
-          throw new Error("Trip ID not found");
+          throw new Error("Trip not found");
         }
 
         const tripDetails = await getTripDetails(userDetails._id, tripId);
@@ -118,7 +121,7 @@ const EditTrip = () => {
               className="bg-oxford-blue text-xl px-8 py-3 rounded-full text-baby-powder hover:bg-teal"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setModalShow(true)}
+              onClick={() => setCollaboratorsModalShow(true)}
             >
               Collaborators <FontAwesomeIcon icon={faUserGroup} /> (
               {trip.collaborators?.length})
@@ -164,6 +167,16 @@ const EditTrip = () => {
               </div>
             </form>
           </section>
+          <section className="flex justify-center items-center">
+            <motion.button
+              className="text-baby-powder font-medium text-2xl px-12 py-4 rounded-full bg-oxford-blue"
+              onClick={() => setActivityModalShow(true)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} /> Add Custom Activity!
+            </motion.button>
+          </section>
           <section className="mb-12">
             <div id="countries-div">
               <div className="flex justify-between items-center">
@@ -182,14 +195,6 @@ const EditTrip = () => {
                     Countries
                   </h1>
                 </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
-                  onClick={() => navigate("/explore/countries")}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
               </div>
               <motion.div
                 className=""
@@ -234,14 +239,6 @@ const EditTrip = () => {
                     States
                   </h1>
                 </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
-                  onClick={() => navigate("/explore/countries")}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
               </div>
               <motion.div
                 className=""
@@ -284,14 +281,6 @@ const EditTrip = () => {
                     Cities
                   </h1>
                 </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
-                  onClick={() => navigate("/explore/countries")}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
               </div>
               <motion.div
                 className=""
@@ -334,14 +323,6 @@ const EditTrip = () => {
                     Hotels
                   </h1>
                 </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
-                  onClick={() => navigate("/explore/countries")}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
               </div>
               <motion.div
                 className=""
@@ -386,7 +367,7 @@ const EditTrip = () => {
                 </motion.div>
                 <motion.p
                   className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
-                  onClick={() => navigate("/explore/countries")}
+                  onClick={() => setActivityModalShow(true)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -436,7 +417,7 @@ const EditTrip = () => {
                 </motion.div>
                 <motion.p
                   className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
-                  onClick={() => navigate("/explore/countries")}
+                  onClick={() => navigate("/flights")}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -459,6 +440,7 @@ const EditTrip = () => {
                           deleteFunction={() => deleteFromTrip(flight)}
                         />
                       }
+                      key={Math.random().toString(36).substring(2, 8)}
                     />
                   );
                 })}
@@ -466,13 +448,18 @@ const EditTrip = () => {
             </div>
           </section>
           <CollaboratorsModal
-            show={modalShow}
-            onHide={() => setModalShow(false)}
+            show={collaboratorsModalShow}
+            onHide={() => setCollaboratorsModalShow(false)}
             collaborators={trip?.collaborators}
             tripId={tripId || ""}
             userId={user?.googleId || ""}
             setTrip={setTrip}
             isOwner={trip.owner.googleId == user?.googleId}
+          />
+          <CustomActivityModal
+            show={activityModalShow}
+            onHide={() => setActivityModalShow(false)}
+            tripId={trip._id}
           />
         </div>
       ) : (

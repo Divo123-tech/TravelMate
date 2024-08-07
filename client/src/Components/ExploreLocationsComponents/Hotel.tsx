@@ -18,10 +18,13 @@ const Hotel = ({ hotel }: Props) => {
           onLoad={() => setIsImageLoaded(true)}
         ></img>
         <div className="flex flex-col justify-start">
-          <p className="text-white text-md md:text-lg">
+          <p className="text-white text-md md:text-lg font-Rethink">
             Location: {hotel.city}
           </p>
-          <a href={hotel.url} className="text-white text-2xl md:text-3xl">
+          <a
+            href={hotel.url}
+            className="text-white text-2xl md:text-3xl font-Oswald"
+          >
             {hotel.name}
           </a>
         </div>

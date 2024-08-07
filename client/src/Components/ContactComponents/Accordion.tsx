@@ -15,14 +15,16 @@ const FAQAccordion = ({ eventKey, question, answer }: Props) => {
     <>
       <Card className="mb-4">
         <Card.Header className="bg-teal flex justify-between items-center px-8">
-          <p className="text-white text-xl">{question}</p>
+          <p className="text-white text-2xl font-Oswald">{question}</p>
           <CustomToggle eventKey={eventKey}>
             {" "}
             <FontAwesomeIcon icon={faCaretDown} className="text-4xl" />
           </CustomToggle>
         </Card.Header>
         <Accordion.Collapse eventKey={eventKey}>
-          <Card.Body className="px-8 text-justify">{answer}</Card.Body>
+          <Card.Body className="px-8 text-justify font-Rethink">
+            {answer}
+          </Card.Body>
         </Accordion.Collapse>
       </Card>
     </>

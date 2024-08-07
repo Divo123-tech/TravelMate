@@ -19,7 +19,7 @@ const HomePage: FC = () => {
       <CarouselComponent />
 
       {/* Itineraries  */}
-      <section className="mt-24">
+      <section className="">
         <motion.div
           className="bg-baby-powder w-48 text-center my-10 p-1"
           initial="hidden"
@@ -31,7 +31,9 @@ const HomePage: FC = () => {
             visible: { opacity: 1, x: 0 },
           }}
         >
-          <p className="text-lg font-medium">TOP ITINERARIES</p>
+          <p className="text-2xl font-medium font-Oswald whitespace-nowrap">
+            TOP DESTINATIONS
+          </p>
         </motion.div>
         <motion.div
           className="justify-center px-6 flex md:justify-between flex-wrap gap-8"
@@ -59,7 +61,7 @@ const HomePage: FC = () => {
           }}
         >
           <div className="text-center">
-            <h1 className="text-oxford-blue text-5xl font-bold">
+            <h1 className="text-oxford-blue text-5xl font-bold font-FatFace">
               WHAT OUR TRAVELLERS ARE SAYING
             </h1>
           </div>

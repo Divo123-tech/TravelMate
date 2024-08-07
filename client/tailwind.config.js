@@ -9,8 +9,9 @@ export default {
         "oxford-blue": "#13294B",
       },
       fontFamily: {
-        arial: ["Arial", "sans-serif"],
-        helvetica: ["Helvetica", "sans-serif"],
+        FatFace: ["Abril Fatface", "sans-serif"],
+        Rethink: ["Rethink Sans", "sans-serif"],
+        Oswald: ["Oswald", "sans-serif"],
       },
     },
     screens: {

@@ -99,7 +99,10 @@ const CollaboratorsModal = ({
               <div>
                 {collaborators.map((collaborator) => {
                   return (
-                    <div className="bg-oxford-blue py-3 px-4 rounded-full flex flex-col md:flex-row items-center justify-between gap-3">
+                    <div
+                      className="bg-oxford-blue py-3 px-4 rounded-full flex flex-col md:flex-row items-center justify-between gap-3"
+                      key={collaborator.googleId}
+                    >
                       <div className="flex gap-2 items-center flex-col md:flex-row">
                         <img
                           src={collaborator.picture}

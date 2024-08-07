@@ -30,10 +30,10 @@ const State = ({ state, setCurrentState, setSearch }: Props) => {
           onLoad={() => setIsImageLoaded(true)}
         ></img>
         <div className="flex flex-col md:text-left" onClick={goToCities}>
-          <p className="text-white text-base text-lg whitespace-nowrap">
+          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
             Country: {state.countryName}, {state.countryCode}
           </p>
-          <h1 className="text-white text-3xl font-medium hover:cursor-pointer">
+          <h1 className="text-white text-3xl font-medium hover:cursor-pointer font-Oswald">
             {state.name}, {state.code}
           </h1>
         </div>

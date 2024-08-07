@@ -16,8 +16,8 @@ const Video = ({ video }: Props) => {
             title="My Iframe"
           />
         </div>
-        <div className="flex flex-col gap-4 justify-center md:text-start p-2">
-          <p className="text-3xl text-baby-powder">{video.title}</p>
+        <div className="flex flex-col gap-4 justify-center md:text-start p-2 font-Rethink">
+          <p className="text-3xl text-baby-powder font-Oswald">{video.title}</p>
           <p className="text-xl text-baby-powder">{video.channel}</p>
           <p className="text-xl text-baby-powder">
             {video.views} - {video.date}

@@ -10,7 +10,7 @@ const AddToTrip: FC<Props> = ({ itineraries }: Props) => {
   return (
     <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
       <motion.button
-        className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap"
+        className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap font-Rethink"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setModalShow(true)}

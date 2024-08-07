@@ -47,23 +47,23 @@ const City = ({ city, setCurrentCity }: Props) => {
           onLoad={() => setIsImageLoaded(true)}
         ></img>
         <div className="flex flex-col md:text-left gap-3">
-          <p className="text-white text-base text-lg whitespace-nowrap">
+          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
             State: {city.state}
           </p>
           <h1
-            className="text-white text-3xl font-medium hover:cursor-pointer"
+            className="text-white text-3xl font-medium hover:cursor-pointer font-Oswald"
             onClick={goToActivities}
           >
             {city.name}
           </h1>
-          <p className="text-white text-base text-lg whitespace-nowrap">
+          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
             Country: {city.country}
           </p>
         </div>
       </div>
       <div className="flex flex-col text-baby-powder text-center mx-16 hover:cursor-pointer">
         <motion.h1
-          className="text-baby-powder font-medium text-2xl"
+          className="text-baby-powder font-medium text-2xl font-Oswald"
           onClick={() => fetchLocationTimeZone(city)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.9 }}
@@ -73,10 +73,12 @@ const City = ({ city, setCurrentCity }: Props) => {
         {timeZoneShown ? (
           timeZoneDetails ? (
             <div>
-              <p className="text-lg">
+              <p className="text-lg font-Rethink">
                 Time: {timeZoneDetails.time}, {timeZoneDetails.date}
               </p>
-              <p className="text-lg">TimeZone: {timeZoneDetails.timeZone}</p>
+              <p className="text-lg font-Rethink">
+                TimeZone: {timeZoneDetails.timeZone}
+              </p>
             </div>
           ) : (
             <h1>loading...</h1>

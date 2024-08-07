@@ -14,7 +14,7 @@ const CarouselComponent = () => {
   return (
     <>
       <motion.div
-        className="relative mb-32"
+        className="relative mb-0 md:mb-32"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
@@ -49,10 +49,10 @@ const CarouselComponent = () => {
         </Carousel>
         <div className="absolute inset-0 flex flex-col items-center justify-around">
           <div className="text-center text-white bg-black bg-opacity-50 rounded-md p-6 md:p-16 flex flex-col gap-8">
-            <h1 className="text-lg md:text-6xl">
+            <h1 className="text-lg md:text-6xl font-FatFace">
               Global Traveling, Easy Planning
             </h1>
-            <p className="text-xs md:text-xl">
+            <p className="text-xs md:text-xl font-Oswald">
               Plan Your Vacations Anywhere in The World
             </p>
           </div>
@@ -60,7 +60,7 @@ const CarouselComponent = () => {
             <Link to={"/countries"} className="rounded-full bg-black">
               <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-teal flex items-center justify-center">
                 <div className="flex flex-col gap-2 md:gap-4 items-center">
-                  <p className="text-lg md:text-2xl">Explore</p>
+                  <p className="text-lg md:text-2xl font-Rethink">Explore</p>
                   <FontAwesomeIcon
                     icon={faMagnifyingGlassLocation}
                     className="text-xl md:text-4xl"
@@ -71,7 +71,9 @@ const CarouselComponent = () => {
             <Link to={"/profile"} className="rounded-full bg-black">
               <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-oxford-blue flex items-center justify-center">
                 <div className="flex flex-col gap-2 md:gap-4 items-center">
-                  <p className="text-md md:text-2xl">Create A Trip</p>
+                  <p className="text-md md:text-2xl font-Rethink">
+                    Create A Trip
+                  </p>
                   <FontAwesomeIcon
                     icon={faPlaneDeparture}
                     className="text-xl md:text-4xl"

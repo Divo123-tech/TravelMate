@@ -55,11 +55,11 @@ const Trip = ({ role, id, name, startDate, endDate, userId }: Props) => {
       ></img>
       {/* </object> */}
       <div className="text-white flex flex-col gap-3">
-        <p className="text-md md:text-lg">
+        <p className="text-md md:text-lg font-Rethink">
           <FontAwesomeIcon icon={faUser} /> Role: {role}
         </p>
-        <p className="text-xl md:text-3xl">{name}</p>
-        <p className="text-md md:text-lg">
+        <p className="text-xl md:text-3xl font-Oswald">{name}</p>
+        <p className="text-md md:text-lg font-Rethink">
           <FontAwesomeIcon icon={faCalendarDays} /> {startDate.slice(0, 10)} -{" "}
           {endDate}
         </p>

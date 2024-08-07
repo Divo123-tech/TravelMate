@@ -40,12 +40,12 @@ const DetailsModal: FC<Props> = ({
       dialogClassName="w-1/2"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Set Filters</Modal.Title>
+        <Modal.Title className="font-Oswald">SET FILTERS</Modal.Title>
       </Modal.Header>
       <form>
         <Modal.Body>
-          <div className="flex flex-col px-2 gap-3">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col px-2 gap-3 font-Oswald">
+            <div className="flex items-center gap-2 ">
               <label className="text-xl font-medium">Direct</label>
               <input
                 className="border-2 rounded-md border-black w-5 h-5 text-2xl"
