@@ -165,6 +165,7 @@ const ExploreLocations = () => {
             } catch (e) {
               setCurrentCountry(null);
               setCurrentState(null);
+              setCurrentPageNumber(0);
             }
             try {
               response = await getAllCities(
@@ -214,6 +215,7 @@ const ExploreLocations = () => {
               setCurrentCountry(null);
               setCurrentState(null);
               setCurrentCity(null);
+              setCurrentPageNumber(0);
             }
             switch (activityType) {
               case "Hotels":

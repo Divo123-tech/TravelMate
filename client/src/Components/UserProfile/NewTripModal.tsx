@@ -4,7 +4,6 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewTrip } from "../../services/users.service";
 import { UserContext } from "../../App";
-import { UserType } from "../../types/types";
 type Props = {
   show: boolean;
   onHide: () => void;

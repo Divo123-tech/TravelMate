@@ -1,10 +1,9 @@
 const ServerAPI = "http://localhost:3000";
 import axios from "axios";
-import { PassportType, TripType, UserType, timeZoneType } from "../types/types";
-import { cachedApiCall } from "../utils/apiCache";
+import { PassportType, TripType, UserType } from "../types/types";
 export const googleAuthenticate = () => {
   try {
-    window.open(`http://localhost:3000/auth/google/`, "_self");
+    window.open(`${ServerAPI}/auth/google/`, "_self");
   } catch (err) {
     return;
   }
@@ -12,7 +11,7 @@ export const googleAuthenticate = () => {
 
 export const logOutAPI = async () => {
   try {
-    await axios.post("http://localhost:3000/auth/google/logout", {
+    await axios.post(`${ServerAPI}/auth/google/logout`, {
       withCredentials: true,
     });
   } catch (error) {
@@ -32,12 +31,8 @@ export const editUserDetails = async (
     passport,
     currencyUsed,
   };
-  try {
-    const response = await axios.put(url, body, { withCredentials: true });
-    return response.data;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const { data } = await axios.put(url, body, { withCredentials: true });
+  return data;
 };
 
 export const getCurrentUser = async (): Promise<UserType | null> => {
@@ -67,23 +62,15 @@ export const deleteTrip = async (
   userId: string,
   tripId: string
 ): Promise<TripType> => {
-  try {
-    const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
-    const { data } = await axios.delete(url, { withCredentials: true });
-    return data;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
+  const { data } = await axios.delete(url, { withCredentials: true });
+  return data;
 };
 
 export const getTripDetails = async (userId: string, tripId: string) => {
-  try {
-    const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
-    const { data } = await axios.get(url, { withCredentials: true });
-    return data;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
+  const { data } = await axios.get(url, { withCredentials: true });
+  return data;
 };
 
 export const createNewTrip = async (
@@ -92,19 +79,14 @@ export const createNewTrip = async (
   endDate: string,
   userId: string
 ) => {
-  try {
-    const url = `${ServerAPI}/users/${userId}/trips`;
-    console.log(startDate);
-    const body = {
-      name,
-      startDate,
-      endDate,
-    };
-    const { data } = await axios.post(url, body, { withCredentials: true });
-    return data;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const url = `${ServerAPI}/users/${userId}/trips`;
+  const body = {
+    name,
+    startDate,
+    endDate,
+  };
+  const { data } = await axios.post(url, body, { withCredentials: true });
+  return data;
 };
 
 export const addCollaborator = async (
@@ -137,7 +119,6 @@ export const deleteCollaborator = async (
     const { data } = await axios.put(url, body, { withCredentials: true });
     return data;
   } catch (err: any) {
-    console.log(err);
     return null;
   }
 };
