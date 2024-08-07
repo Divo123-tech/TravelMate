@@ -18,6 +18,7 @@ import {
   PageContextType,
 } from "./types/types";
 import "./App.css";
+import Preloader from "./Components/PreLoader";
 
 export const UserContext = createContext<UserContextType | null>(null);
 export const PageContext = createContext<PageContextType>({
@@ -29,15 +30,17 @@ function App() {
   const [user, setUser] = useState<UserType | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentPage, setCurrentPage] = useState<string>("Home");
+  const [loading, setLoading] = useState(true);
+  const [animationComplete, setAnimationComplete] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
-      setUser(await getCurrentUser()); // Set user state with the fetched data
+      setUser(await getCurrentUser());
+      setLoading(false);
     };
 
-    getUser(); // Call getUser when the component mounts
-  }, []); // Empty dependency array ensures this effect runs only once on mount
-
+    getUser();
+  }, []);
   useEffect(() => {
     const newSocket: Socket = io("http://localhost:3000");
     setSocket(newSocket);
@@ -54,6 +57,14 @@ function App() {
   };
 
   const location = useLocation();
+  const handlePreloaderComplete = () => {
+    setAnimationComplete(true);
+  };
+
+  if (loading || !animationComplete) {
+    return <Preloader onLoaded={handlePreloaderComplete} />;
+  }
+
   return (
     <>
       <UserContext.Provider value={{ user, setUser }}>

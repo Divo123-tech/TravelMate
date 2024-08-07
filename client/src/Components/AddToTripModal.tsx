@@ -1,13 +1,9 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { UserContext, SocketContext } from "../App";
 import { TripType } from "../types/types";
-import { motion } from "framer-motion";
 import { googleAuthenticate } from "../services/apiService";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Trip from "./ExploreLocationsComponents/Trip";
 type Props = {
   show: boolean;
@@ -23,8 +19,6 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
   }
   const { user } = userContext;
   const { emitEvent } = socketContext;
-  const [successfullyAdded, setSuccessfullyAdded] = useState<boolean>(false);
-  const navigate = useNavigate();
   const addItinerariesToTrip = (tripId: string) => {
     try {
       itineraries.map((itinerary: any) => {
@@ -32,8 +26,6 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
           tripId,
           data: { details: itinerary, type: itinerary.type },
         });
-
-        // console.log(itinerary, itinerary.type);
       });
     } catch (err) {
       return;
