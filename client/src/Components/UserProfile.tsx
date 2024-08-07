@@ -13,12 +13,11 @@ import Trip from "./UserProfileComponents/Trip";
 import CreateNewTrip from "./UserProfileComponents/CreateNewTrip";
 import EditSuccessToast from "./UserProfileComponents/EditSuccessToast";
 import { useContext } from "react";
-import { UserContext } from "../App";
+import { UserContext, PageContext } from "../App";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilePen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { TripType } from "../types/types";
+import { faFilePen } from "@fortawesome/free-solid-svg-icons";
 import DeleteButton from "./DeleteButton";
 const container = {
   hidden: {},
@@ -32,12 +31,13 @@ const childVariant = {
 };
 const UserProfile: FC = () => {
   const navigate = useNavigate();
-  const context = useContext(UserContext);
-
-  if (!context) {
+  const userContext = useContext(UserContext);
+  const pageContext = useContext(PageContext);
+  if (!userContext || !pageContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-  const { user, setUser } = context;
+  const { user, setUser } = userContext;
+  const { setCurrentPage } = pageContext;
   const [countries, setCountries] = useState([]);
   const [editSuccess, setEditSuccess] = useState(false);
   useEffect(() => {
@@ -47,6 +47,9 @@ const UserProfile: FC = () => {
 
     getUser(); // Call getUser when the component mounts
   }, []); // Empty dependency array ensures this effect runs only once on mount
+  useEffect(() => {
+    setCurrentPage("Profile");
+  }, []);
   useEffect(() => {
     const getCountries = async () => {
       try {

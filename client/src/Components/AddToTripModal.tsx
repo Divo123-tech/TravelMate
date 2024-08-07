@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { UserContext, SocketContext } from "../App";
@@ -6,6 +6,9 @@ import { TripType } from "../types/types";
 import { motion } from "framer-motion";
 import { googleAuthenticate } from "../services/apiService";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
+import Trip from "./ExploreLocationsComponents/Trip";
 type Props = {
   show: boolean;
   onHide: () => void;
@@ -20,15 +23,21 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
   }
   const { user } = userContext;
   const { emitEvent } = socketContext;
+  const [successfullyAdded, setSuccessfullyAdded] = useState<boolean>(false);
   const navigate = useNavigate();
-  const addItinereariesToTrip = (tripId: string) => {
-    itineraries.map((itinerary: any) => {
-      emitEvent("AddLocationToTrip", {
-        tripId,
-        data: { details: itinerary, type: itinerary.type },
+  const addItinerariesToTrip = (tripId: string) => {
+    try {
+      itineraries.map((itinerary: any) => {
+        emitEvent("AddLocationToTrip", {
+          tripId,
+          data: { details: itinerary, type: itinerary.type },
+        });
+
+        // console.log(itinerary, itinerary.type);
       });
-      // console.log(itinerary, itinerary.type);
-    });
+    } catch (err) {
+      return;
+    }
   };
   return (
     <Modal
@@ -47,19 +56,10 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
             <div className="flex flex-col gap-2">
               {user.trips.map((trip: TripType) => {
                 return (
-                  <div className="bg-teal px-4 py-2 rounded-full flex items-center justify-between">
-                    <h1 className="text-xl font-medium text-baby-powder font-Oswald">
-                      {trip.name}
-                    </h1>
-                    <motion.p
-                      className="text-4xl font-bold text-oxford-blue hover:cursor-pointer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => addItinereariesToTrip(trip._id)}
-                    >
-                      +
-                    </motion.p>
-                  </div>
+                  <Trip
+                    trip={trip}
+                    addItinerariesToTrip={addItinerariesToTrip}
+                  />
                 );
               })}
             </div>

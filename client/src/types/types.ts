@@ -15,6 +15,12 @@ export type UserContextType = {
   user: UserType | null;
   setUser: Dispatch<SetStateAction<UserType | null>>;
 };
+
+export type PageContextType = {
+  currentPage: string;
+  setCurrentPage: Dispatch<SetStateAction<string>>;
+};
+
 export type SocketContextType = {
   socket: Socket | null;
   emitEvent: (eventName: string, data: any) => void;
@@ -45,6 +51,7 @@ export type ItineraryType = {
   countryName: string;
   desc: string;
   imgSrc: string;
+  url: string;
 };
 
 export type ReviewType = {

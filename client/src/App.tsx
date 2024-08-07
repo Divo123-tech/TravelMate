@@ -12,15 +12,23 @@ import { SwitchTransition, CSSTransition } from "react-transition-group";
 import { UserType } from "./types/types";
 import { getCurrentUser } from "./services/apiService";
 import io, { Socket } from "socket.io-client";
-import { SocketContextType, UserContextType } from "./types/types";
+import {
+  SocketContextType,
+  UserContextType,
+  PageContextType,
+} from "./types/types";
 import "./App.css";
 
 export const UserContext = createContext<UserContextType | null>(null);
-
+export const PageContext = createContext<PageContextType>({
+  currentPage: "Home",
+  setCurrentPage: () => {},
+});
 export const SocketContext = createContext<SocketContextType | null>(null);
 function App() {
   const [user, setUser] = useState<UserType | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [currentPage, setCurrentPage] = useState<string>("Home");
 
   useEffect(() => {
     const getUser = async () => {
@@ -50,27 +58,29 @@ function App() {
     <>
       <UserContext.Provider value={{ user, setUser }}>
         <SocketContext.Provider value={{ socket, emitEvent }}>
-          <div className="flex flex-col min-h-screen">
-            <NavigationBar />
-            <SwitchTransition>
-              <CSSTransition
-                key={location.pathname}
-                classNames="fade"
-                timeout={300}
-                unmountOnExit
-              >
-                <Routes location={location}>
-                  <Route path={"/"} element={<HomePage />}></Route>
-                  <Route path={"/explore"} element={<ExploreLocations />} />
-                  <Route path={"/flights"} element={<Flights />} />
-                  <Route path={"/profile"} element={<UserProfile />} />
-                  <Route path={"trip/:tripId"} element={<EditTrip />} />
-                  <Route path={"/contact"} element={<Contact />} />
-                </Routes>
-              </CSSTransition>
-            </SwitchTransition>
-            <Footer />
-          </div>
+          <PageContext.Provider value={{ currentPage, setCurrentPage }}>
+            <div className="flex flex-col min-h-screen">
+              <NavigationBar />
+              <SwitchTransition>
+                <CSSTransition
+                  key={location.pathname}
+                  classNames="fade"
+                  timeout={300}
+                  unmountOnExit
+                >
+                  <Routes location={location}>
+                    <Route path={"/"} element={<HomePage />}></Route>
+                    <Route path={"/explore"} element={<ExploreLocations />} />
+                    <Route path={"/flights"} element={<Flights />} />
+                    <Route path={"/profile"} element={<UserProfile />} />
+                    <Route path={"trip/:tripId"} element={<EditTrip />} />
+                    <Route path={"/contact"} element={<Contact />} />
+                  </Routes>
+                </CSSTransition>
+              </SwitchTransition>
+              <Footer />
+            </div>
+          </PageContext.Provider>
         </SocketContext.Provider>
       </UserContext.Provider>
     </>

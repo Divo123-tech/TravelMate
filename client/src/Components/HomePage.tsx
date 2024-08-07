@@ -4,7 +4,8 @@ import Review from "./HomePageComponents/Review";
 import CarouselComponent from "./HomePageComponents/Carousel";
 import { itineraries, reviews } from "../data/homepage";
 import { ItineraryType, ReviewType } from "../types/types";
-import { FC } from "react";
+import { FC, useContext, useEffect } from "react";
+import { PageContext } from "../App";
 const container = {
   hidden: {},
   visible: {
@@ -13,6 +14,14 @@ const container = {
 };
 
 const HomePage: FC = () => {
+  const pageContext = useContext(PageContext);
+  if (!pageContext) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const { setCurrentPage } = pageContext;
+  useEffect(() => {
+    setCurrentPage("Home");
+  }, []);
   return (
     <>
       <div id="home"></div>

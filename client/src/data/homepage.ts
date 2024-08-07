@@ -1,6 +1,5 @@
 import MelbourneImage from "../assets/Melbourne.jpg";
 import DenpasarImage from "../assets/Denpasar.jpg";
-import BrazilImage from "../assets/Brazil.jpg";
 import GzImage from "../assets/Guangzhou.jpg";
 import JapanImage from "../assets/Japan.jpg";
 import headshot1 from "../assets/headshot1.jpg";
@@ -11,6 +10,7 @@ type itinerary = {
   countryName: string;
   desc: string;
   imgSrc: any;
+  url: string;
 };
 
 export const itineraries: itinerary[] = [
@@ -18,21 +18,25 @@ export const itineraries: itinerary[] = [
     countryName: "MELBOURNE",
     desc: "Melbourne, Australia's vibrant cultural capital, enchants visitors with its diverse arts scene, iconic laneways, world-class dining, and picturesque waterfronts.",
     imgSrc: MelbourneImage,
+    url: "/explore?locationType=activities&country=Australia&state=Victoria&city=Melbourne",
   },
   {
     countryName: "DENPASAR",
     desc: " Denpasar, the bustling capital of Bali, Indonesia, offers a rich blend of traditional Balinese culture, historic temples, vibrant markets, and stunning beaches.",
     imgSrc: DenpasarImage,
+    url: "/explore?locationType=activities&country=Indonesia&state=Bali&city=Denpasar",
   },
   {
     countryName: "TOKYO",
     desc: "Tokyo offers a unique fusion of ancient traditions and cutting-edge modernity through their historic temples and bustling metropolis.",
     imgSrc: JapanImage,
+    url: "/explore?locationType=activities&country=Japan&state=Tokyo&city=Tokyo",
   },
   {
     countryName: "GUANGZHOU",
     desc: " Guangzhou, a sprawling metropolis in southern China, captivates travelers with its rich history, modern architecture, and the beauty of the Pearl River.",
     imgSrc: GzImage,
+    url: "/explore?locationType=activities&country=China&state=Guangdong&city=Guangzhou",
   },
 ];
 

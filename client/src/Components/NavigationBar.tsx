@@ -4,18 +4,19 @@ import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useContext, FC } from "react";
-import { UserContext } from "../App";
+import { UserContext, PageContext } from "../App";
 import { googleAuthenticate, logOutAPI } from "../services/apiService";
 import logo from "../assets/logo.png";
 const NavigationBar: FC = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("YourComponent must be used within a UserProvider");
+  const userContext = useContext(UserContext);
+  const pageContext = useContext(PageContext);
+  if (!userContext || !pageContext) {
+    throw new Error("YourComponent must be used within a Provider");
   }
 
-  const { user, setUser } = context;
-
+  const { user, setUser } = userContext;
+  const { currentPage, setCurrentPage } = pageContext;
+  const currentPageStyle = "bg-teal rounded-full px-4 text-white";
   const logOut = async () => {
     try {
       await logOutAPI();
@@ -40,15 +41,23 @@ const NavigationBar: FC = () => {
             <Nav className="text-black flex gap-3 text-lg">
               <Link to={"/"}>
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className={`${
+                    currentPage == "Home" ? currentPageStyle : "text-black"
+                  } font-Rethink rounded-full hover:font-bold`}
                   href="#home"
+                  onClick={() => setCurrentPage("Home")}
                 >
                   Home
                 </Nav.Link>
               </Link>
               <Link to={"/explore"}>
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className={`${
+                    currentPage == "Locations"
+                      ? currentPageStyle
+                      : "text-black hover:font-bold"
+                  } font-Rethink rounded-full`}
+                  onClick={() => setCurrentPage("Locations")}
                   href="#features"
                 >
                   Locations
@@ -56,7 +65,12 @@ const NavigationBar: FC = () => {
               </Link>
               <Link to={"/explore?locationType=activities"}>
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className={`${
+                    currentPage == "Explore"
+                      ? currentPageStyle
+                      : "text-black hover:font-bold"
+                  } font-Rethink rounded-full `}
+                  onClick={() => setCurrentPage("Explore")}
                   href="#home"
                 >
                   Explore
@@ -64,7 +78,12 @@ const NavigationBar: FC = () => {
               </Link>
               <Link to={"/flights"}>
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className={`${
+                    currentPage == "Flights"
+                      ? currentPageStyle
+                      : "text-black hover:font-bold"
+                  } font-Rethink rounded-full `}
+                  onClick={() => setCurrentPage("Flights")}
                   href="#home"
                 >
                   Flights
@@ -72,7 +91,12 @@ const NavigationBar: FC = () => {
               </Link>
               <Link to={"/contact"}>
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className={`${
+                    currentPage == "Contact"
+                      ? currentPageStyle
+                      : "text-black hover:font-bold"
+                  } font-Rethink rounded-full `}
+                  onClick={() => setCurrentPage("Contact")}
                   href="#features"
                 >
                   Contact
@@ -87,8 +111,19 @@ const NavigationBar: FC = () => {
                   Login/Sign Up
                 </Nav.Link>
               ) : (
-                <Nav.Link className="text-black hover:font-bold font-Rethink">
-                  <Link to={"/profile"}>Profile</Link>
+                <Nav.Link
+                  className={`${
+                    currentPage == "Profile"
+                      ? currentPageStyle
+                      : "text-black hover:font-bold"
+                  } font-Rethink rounded-full `}
+                >
+                  <Link
+                    to={"/profile"}
+                    onClick={() => setCurrentPage("Profile")}
+                  >
+                    Profile
+                  </Link>
                 </Nav.Link>
               )}
               {user && (

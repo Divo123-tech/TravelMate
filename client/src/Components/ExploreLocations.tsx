@@ -22,7 +22,7 @@ import {
   getCityByName,
 } from "../services/apiService";
 import { countryType, stateType, cityType } from "../types/types";
-import { UserContext } from "../App";
+import { PageContext } from "../App";
 import loading from "../assets/loading.png";
 import Country from "./ExploreLocationsComponents/Country";
 import State from "./ExploreLocationsComponents/State";
@@ -47,7 +47,7 @@ const ExploreLocations = () => {
   const [states, setStates] = useState<stateType[] | null>(null);
   const [cities, setCities] = useState<cityType[] | null>(null);
   const [total, setTotal] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
   const [currentCountry, setCurrentCountry] = useState<countryType | null>(
     null
@@ -71,22 +71,25 @@ const ExploreLocations = () => {
     () =>
       debounce((value: string) => {
         setSearch(value);
-        setCurrentPage(1);
+        setCurrentPageNumber(1);
       }, 300),
     []
   );
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     debouncedHandleSearch(e.target.value);
   };
-
-  const context = useContext(UserContext);
-
-  if (!context) {
+  const pageContext = useContext(PageContext);
+  if (!pageContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
+  const { setCurrentPage } = pageContext;
+
+  useEffect(() => {
+    setCurrentPage("Locations");
+  }, []);
   const changeContinent = (e: any) => {
     setContinent(e.target.value);
-    setCurrentPage(1);
+    setCurrentPageNumber(1);
   };
 
   useEffect(() => {
@@ -95,7 +98,7 @@ const ExploreLocations = () => {
     } else {
       setLocationType("countries");
     }
-    setCurrentPage(1);
+    setCurrentPageNumber(1);
   }, [searchParams]);
 
   useEffect(() => {
@@ -106,13 +109,17 @@ const ExploreLocations = () => {
           case "countries":
             setCountries(null);
             try {
-              response = await getAllCountries(continent, currentPage, search);
+              response = await getAllCountries(
+                continent,
+                currentPageNumber,
+                search
+              );
               setCountries(response.data);
               setTotal(response.total);
             } catch (e) {
               setCountries([]);
               setTotal(0);
-              setCurrentPage(0);
+              setCurrentPageNumber(0);
             }
             break;
           case "states":
@@ -126,7 +133,7 @@ const ExploreLocations = () => {
               }
               response = await getAllStates(
                 currentCountry?.name || searchParams.get("country") || "",
-                currentPage,
+                currentPageNumber,
                 search
               );
               setStates(response.data);
@@ -134,7 +141,7 @@ const ExploreLocations = () => {
             } catch (e) {
               setStates([]);
               setTotal(0);
-              setCurrentPage(0);
+              setCurrentPageNumber(0);
             }
             break;
           case "cities":
@@ -165,7 +172,7 @@ const ExploreLocations = () => {
                 currentCountry?.name ||
                   searchParams.get("country") ||
                   "United States",
-                currentPage,
+                currentPageNumber,
                 search
               );
 
@@ -174,7 +181,7 @@ const ExploreLocations = () => {
             } catch (e) {
               setCities([]);
               setTotal(0);
-              setCurrentPage(0);
+              setCurrentPageNumber(0);
             }
             break;
           case "activities":
@@ -214,7 +221,7 @@ const ExploreLocations = () => {
                   response = await getAllHotels(
                     currentCity?.name || searchParams.get("city") || "",
                     currentCountry?.name || searchParams.get("country") || "",
-                    currentPage,
+                    currentPageNumber,
                     search
                   );
                   setActivities(response.data);
@@ -222,7 +229,7 @@ const ExploreLocations = () => {
                 } catch (e) {
                   setActivities([]);
                   setTotal(0);
-                  setCurrentPage(0);
+                  setCurrentPageNumber(0);
                 }
 
                 break;
@@ -235,7 +242,7 @@ const ExploreLocations = () => {
                     currentState?.name ||
                       searchParams.get("state") ||
                       "California",
-                    currentPage,
+                    currentPageNumber,
                     search
                   );
 
@@ -244,7 +251,7 @@ const ExploreLocations = () => {
                 } catch (e) {
                   setActivities([]);
                   setTotal(0);
-                  setCurrentPage(0);
+                  setCurrentPageNumber(0);
                 }
                 break;
               case "Restaurants":
@@ -253,7 +260,7 @@ const ExploreLocations = () => {
                     currentCity?.name || searchParams.get("city") || "",
                     currentState?.name || searchParams.get("state") || "",
                     "restaurants",
-                    currentPage,
+                    currentPageNumber,
                     search
                   );
                   setActivities(response.data);
@@ -261,7 +268,7 @@ const ExploreLocations = () => {
                 } catch (e) {
                   setActivities([]);
                   setTotal(0);
-                  setCurrentPage(0);
+                  setCurrentPageNumber(0);
                 }
                 break;
               case "Things To Do":
@@ -270,7 +277,7 @@ const ExploreLocations = () => {
                     currentCity?.name || searchParams.get("city") || "",
                     currentState?.name || searchParams.get("state") || "",
                     "attractions",
-                    currentPage,
+                    currentPageNumber,
                     search
                   );
                   setActivities(response.data);
@@ -278,7 +285,7 @@ const ExploreLocations = () => {
                 } catch (e) {
                   setActivities([]);
                   setTotal(0);
-                  setCurrentPage(0);
+                  setCurrentPageNumber(0);
                 }
                 break;
               case "Videos":
@@ -287,7 +294,7 @@ const ExploreLocations = () => {
                     currentCity?.name ||
                       searchParams.get("city") ||
                       "Los Angeles",
-                    currentPage,
+                    currentPageNumber,
                     search
                   );
                   setActivities(response.data);
@@ -295,7 +302,7 @@ const ExploreLocations = () => {
                 } catch (e) {
                   setActivities([]);
                   setTotal(0);
-                  setCurrentPage(0);
+                  setCurrentPageNumber(0);
                 }
                 break;
             }
@@ -312,7 +319,7 @@ const ExploreLocations = () => {
   }, [
     locationType,
     continent,
-    currentPage,
+    currentPageNumber,
     search,
     searchParams,
     activityType,
@@ -412,19 +419,20 @@ const ExploreLocations = () => {
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
                   onClick={() =>
-                    setCurrentPage((prevPage) =>
+                    setCurrentPageNumber((prevPage) =>
                       prevPage == 1
                         ? (prevPage = Math.ceil(total / 10))
                         : (prevPage -= 1)
                     )
                   }
                 />{" "}
-                Page: {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}{" "}
+                Page: {total == 0 ? 0 : currentPageNumber} of{" "}
+                {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
                   className="text-2xl hover:cursor-pointer hover:cursor-pointer"
                   onClick={() =>
-                    setCurrentPage((prevPage) =>
+                    setCurrentPageNumber((prevPage) =>
                       prevPage == Math.ceil(total / 10)
                         ? (prevPage = 1)
                         : (prevPage += 1)
@@ -515,19 +523,20 @@ const ExploreLocations = () => {
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
                   onClick={() =>
-                    setCurrentPage((prevPage) =>
+                    setCurrentPageNumber((prevPage) =>
                       prevPage == 1
                         ? (prevPage = Math.ceil(total / 10))
                         : (prevPage -= 1)
                     )
                   }
                 />{" "}
-                Page: {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}{" "}
+                Page: {total == 0 ? 0 : currentPageNumber} of{" "}
+                {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
                   className="text-2xl hover:cursor-pointer"
                   onClick={() =>
-                    setCurrentPage((prevPage) =>
+                    setCurrentPageNumber((prevPage) =>
                       prevPage == Math.ceil(total / 10)
                         ? (prevPage = 1)
                         : (prevPage += 1)
@@ -620,19 +629,20 @@ const ExploreLocations = () => {
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
                   onClick={() =>
-                    setCurrentPage((prevPage) =>
+                    setCurrentPageNumber((prevPage) =>
                       prevPage == 1
                         ? (prevPage = Math.ceil(total / 10))
                         : (prevPage -= 1)
                     )
                   }
                 />{" "}
-                Page: {total == 0 ? 0 : currentPage} of {Math.ceil(total / 10)}{" "}
+                Page: {total == 0 ? 0 : currentPageNumber} of{" "}
+                {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
                   className="text-2xl hover:cursor-pointer"
                   onClick={() =>
-                    setCurrentPage((prevPage) =>
+                    setCurrentPageNumber((prevPage) =>
                       prevPage == Math.ceil(total / 10)
                         ? (prevPage = 1)
                         : (prevPage += 1)
@@ -801,20 +811,20 @@ const ExploreLocations = () => {
                       icon={faCaretLeft}
                       className="text-2xl hover:cursor-pointer"
                       onClick={() =>
-                        setCurrentPage((prevPage) =>
+                        setCurrentPageNumber((prevPage) =>
                           prevPage == 1
                             ? (prevPage = Math.ceil(total / 10))
                             : (prevPage -= 1)
                         )
                       }
                     />{" "}
-                    Page: {total == 0 ? 0 : currentPage} of{" "}
+                    Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                     {Math.ceil(total / 10)}{" "}
                     <FontAwesomeIcon
                       icon={faCaretRight}
                       className="text-2xl hover:cursor-pointer"
                       onClick={() =>
-                        setCurrentPage((prevPage) =>
+                        setCurrentPageNumber((prevPage) =>
                           prevPage == Math.ceil(total / 10)
                             ? (prevPage = 1)
                             : (prevPage += 1)

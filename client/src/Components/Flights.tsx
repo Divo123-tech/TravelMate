@@ -3,10 +3,9 @@ import { useState, FC, useEffect, useContext } from "react";
 import { getAllFlights } from "../services/apiService";
 import { flightType } from "../types/types";
 import loading from "../assets/loading.png";
-import { UserContext } from "../App";
+import { UserContext, PageContext } from "../App";
 import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "framer-motion";
 import Placeholder from "react-bootstrap/Placeholder";
 import DetailsModal from "./FlightsComponents/DetailsModal";
 import Flight from "./FlightsComponents/Flight";
@@ -22,17 +21,22 @@ const Flights: FC = () => {
     cabin: "ECONOMY",
     maxPrice: 1000000000,
   });
-  const context = useContext(UserContext);
-
-  if (!context) {
+  const userContext = useContext(UserContext);
+  const pageContext = useContext(PageContext);
+  if (!userContext || !pageContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-  const { user } = context;
+  const { user } = userContext;
+  const { setCurrentPage } = pageContext;
+
+  useEffect(() => {
+    setCurrentPage("Flights");
+  }, []);
   const [modalShow, setModalShow] = useState(false);
   const [flights, setFlights] = useState<flightType[] | null>(null);
   const [showFlights, setShowFlights] = useState(false);
   const [totalFlights, settotalFlights] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const getFlights = async () => {
     const {
       origin,
@@ -57,7 +61,7 @@ const Flights: FC = () => {
         cabin,
         user?.currencyUsed || "USD",
         maxPrice,
-        currentPage
+        currentPageNumber
       );
       setFlights(fetchedFlights.data);
       settotalFlights(fetchedFlights.total);
@@ -65,14 +69,14 @@ const Flights: FC = () => {
     } catch (err) {
       setFlights([]);
       settotalFlights(0);
-      setCurrentPage(0);
+      setCurrentPageNumber(0);
     }
   };
   useEffect(() => {
     if (showFlights) {
       getFlights();
     }
-  }, [currentPage, showFlights]);
+  }, [currentPageNumber, showFlights]);
 
   const handleChange = (event: any) => {
     const { value, name } = event.target;
@@ -212,20 +216,20 @@ const Flights: FC = () => {
               icon={faCaretLeft}
               className="text-2xl"
               onClick={() =>
-                setCurrentPage((prevPage) =>
+                setCurrentPageNumber((prevPage) =>
                   prevPage == 1
                     ? (prevPage = Math.ceil(totalFlights / 10))
                     : (prevPage -= 1)
                 )
               }
             />{" "}
-            Page: {totalFlights == 0 ? 0 : currentPage} of{" "}
+            Page: {totalFlights == 0 ? 0 : currentPageNumber} of{" "}
             {Math.ceil(totalFlights / 10)}{" "}
             <FontAwesomeIcon
               icon={faCaretRight}
               className="text-2xl"
               onClick={() =>
-                setCurrentPage((prevPage) =>
+                setCurrentPageNumber((prevPage) =>
                   prevPage == Math.ceil(totalFlights / 10)
                     ? (prevPage = 1)
                     : (prevPage += 1)

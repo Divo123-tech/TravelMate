@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { motion } from "framer-motion";
-
+import { useNavigate } from "react-router-dom";
 const childVariant = {
   hidden: { opacity: 0, scale: 0.9 },
   visible: { opacity: 1, scale: 1 },
@@ -11,8 +11,10 @@ type Props = {
   countryName: string;
   imgSrc: string;
   desc: string;
+  url: string;
 };
-const Itinerary = ({ countryName, imgSrc, desc }: Props) => {
+const Itinerary = ({ countryName, imgSrc, desc, url }: Props) => {
+  const navigate = useNavigate();
   return (
     <motion.div
       variants={childVariant}
@@ -25,7 +27,10 @@ const Itinerary = ({ countryName, imgSrc, desc }: Props) => {
             {countryName}
           </Card.Title>
           <Card.Text className="my-3 font-Rethink">{desc}</Card.Text>
-          <Button className="px-16 bg-teal border-none font-Rethink">
+          <Button
+            className="px-16 bg-teal border-none font-Rethink"
+            onClick={() => navigate(url)}
+          >
             Explore!
           </Button>
         </Card.Body>
