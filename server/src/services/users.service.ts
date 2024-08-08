@@ -1,7 +1,7 @@
-import userModel, { UserInterface } from "../models/users.model.js";
-import mongoose, { mongo } from "mongoose";
+import userModel from "../models/users.model.js";
+import mongoose from "mongoose";
 const userExists = async (email: string): Promise<boolean> => {
-  const user = await userModel.findOne({ email: email });
+  const user = await userModel.findOne({ email });
   return user ? true : false;
 };
 
@@ -10,15 +10,11 @@ const addUser = async (
   email: string,
   picture: string
 ): Promise<void> => {
-  try {
-    await userModel.create({
-      googleId: googleId,
-      email: email,
-      picture: picture,
-    });
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  await userModel.create({
+    googleId,
+    email,
+    picture,
+  });
 };
 
 const editUserDetails = async (
@@ -27,78 +23,58 @@ const editUserDetails = async (
   passport: object,
   currencyUsed: string
 ) => {
-  try {
-    return await userModel.findOneAndUpdate(
-      { googleId },
-      {
-        $set: {
-          name,
-          passport,
-          currencyUsed,
-        },
+  return await userModel.findOneAndUpdate(
+    { googleId },
+    {
+      $set: {
+        name,
+        passport,
+        currencyUsed,
       },
-      { new: true }
-    );
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
+    },
+    { new: true }
+  );
 };
 
 const getUserDetails = async (collaboratorInfo: string, searchBy: string) => {
-  try {
-    return await userModel
-      .findOne({ [`${searchBy}`]: collaboratorInfo })
-      .populate("trips")
-      .exec();
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
+  return await userModel
+    .findOne({ [`${searchBy}`]: collaboratorInfo })
+    .populate("trips")
+    .exec();
 };
 
 const findUserById = async (id: mongoose.Types.ObjectId) => {
-  try {
-    return await userModel.findById(id);
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
+  return await userModel.findById(id);
 };
 
 const addTrip = async (
   googleId: string,
   tripId: mongoose.Types.ObjectId | string
 ) => {
-  try {
-    return await userModel.findOneAndUpdate(
-      { googleId },
-      {
-        $push: {
-          trips:
-            typeof tripId == "string"
-              ? new mongoose.Types.ObjectId(tripId)
-              : tripId,
-        },
+  return await userModel.findOneAndUpdate(
+    { googleId },
+    {
+      $push: {
+        trips:
+          typeof tripId == "string"
+            ? new mongoose.Types.ObjectId(tripId)
+            : tripId,
       },
-      { new: true }
-    );
-  } catch (err: any) {
-    throw new Error(err);
-  }
+    },
+    { new: true }
+  );
 };
 
 const deleteTrip = async (googleId: string, tripId: string) => {
-  try {
-    return await userModel.findOneAndUpdate(
-      { googleId },
-      {
-        $pull: {
-          trips: tripId,
-        },
+  return await userModel.findOneAndUpdate(
+    { googleId },
+    {
+      $pull: {
+        trips: tripId,
       },
-      { new: true }
-    );
-  } catch (err: any) {
-    throw new Error(err);
-  }
+    },
+    { new: true }
+  );
 };
 
 export default {

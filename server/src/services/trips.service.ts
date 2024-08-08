@@ -9,80 +9,60 @@ const addTrip = async (
   },
   userId: mongoose.Types.ObjectId
 ) => {
-  try {
-    const tripAdded = await tripsModel.create({ ...tripToAdd, owner: userId });
-    return tripAdded;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const tripAdded = await tripsModel.create({ ...tripToAdd, owner: userId });
+  return tripAdded;
 };
 
 const getTripDetails = async (tripId: string) => {
-  try {
-    return await tripsModel
-      .findById(tripId)
-      .populate({ path: "owner", select: "googleId _id email picture name" })
-      .populate({
-        path: "collaborators",
-        select: "googleId _id email picture name",
-      })
-      .sort({ startDate: -1 }) // Add this line to sort by startDate in descending order
-      .exec();
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  return await tripsModel
+    .findById(tripId)
+    .populate({ path: "owner", select: "googleId _id email picture name" })
+    .populate({
+      path: "collaborators",
+      select: "googleId _id email picture name",
+    })
+    .sort({ startDate: -1 }) // Add this line to sort by startDate in descending order
+    .exec();
 };
 
 const deleteTrip = async (tripId: string) => {
-  try {
-    return await tripsModel.findByIdAndDelete(tripId);
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  return await tripsModel.findByIdAndDelete(tripId);
 };
 
 const addCollaborator = async (
   tripId: string,
   collaboratorId: mongoose.Types.ObjectId
 ) => {
-  try {
-    const trip = await tripsModel
-      .findByIdAndUpdate(
-        tripId,
-        { $push: { collaborators: collaboratorId } },
-        { new: true }
-      )
-      .populate({ path: "owner", select: "googleId _id email picture name" })
-      .populate({
-        path: "collaborators",
-        select: "googleId _id email picture name",
-      });
-    return trip;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const trip = await tripsModel
+    .findByIdAndUpdate(
+      tripId,
+      { $push: { collaborators: collaboratorId } },
+      { new: true }
+    )
+    .populate({ path: "owner", select: "googleId _id email picture name" })
+    .populate({
+      path: "collaborators",
+      select: "googleId _id email picture name",
+    });
+  return trip;
 };
 
 const removeCollaborator = async (
   tripId: string,
   collaboratorId: mongoose.Types.ObjectId
 ) => {
-  try {
-    const trip = await tripsModel
-      .findByIdAndUpdate(
-        tripId,
-        { $pull: { collaborators: collaboratorId } },
-        { new: true }
-      )
-      .populate({ path: "owner", select: "googleId _id email picture name" })
-      .populate({
-        path: "collaborators",
-        select: "googleId _id email picture name",
-      });
-    return trip;
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  const trip = await tripsModel
+    .findByIdAndUpdate(
+      tripId,
+      { $pull: { collaborators: collaboratorId } },
+      { new: true }
+    )
+    .populate({ path: "owner", select: "googleId _id email picture name" })
+    .populate({
+      path: "collaborators",
+      select: "googleId _id email picture name",
+    });
+  return trip;
 };
 
 const addLocationToTrip = async (
@@ -106,15 +86,11 @@ const removeLocationFromTrip = async (
   location: {},
   locationType: string
 ) => {
-  try {
-    return await tripsModel.findByIdAndUpdate(
-      tripId,
-      { $pull: { [locationType]: location } },
-      { new: true }
-    );
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  return await tripsModel.findByIdAndUpdate(
+    tripId,
+    { $pull: { [locationType]: location } },
+    { new: true }
+  );
 };
 
 const editTripDetails = async (
@@ -123,15 +99,11 @@ const editTripDetails = async (
   startDate: string,
   endDate: string
 ) => {
-  try {
-    return await tripsModel.findByIdAndUpdate(
-      tripId,
-      { $set: { name: name, startDate: startDate, endDate: endDate } },
-      { new: true }
-    );
-  } catch (err: any) {
-    throw new Error(err);
-  }
+  return await tripsModel.findByIdAndUpdate(
+    tripId,
+    { $set: { name: name, startDate: startDate, endDate: endDate } },
+    { new: true }
+  );
 };
 
 export default {

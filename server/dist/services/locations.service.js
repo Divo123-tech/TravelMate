@@ -238,64 +238,56 @@ const getCoords = async (city, country) => {
 //function to get All airports within a given city and country
 const getAllAirports = async (city, region, page = 1, searchQuery) => {
     let url = `https://api.api-ninjas.com/v1/airports?city=${city}`;
-    try {
-        const response = await axios.get(url, {
+    const response = await axios.get(url, {
+        headers: {
+            "X-Api-Key": process.env.APININJA_KEY,
+        },
+    });
+    //if data doesn't exist throw an error
+    if (!response.data) {
+        throw new Error("failed to get airports");
+    }
+    //filter the airports that are actually commercial and not air bases
+    let airportsArray = response.data.filter((airport) => {
+        return airport.iata != "";
+    });
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
+    //if data doesn't exist throw an error
+    if (airportsArray.length == 0) {
+        url = `https://api.api-ninjas.com/v1/airports?region=${region}`;
+        const { data } = await axios.get(url, {
             headers: {
                 "X-Api-Key": process.env.APININJA_KEY,
             },
         });
         //if data doesn't exist throw an error
-        if (!response.data) {
+        if (!{ data }) {
             throw new Error("failed to get airports");
         }
         //filter the airports that are actually commercial and not air bases
-        let airportsArray = response.data.filter((airport) => {
+        airportsArray = data.filter((airport) => {
             return airport.iata != "";
         });
-        // Calculate the start and end indices for pagination
-        const startIndex = (page - 1) * 10;
-        const endIndex = startIndex + 10;
-        //if data doesn't exist throw an error
-        if (airportsArray.length == 0) {
-            url = `https://api.api-ninjas.com/v1/airports?region=${region}`;
-            const { data } = await axios.get(url, {
-                headers: {
-                    "X-Api-Key": process.env.APININJA_KEY,
-                },
-            });
-            //if data doesn't exist throw an error
-            if (!{ data }) {
-                throw new Error("failed to get airports");
-            }
-            //filter the airports that are actually commercial and not air bases
-            airportsArray = data.filter((airport) => {
-                return airport.iata != "";
-            });
-        }
-        if (airportsArray.length == 0) {
-            throw new Error("No Airports found");
-        }
-        // Filter and map the data only if searchQuery is provided
-        if (searchQuery) {
-            airportsArray = airportsArray.filter((airport) => airport.name.toLowerCase().includes(searchQuery.toLowerCase()));
-        }
-        //Map the data of the response to fit the airport interface
-        return {
-            total: airportsArray.length,
-            data: airportsArray.slice(startIndex, endIndex).map((airport) => {
-                return {
-                    name: airport.name,
-                    iata: airport.iata,
-                    region,
-                    city: airport.city,
-                };
-            }),
-        };
-        //error handling
     }
-    catch (err) {
-        throw new Error("No Airports Found");
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+        airportsArray = airportsArray.filter((airport) => airport.name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
+    //Map the data of the response to fit the airport interface
+    return {
+        total: airportsArray.length,
+        data: airportsArray.slice(startIndex, endIndex).map((airport) => {
+            return {
+                name: airport.name,
+                iata: airport.iata,
+                region,
+                city: airport.city,
+            };
+        }),
+    };
+    //error handling
 };
 //helper function for the flights function that populates the URL with the optional query parameters
 const populateURLWithOptionalParams = (params, url, paramNames) => {
@@ -360,191 +352,164 @@ const getAllFlights = async (origin, destination, departureDate, adults = 1, non
     let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=${currencyCode}`;
     //update the url
     const updatedUrl = populateURLWithOptionalParams([children, infants, maxPrice, travelClass], url, ["children", "infants", "maxPrice", "travelClass"]);
-    try {
-        const { data } = await axios.get(updatedUrl, {
-            headers: {
-                Authorization: `Bearer ${await getAmadeusToken()}`,
-            },
-        });
-        //if data doesn't exist throw an error
-        if (!data.data) {
-            throw new Error("failed to get flights");
-        }
-        const flightsArray = data.data;
-        // Calculate the start and end indices for pagination
-        const startIndex = (page - 1) * 10;
-        const endIndex = startIndex + 10;
-        //Map the data of the response to fit the flight interface
-        return {
-            total: flightsArray.length,
-            data: flightsArray.slice(startIndex, endIndex).map((flight) => {
-                return {
-                    origin,
-                    destination,
-                    duration: flight.itineraries[0].duration.substring(2),
-                    stops: flight.itineraries[0].segments.length - 1,
-                    departureDate: flight.itineraries[0].segments[0].departure.at,
-                    arrivalDate: flight.itineraries[0].segments[flight.itineraries[0].segments.length - 1].arrival.at,
-                    cabin: flight.travelerPricings[0].fareDetailsBySegment[0].cabin,
-                    url: getFlightURL(flight, children || 0, infants || 0),
-                    price: Number(flight.price.grandTotal),
-                    airline: data.dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode],
-                    currency: currencyCode,
-                    type: "flights",
-                };
-            }),
-        };
+    const { data } = await axios.get(updatedUrl, {
+        headers: {
+            Authorization: `Bearer ${await getAmadeusToken()}`,
+        },
+    });
+    //if data doesn't exist throw an error
+    if (!data.data) {
+        throw new Error("failed to get flights");
     }
-    catch (err) {
-        throw new Error(err);
-    }
+    const flightsArray = data.data;
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
+    //Map the data of the response to fit the flight interface
+    return {
+        total: flightsArray.length,
+        data: flightsArray.slice(startIndex, endIndex).map((flight) => {
+            return {
+                origin,
+                destination,
+                duration: flight.itineraries[0].duration.substring(2),
+                stops: flight.itineraries[0].segments.length - 1,
+                departureDate: flight.itineraries[0].segments[0].departure.at,
+                arrivalDate: flight.itineraries[0].segments[flight.itineraries[0].segments.length - 1].arrival.at,
+                cabin: flight.travelerPricings[0].fareDetailsBySegment[0].cabin,
+                url: getFlightURL(flight, children || 0, infants || 0),
+                price: Number(flight.price.grandTotal),
+                airline: data.dictionaries.carriers[flight.itineraries[0].segments[0].carrierCode],
+                currency: currencyCode,
+                type: "flights",
+            };
+        }),
+    };
 };
 //function that returns an array of all hotels within a city and country code
 const getAllHotels = async (city, country, page = 1, searchQuery) => {
     //use destructuring to get the latitude and longitude from getCoords
     const { lat, lon } = await getCoords(city, country);
     const url = `https://api.amadeus.com/v1/reference-data/locations/hotels/by-geocode?latitude=${lat}&longitude=${lon}&radius=10&radiusUnit=KM&hotelSource=ALL`;
-    try {
-        const { data } = await axios.get(url, {
-            headers: {
-                Authorization: `Bearer ${await getAmadeusToken()}`,
-            },
-        });
-        //if data doesn't exist throw an error
-        if (!data.data) {
-            throw new Error("failed to get hotels");
-        }
-        let hotelsArray = data.data;
-        // Filter and map the data only if searchQuery is provided
-        if (searchQuery) {
-            hotelsArray = hotelsArray.filter((hotel) => hotel.name.toLowerCase().includes(searchQuery.toLowerCase()));
-        }
-        // Calculate the start and end indices for pagination
-        const startIndex = (page - 1) * 10;
-        const endIndex = startIndex + 10;
-        //Map the data of the response to fit the hotel interface
-        return {
-            total: hotelsArray.length,
-            data: hotelsArray.slice(startIndex, endIndex).map((hotel) => {
-                return {
-                    name: hotel.name
-                        .toLowerCase()
-                        .split(" ")
-                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(" "),
-                    id: hotel.hotelId,
-                    url: `https://www.tripadvisor.com/Search?q=${hotel.name.replaceAll(" ", "+")}`,
-                    city,
-                    country,
-                    type: "hotels",
-                };
-            }),
-        };
-        //error handling
+    const { data } = await axios.get(url, {
+        headers: {
+            Authorization: `Bearer ${await getAmadeusToken()}`,
+        },
+    });
+    //if data doesn't exist throw an error
+    if (!data.data) {
+        throw new Error("failed to get hotels");
     }
-    catch (err) {
-        throw new Error(err);
+    let hotelsArray = data.data;
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+        hotelsArray = hotelsArray.filter((hotel) => hotel.name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
+    //Map the data of the response to fit the hotel interface
+    return {
+        total: hotelsArray.length,
+        data: hotelsArray.slice(startIndex, endIndex).map((hotel) => {
+            return {
+                name: hotel.name
+                    .toLowerCase()
+                    .split(" ")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" "),
+                id: hotel.hotelId,
+                url: `https://www.tripadvisor.com/Search?q=${hotel.name.replaceAll(" ", "+")}`,
+                city,
+                country,
+                type: "hotels",
+            };
+        }),
+    };
 };
 //function that returns an array of attractions from a given city or country
 const getAllAttractions = async (city, country, category, page = 1, searchQuery) => {
-    try {
-        const { lon, lat } = await getCoords(city, country);
-        //trip advisor
-        const url = `https://api.content.tripadvisor.com/api/v1/location/nearby_search?latLong=${lat}%2C${lon}&key=${process.env.TRIPADV_KEY}&category=${category}&language=en`;
-        const { data } = await axios.get(url, {
-            headers: { accept: "application/json" },
-        });
-        //if data doesn't exist throw an error
-        if (!data.data) {
-            throw new Error("failed to get attractions");
-        }
-        let attractionsArray = data.data;
-        // Filter and map the data only if searchQuery is provided
-        if (searchQuery) {
-            attractionsArray = attractionsArray.filter((attraction) => attraction.name.toLowerCase().includes(searchQuery.toLowerCase()));
-        }
-        // Calculate the start and end indices for pagination
-        const startIndex = (page - 1) * 10;
-        const endIndex = startIndex + 10;
-        //Map the data of the response to fit the attraction interface
-        return {
-            total: attractionsArray.length,
-            data: attractionsArray
-                .slice(startIndex, endIndex)
-                .map((destination) => {
-                return {
-                    name: destination.name,
-                    id: destination.location_id,
-                    address: destination.address_obj.address_string,
-                    city,
-                    country: destination.address_obj.country,
-                    url: `https://www.tripadvisor.com/Search?q=${destination.name.replaceAll(" ", "+")}+${city}`,
-                    type: "activities",
-                };
-            }),
-        };
-        //error handling
+    const { lon, lat } = await getCoords(city, country);
+    //trip advisor
+    const url = `https://api.content.tripadvisor.com/api/v1/location/nearby_search?latLong=${lat}%2C${lon}&key=${process.env.TRIPADV_KEY}&category=${category}&language=en`;
+    const { data } = await axios.get(url, {
+        headers: { accept: "application/json" },
+    });
+    //if data doesn't exist throw an error
+    if (!data.data) {
+        throw new Error("failed to get attractions");
     }
-    catch (err) {
-        throw new Error(err);
+    let attractionsArray = data.data;
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+        attractionsArray = attractionsArray.filter((attraction) => attraction.name.toLowerCase().includes(searchQuery.toLowerCase()));
     }
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
+    //Map the data of the response to fit the attraction interface
+    return {
+        total: attractionsArray.length,
+        data: attractionsArray
+            .slice(startIndex, endIndex)
+            .map((destination) => {
+            return {
+                name: destination.name,
+                id: destination.location_id,
+                address: destination.address_obj.address_string,
+                city,
+                country: destination.address_obj.country,
+                url: `https://www.tripadvisor.com/Search?q=${destination.name.replaceAll(" ", "+")}+${city}`,
+                type: "activities",
+            };
+        }),
+    };
 };
 //function that returns an array of videos
 const getYoutubeVideos = async (city, page = 1, searchQuery) => {
-    try {
-        const { data } = await axios.get(`https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`, {
-            headers: {
-                "x-rapidapi-key": process.env.YT_KEY,
-                "x-rapidapi-host": "youtube-search-and-download.p.rapidapi.com",
-            },
-        });
-        //if data doesn't exist throw an error
-        if (!data.contents) {
-            throw new Error("failed to get videos");
-        }
-        let videosArray = data.contents;
-        // Filter and map the data only if searchQuery is provided
-        if (searchQuery) {
-            videosArray = videosArray.filter((video) => video.video.title.toLowerCase().includes(searchQuery.toLowerCase()));
-        }
-        // Calculate the start and end indices for pagination
-        const startIndex = (page - 1) * 10;
-        const endIndex = startIndex + 10;
-        //takes only the first 10 videos and maps the results to fit the video interface
-        return {
-            total: videosArray.length,
-            data: videosArray.slice(startIndex, endIndex).map((video) => {
-                return {
-                    url: `https://www.youtube.com/embed/${video.video.videoId}`,
-                    title: video.video.title,
-                    channel: video.video.channelName,
-                    views: video.video.viewCountText,
-                    date: video.video.publishedTimeText,
-                    length: video.video.lengthText,
-                    type: "videos",
-                };
-            }),
-        };
+    const { data } = await axios.get(`https://youtube-search-and-download.p.rapidapi.com/search?query=Things to do in ${city}`, {
+        headers: {
+            "x-rapidapi-key": process.env.YT_KEY,
+            "x-rapidapi-host": "youtube-search-and-download.p.rapidapi.com",
+        },
+    });
+    //if data doesn't exist throw an error
+    if (!data.contents) {
+        throw new Error("failed to get videos");
     }
-    catch (err) {
-        throw new Error(err);
+    let videosArray = data.contents;
+    // Filter and map the data only if searchQuery is provided
+    if (searchQuery) {
+        videosArray = videosArray.filter((video) => video.video.title.toLowerCase().includes(searchQuery.toLowerCase()));
     }
+    // Calculate the start and end indices for pagination
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
+    //takes only the first 10 videos and maps the results to fit the video interface
+    return {
+        total: videosArray.length,
+        data: videosArray.slice(startIndex, endIndex).map((video) => {
+            return {
+                url: `https://www.youtube.com/embed/${video.video.videoId}`,
+                title: video.video.title,
+                channel: video.video.channelName,
+                views: video.video.viewCountText,
+                date: video.video.publishedTimeText,
+                length: video.video.lengthText,
+                type: "videos",
+            };
+        }),
+    };
 };
 //function that returns details of a country
 const getCountryVisa = async (countryCodeFrom, countryCodeTo) => {
     //get the current year
     const visaURL = `https://rough-sun-2523.fly.dev/api/${countryCodeTo}/${countryCodeFrom}`;
-    try {
-        const visaStatus = (await axios.get(visaURL)).data;
-        return {
-            visaStatus: visaStatus.category,
-            visaDuration: visaStatus.dur,
-        };
-    }
-    catch (err) {
-        throw new Error("failed to get details");
-    }
+    const visaStatus = (await axios.get(visaURL)).data;
+    return {
+        visaStatus: visaStatus.category,
+        visaDuration: visaStatus.dur,
+    };
 };
 const getCountryExchangeRate = async (currencyFrom, currencyTo) => {
     const excRateURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencyFrom.toLowerCase()}.json`;
