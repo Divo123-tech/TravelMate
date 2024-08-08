@@ -24,45 +24,40 @@ const getAllCountries = async (
   if (continent != "all") {
     url += `?continent=${continent}`;
   }
-  try {
-    const { data } = await axios.get(url, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
-      },
-    });
+  const { data } = await axios.get(url, {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
+    },
+  });
 
-    //if data doesn't exist throw an error
-    if (!data.data) {
-      throw new Error("failed to get countries");
-    }
-    let countriesArray = data.data;
-
-    // Filter and map the data only if searchQuery is provided
-    if (searchQuery) {
-      countriesArray = countriesArray.filter((country: any) =>
-        country.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    // Slice and map the data in one pass
-    return {
-      total: countriesArray.length,
-      data: countriesArray.slice(startIndex, endIndex).map((country: any) => ({
-        name: country.name,
-        iso2: country.iso2,
-        currency: country.currency,
-        capital: country.capital,
-        continent: country.continent,
-        type: "countries",
-      })),
-    };
-    //error handling
-  } catch (err: any) {
-    throw new Error("No Countries Found");
+  //if data doesn't exist throw an error
+  if (!data.data) {
+    throw new Error("failed to get countries");
   }
+  let countriesArray = data.data;
+
+  // Filter and map the data only if searchQuery is provided
+  if (searchQuery) {
+    countriesArray = countriesArray.filter((country: any) =>
+      country.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+  // Calculate the start and end indices for pagination
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  // Slice and map the data in one pass
+  return {
+    total: countriesArray.length,
+    data: countriesArray.slice(startIndex, endIndex).map((country: any) => ({
+      name: country.name,
+      iso2: country.iso2,
+      currency: country.currency,
+      capital: country.capital,
+      continent: country.continent,
+      type: "countries",
+    })),
+  };
 };
 
 const getCountryByName = async (name: string): Promise<countryType> => {
@@ -104,49 +99,43 @@ const getAllStates = async (
   searchQuery?: string
 ): Promise<{ total: number; data: stateType[] }> => {
   const url = "https://countriesnow.space/api/v0.1/countries/states";
-  try {
-    const response = await axios.post(
-      url,
-      { country },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        maxBodyLength: Infinity,
-      }
-    );
-    //if data doesn't exist throw an error
-    if (!response.data.data) {
-      throw new Error("failed to get states");
+  const response = await axios.post(
+    url,
+    { country },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      maxBodyLength: Infinity,
     }
-    let statesArray = response.data.data.states;
-
-    // Filter and map the data only if searchQuery is provided
-    if (searchQuery) {
-      statesArray = statesArray.filter((state: any) =>
-        state.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * 10;
-    const endIndex = startIndex + 10;
-    //Map the data of the response to return just the name
-    return {
-      total: statesArray.length,
-      data: statesArray.slice(startIndex, endIndex).map((state: any) => ({
-        name: state.name,
-        code: state.state_code,
-        countryName: response.data.data.name,
-        countryCode: response.data.data.iso2,
-        type: "states",
-      })),
-    };
-
-    //error handling
-  } catch (err: any) {
-    throw new Error("No States Found");
+  );
+  //if data doesn't exist throw an error
+  if (!response.data.data) {
+    throw new Error("failed to get states");
   }
+  let statesArray = response.data.data.states;
+
+  // Filter and map the data only if searchQuery is provided
+  if (searchQuery) {
+    statesArray = statesArray.filter((state: any) =>
+      state.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  // Calculate the start and end indices for pagination
+  const startIndex = (page - 1) * 10;
+  const endIndex = startIndex + 10;
+  //Map the data of the response to return just the name
+  return {
+    total: statesArray.length,
+    data: statesArray.slice(startIndex, endIndex).map((state: any) => ({
+      name: state.name,
+      code: state.state_code,
+      countryName: response.data.data.name,
+      countryCode: response.data.data.iso2,
+      type: "states",
+    })),
+  };
 };
 const binarySearch = (arr: any[], target: string): any => {
   let left = 0;
@@ -222,50 +211,45 @@ const getAllCities = async (
   searchQuery?: string
 ): Promise<{ total: number; data: cityType[] }> => {
   const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
-  try {
-    const { data } = await axios.post(
-      url,
-      {
-        country,
-        state,
+  const { data } = await axios.post(
+    url,
+    {
+      country,
+      state,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        maxBodyLength: Infinity,
-      }
-    );
-    //if data doesn't exist throw an error
-    if (!data.data) {
-      throw new Error("failed to get states");
+      maxBodyLength: Infinity,
     }
-    let citiesArray = data.data;
-
-    // Filter and map the data only if searchQuery is provided
-    if (searchQuery) {
-      citiesArray = citiesArray.filter((city: any) =>
-        city.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-
-    // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * 10;
-    const endIndex = startIndex + 10;
-
-    return {
-      total: citiesArray.length,
-      data: citiesArray.slice(startIndex, endIndex).map((city: any) => ({
-        name: city,
-        country,
-        state,
-        type: "cities",
-      })),
-    };
-    //error handling
-  } catch (err: any) {
-    throw new Error("No Cities Found");
+  );
+  //if data doesn't exist throw an error
+  if (!data.data) {
+    throw new Error("failed to get states");
   }
+  let citiesArray = data.data;
+
+  // Filter and map the data only if searchQuery is provided
+  if (searchQuery) {
+    citiesArray = citiesArray.filter((city: any) =>
+      city.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  // Calculate the start and end indices for pagination
+  const startIndex = (page - 1) * 10;
+  const endIndex = startIndex + 10;
+
+  return {
+    total: citiesArray.length,
+    data: citiesArray.slice(startIndex, endIndex).map((city: any) => ({
+      name: city,
+      country,
+      state,
+      type: "cities",
+    })),
+  };
 };
 
 const getCityByName = async (name: string, country: string, state: string) => {
