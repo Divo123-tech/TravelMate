@@ -8,36 +8,42 @@ const getAllCountries = async (continent, page = 1, searchQuery, limit = 10) => 
     if (continent != "all") {
         url += `?continent=${continent}`;
     }
-    const { data } = await axios.get(url, {
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
-        },
-    });
-    //if data doesn't exist throw an error
-    if (!data.data) {
-        throw new Error("failed to get countries");
+    try {
+        const { data } = await axios.get(url, {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
+            },
+        });
+        //if data doesn't exist throw an error
+        if (!data.data) {
+            throw new Error("failed to get countries");
+        }
+        let countriesArray = data.data;
+        // Filter and map the data only if searchQuery is provided
+        if (searchQuery) {
+            countriesArray = countriesArray.filter((country) => country.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+        // Calculate the start and end indices for pagination
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        // Slice and map the data in one pass
+        return {
+            total: countriesArray.length,
+            data: countriesArray.slice(startIndex, endIndex).map((country) => ({
+                name: country.name,
+                iso2: country.iso2,
+                currency: country.currency,
+                capital: country.capital,
+                continent: country.continent,
+                type: "countries",
+            })),
+        };
+        //error handling
     }
-    let countriesArray = data.data;
-    // Filter and map the data only if searchQuery is provided
-    if (searchQuery) {
-        countriesArray = countriesArray.filter((country) => country.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    catch (err) {
+        throw new Error("No Countries Found");
     }
-    // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    // Slice and map the data in one pass
-    return {
-        total: countriesArray.length,
-        data: countriesArray.slice(startIndex, endIndex).map((country) => ({
-            name: country.name,
-            iso2: country.iso2,
-            currency: country.currency,
-            capital: country.capital,
-            continent: country.continent,
-            type: "countries",
-        })),
-    };
 };
 const getCountryByName = async (name) => {
     let url = `https://restfulcountries.com/api/v1/countries/${name}`;
@@ -64,35 +70,41 @@ const getCountryByName = async (name) => {
 //function to get all states within a given country
 const getAllStates = async (country, page = 1, searchQuery) => {
     const url = "https://countriesnow.space/api/v0.1/countries/states";
-    const response = await axios.post(url, { country }, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-        maxBodyLength: Infinity,
-    });
-    //if data doesn't exist throw an error
-    if (!response.data.data) {
-        throw new Error("failed to get states");
+    try {
+        const response = await axios.post(url, { country }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            maxBodyLength: Infinity,
+        });
+        //if data doesn't exist throw an error
+        if (!response.data.data) {
+            throw new Error("failed to get states");
+        }
+        let statesArray = response.data.data.states;
+        // Filter and map the data only if searchQuery is provided
+        if (searchQuery) {
+            statesArray = statesArray.filter((state) => state.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+        // Calculate the start and end indices for pagination
+        const startIndex = (page - 1) * 10;
+        const endIndex = startIndex + 10;
+        //Map the data of the response to return just the name
+        return {
+            total: statesArray.length,
+            data: statesArray.slice(startIndex, endIndex).map((state) => ({
+                name: state.name,
+                code: state.state_code,
+                countryName: response.data.data.name,
+                countryCode: response.data.data.iso2,
+                type: "states",
+            })),
+        };
+        //error handling
     }
-    let statesArray = response.data.data.states;
-    // Filter and map the data only if searchQuery is provided
-    if (searchQuery) {
-        statesArray = statesArray.filter((state) => state.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    catch (err) {
+        throw new Error("No States Found");
     }
-    // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * 10;
-    const endIndex = startIndex + 10;
-    //Map the data of the response to return just the name
-    return {
-        total: statesArray.length,
-        data: statesArray.slice(startIndex, endIndex).map((state) => ({
-            name: state.name,
-            code: state.state_code,
-            countryName: response.data.data.name,
-            countryCode: response.data.data.iso2,
-            type: "states",
-        })),
-    };
 };
 const binarySearch = (arr, target) => {
     let left = 0;
@@ -143,36 +155,42 @@ const getStateByName = async (name, country) => {
 //function to get all the cities within a given state and country
 const getAllCities = async (state, country, page = 1, searchQuery) => {
     const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
-    const { data } = await axios.post(url, {
-        country,
-        state,
-    }, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-        maxBodyLength: Infinity,
-    });
-    //if data doesn't exist throw an error
-    if (!data.data) {
-        throw new Error("failed to get states");
-    }
-    let citiesArray = data.data;
-    // Filter and map the data only if searchQuery is provided
-    if (searchQuery) {
-        citiesArray = citiesArray.filter((city) => city.toLowerCase().includes(searchQuery.toLowerCase()));
-    }
-    // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * 10;
-    const endIndex = startIndex + 10;
-    return {
-        total: citiesArray.length,
-        data: citiesArray.slice(startIndex, endIndex).map((city) => ({
-            name: city,
+    try {
+        const { data } = await axios.post(url, {
             country,
             state,
-            type: "cities",
-        })),
-    };
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            maxBodyLength: Infinity,
+        });
+        //if data doesn't exist throw an error
+        if (!data.data) {
+            throw new Error("failed to get states");
+        }
+        let citiesArray = data.data;
+        // Filter and map the data only if searchQuery is provided
+        if (searchQuery) {
+            citiesArray = citiesArray.filter((city) => city.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+        // Calculate the start and end indices for pagination
+        const startIndex = (page - 1) * 10;
+        const endIndex = startIndex + 10;
+        return {
+            total: citiesArray.length,
+            data: citiesArray.slice(startIndex, endIndex).map((city) => ({
+                name: city,
+                country,
+                state,
+                type: "cities",
+            })),
+        };
+        //error handling
+    }
+    catch (err) {
+        throw new Error("No Cities Found");
+    }
 };
 const getCityByName = async (name, country, state) => {
     const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
