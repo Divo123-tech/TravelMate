@@ -24,12 +24,7 @@ import { Spinner } from "react-bootstrap";
 import CollaboratorsModal from "./CollaboratorsModal";
 import CustomActivityModal from "./CustomActivityModal";
 import Attraction from "../ExploreLocations/Attraction";
-const container = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.3 },
-  },
-};
+import { container } from "../../data/animation";
 
 const EditTrip = () => {
   const context = useContext(UserContext);
@@ -96,17 +91,14 @@ const EditTrip = () => {
       try {
         const userDetails = await getCurrentUser();
 
-        if (!userDetails) {
-          throw new Error("User not found");
-        }
-        if (!tripId) {
-          throw new Error("Trip not found");
+        if (!userDetails || !tripId) {
+          throw new Error("404 not found");
         }
 
         const tripDetails = await getTripDetails(userDetails._id, tripId);
         setTrip(tripDetails); // Set trip state with the fetched data
       } catch (err) {
-        console.log(err);
+        setTrip(null);
       }
     };
 
@@ -133,7 +125,7 @@ const EditTrip = () => {
               defaultValue={trip.name}
               name="name"
               onChange={handleChange}
-              onBlur={() => editDetails()}
+              onBlur={editDetails}
             ></input>
             <p className="text-lg">
               Owner: {trip.owner.name || trip.owner.email} ({trip.owner.email})
@@ -150,7 +142,7 @@ const EditTrip = () => {
                   min={String(trip.startDate).slice(0, 10)}
                   name="startDate"
                   onChange={handleChange}
-                  onBlur={() => editDetails()}
+                  onBlur={editDetails}
                 ></input>
               </div>
               <div className="flex flex-col gap-2">
@@ -162,7 +154,7 @@ const EditTrip = () => {
                   min={String(trip.startDate).slice(0, 10)}
                   name="endDate"
                   onChange={handleChange}
-                  onBlur={() => editDetails()}
+                  onBlur={editDetails}
                 ></input>
               </div>
             </form>

@@ -21,7 +21,9 @@ const NavigationBar: FC = () => {
     try {
       await logOutAPI();
       setUser(null);
-    } catch (err) {}
+    } catch (err) {
+      return;
+    }
   };
   return (
     <>

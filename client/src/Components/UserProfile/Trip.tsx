@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-
 import loading from "../../assets/loading.png";
 type Props = {
   role: string;

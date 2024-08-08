@@ -1,31 +1,15 @@
-import { FC, useContext, useState } from "react";
-import Button from "react-bootstrap/Button";
+import { FC, useContext, useState, ChangeEvent } from "react";
 import Modal from "react-bootstrap/Modal";
 import { UserContext, SocketContext } from "../../App";
-import { TripType, attractionType } from "../../types/types";
-import { motion } from "framer-motion";
-// export type attractionType = {
-//   name: string;
-//   id: string;
-//   address: string;
-//   city: string;
-//   country: string;
-//   url: string;
-//   type: string;
-// };
+import { attractionType } from "../../types/types";
+
 type Props = {
   show: boolean;
   onHide: () => void;
   tripId: string;
-  //   itineraries: any[];
 };
 
-const CustomActivityModal: FC<Props> = ({
-  show,
-  onHide,
-  tripId,
-}: //   itineraries,
-Props) => {
+const CustomActivityModal: FC<Props> = ({ show, onHide, tripId }: Props) => {
   const [activity, setActivity] = useState({
     name: "",
     id: Math.random().toString(36).substring(2, 8),
@@ -40,25 +24,16 @@ Props) => {
   if (!userContext || !socketContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-  const { user } = userContext;
   const { emitEvent } = socketContext;
-  //   const addItinereariesToTrip = (tripId: string) => {
-  //     itineraries.map((itinerary: any) => {
-  //       emitEvent("AddLocationToTrip", {
-  //         tripId,
-  //         data: { details: itinerary, type: itinerary.type },
-  //       });
-  //     });
-  //   };
+
   const addActivityToTrip = () => {
-    console.log(activity);
     emitEvent("AddLocationToTrip", {
       tripId,
       data: { details: activity, type: activity.type },
     });
     onHide();
   };
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setActivity((prevActivity: attractionType) => {
       return {
         ...prevActivity,
@@ -142,7 +117,7 @@ Props) => {
         <Modal.Footer>
           <button
             className="bg-oxford-blue px-4 py-2 text-xl rounded-full text-baby-powder disabled:opacity-85 "
-            onClick={() => addActivityToTrip()}
+            onClick={addActivityToTrip}
             disabled={
               activity.name == "" ||
               activity.country == "" ||

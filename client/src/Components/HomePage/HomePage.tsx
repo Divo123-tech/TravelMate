@@ -6,12 +6,7 @@ import { itineraries, reviews } from "../../data/homepage";
 import { ItineraryType, ReviewType } from "../../types/types";
 import { FC, useContext, useEffect } from "react";
 import { PageContext } from "../../App";
-const container = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.3 },
-  },
-};
+import { container, rightSlideVariant } from "../../data/animation";
 
 const HomePage: FC = () => {
   const pageContext = useContext(PageContext);
@@ -35,10 +30,7 @@ const HomePage: FC = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1 }}
-          variants={{
-            hidden: { opacity: 0, x: -75 },
-            visible: { opacity: 1, x: 0 },
-          }}
+          variants={rightSlideVariant}
         >
           <p className="text-2xl font-medium font-Oswald whitespace-nowrap">
             TOP DESTINATIONS

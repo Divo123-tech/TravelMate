@@ -44,9 +44,6 @@ function App() {
   useEffect(() => {
     const newSocket: Socket = io("http://localhost:3000");
     setSocket(newSocket);
-    socket?.on("connect", () => {
-      console.log("Connected to server");
-    });
     return () => {
       newSocket.close();
     };

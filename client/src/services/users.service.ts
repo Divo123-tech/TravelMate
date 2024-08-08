@@ -14,7 +14,7 @@ export const logOutAPI = async () => {
     await axios.post(`${ServerAPI}/auth/google/logout`, {
       withCredentials: true,
     });
-  } catch (error) {
+  } catch (err) {
     return;
   }
 };

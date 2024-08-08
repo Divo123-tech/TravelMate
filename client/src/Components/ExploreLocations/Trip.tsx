@@ -1,4 +1,4 @@
-import { ItineraryType, TripType } from "../../types/types";
+import { TripType } from "../../types/types";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";

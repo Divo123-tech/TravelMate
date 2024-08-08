@@ -180,11 +180,9 @@ const CollaboratorsModal = ({
                         </div>
                       </div>
                     ) : (
-                      <div>
-                        <h1 className="text-lg">
-                          Could not find user {inputSearch} {" :("}
-                        </h1>
-                      </div>
+                      <h1 className="text-lg">
+                        Could not find user {inputSearch} {" :("}
+                      </h1>
                     ))}
                 </div>
               </div>

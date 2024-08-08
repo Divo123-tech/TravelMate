@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, ChangeEvent } from "react";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePen } from "@fortawesome/free-solid-svg-icons";
 import DeleteButton from "../DeleteButton";
+import { countryType } from "../../types/types";
 const container = {
   hidden: {},
   visible: {
@@ -62,7 +63,7 @@ const UserProfile: FC = () => {
         const countriesData = response.data;
         setCountries(countriesData);
       } catch (err) {
-        console.error(err);
+        setCountries([]);
       }
     };
 
@@ -73,10 +74,12 @@ const UserProfile: FC = () => {
       await deleteTrip(user?.googleId || "", tripId);
       setUser(await getCurrentUser());
     } catch (err) {
-      console.log(err);
+      return;
     }
   };
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     if (e.target.name == "passport") {
       let code = e.target.value.split(",")[0];
       let name = e.target.value.split(",")[1];
@@ -98,7 +101,7 @@ const UserProfile: FC = () => {
       }
     }
   };
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const editUser = async () => {
       try {
@@ -111,7 +114,6 @@ const UserProfile: FC = () => {
           user.passport,
           user.currencyUsed
         );
-        console.log(userData);
         setUser({
           ...user,
           ["name"]: userData.name,
@@ -120,7 +122,7 @@ const UserProfile: FC = () => {
         });
         setEditSuccess(true);
       } catch (err) {
-        console.log(err);
+        return;
       }
     };
 
@@ -129,7 +131,7 @@ const UserProfile: FC = () => {
 
   // Create a Set to store unique currencies and then sort them alphabetically
   const uniqueCurrencies = Array.from(
-    new Set(countries.map((country: any) => country.currency))
+    new Set(countries.map((country: countryType) => country.currency))
   ).sort((a, b) => a.localeCompare(b));
   return (
     <>

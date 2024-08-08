@@ -1,6 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { FC } from "react";
+import { FC, ChangeEvent } from "react";
+import { flightType } from "../../types/types";
 type Props = {
   flightDetails: any;
   setFlightDetails: (flightDetails: any) => void;
@@ -13,16 +14,18 @@ const DetailsModal: FC<Props> = ({
   show,
   onHide,
 }: Props) => {
-  const handleChange = (e: any) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     if (e.target.name === "nonstop") {
-      setFlightDetails((prevFlightDetails: any) => {
+      setFlightDetails((prevFlightDetails: flightType) => {
         return {
           ...prevFlightDetails,
           [e.target.name]: e.target.value == "on" ? true : false,
         };
       });
     } else {
-      setFlightDetails((prevFlightDetails: any) => {
+      setFlightDetails((prevFlightDetails: flightType) => {
         return {
           ...prevFlightDetails,
           [e.target.name]: e.target.value,

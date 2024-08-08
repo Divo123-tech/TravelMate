@@ -1,9 +1,9 @@
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect, useContext, useMemo, ChangeEvent } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Placeholder from "react-bootstrap/Placeholder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import debounce from "lodash.debounce";
+import { Link } from "react-router-dom";
 import {
   faMagnifyingGlass,
   faCaretLeft,
@@ -23,7 +23,6 @@ import {
 } from "../../services/locations.service";
 import { countryType, stateType, cityType } from "../../types/types";
 import { PageContext } from "../../App";
-import loading from "../../assets/loading.png";
 import Country from "./Country";
 import State from "./State";
 import City from "./City";
@@ -32,6 +31,7 @@ import Airport from "./Airport";
 import Attraction from "./Attraction";
 import Video from "./Video";
 import AddToTrip from "./AddToTrip";
+import LocationsLoading from "./LocationsLoading";
 const container = {
   hidden: {},
   visible: {
@@ -57,7 +57,7 @@ const ExploreLocations = () => {
   const [activityType, setActivityType] = useState<string>("");
   const [activities, setActivities] = useState<[] | null>(null);
   const [currentLocations, setCurrentLocations] = useState<string>("");
-  const exploreNewLocation = (e: any) => {
+  const exploreNewLocation = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setActivities(null);
     setActivityType("Hotels");
@@ -75,8 +75,22 @@ const ExploreLocations = () => {
       }, 300),
     []
   );
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     debouncedHandleSearch(e.target.value);
+  };
+  const handleActivityTypeChange = (newActivityType: string) => () => {
+    setActivityType(newActivityType);
+  };
+  const updatePageNumber = (direction: string) => () => {
+    if (direction == "next") {
+      setCurrentPageNumber((prevPage) =>
+        prevPage === Math.ceil(total / 10) ? 1 : prevPage + 1
+      );
+    } else {
+      setCurrentPageNumber((prevPage) =>
+        prevPage == 1 ? (prevPage = Math.ceil(total / 10)) : (prevPage -= 1)
+      );
+    }
   };
   const pageContext = useContext(PageContext);
   if (!pageContext) {
@@ -87,7 +101,7 @@ const ExploreLocations = () => {
   useEffect(() => {
     setCurrentPage("Locations");
   }, []);
-  const changeContinent = (e: any) => {
+  const changeContinent = (e: ChangeEvent<HTMLSelectElement>) => {
     setContinent(e.target.value);
     setCurrentPageNumber(1);
   };
@@ -103,217 +117,205 @@ const ExploreLocations = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        let response;
-        switch (locationType) {
-          case "countries":
-            setCountries(null);
-            try {
-              response = await getAllCountries(
-                continent,
-                currentPageNumber,
-                search
+      let response;
+      switch (locationType) {
+        case "countries":
+          setCountries(null);
+          try {
+            response = await getAllCountries(
+              continent,
+              currentPageNumber,
+              search
+            );
+            setCountries(response.data);
+            setTotal(response.total);
+          } catch (e) {
+            setCountries([]);
+            setTotal(0);
+            setCurrentPageNumber(0);
+          }
+          break;
+        case "states":
+          setStates(null);
+          try {
+            if (currentCountry == null) {
+              const country = await getCountryByName(
+                searchParams.get("country") || ""
               );
-              setCountries(response.data);
-              setTotal(response.total);
-            } catch (e) {
-              setCountries([]);
-              setTotal(0);
-              setCurrentPageNumber(0);
+              setCurrentCountry(country);
             }
-            break;
-          case "states":
-            setStates(null);
-            try {
-              if (currentCountry == null) {
-                const country = await getCountryByName(
-                  searchParams.get("country") || ""
-                );
-                setCurrentCountry(country);
-              }
-              response = await getAllStates(
+            response = await getAllStates(
+              currentCountry?.name || searchParams.get("country") || "",
+              currentPageNumber,
+              search
+            );
+            setStates(response.data);
+            setTotal(response.total);
+          } catch (e) {
+            setStates([]);
+            setTotal(0);
+            setCurrentPageNumber(0);
+          }
+          break;
+        case "cities":
+          setCities(null);
+          try {
+            if (currentCountry == null) {
+              const country = await getCountryByName(
+                searchParams.get("country") || ""
+              );
+              setCurrentCountry(country);
+            }
+            if (currentState == null) {
+              const state = await getStateByName(
+                searchParams.get("state") || "",
+                currentCountry?.name || searchParams.get("") || ""
+              );
+              setCurrentState(state);
+            }
+          } catch (e) {
+            setCurrentCountry(null);
+            setCurrentState(null);
+            setCurrentPageNumber(0);
+          }
+          try {
+            response = await getAllCities(
+              currentState?.name || searchParams.get("state") || "",
+              currentCountry?.name || searchParams.get("country") || "",
+              currentPageNumber,
+              search
+            );
+
+            setCities(response.data);
+            setTotal(response.total);
+          } catch (e) {
+            setCities([]);
+            setTotal(0);
+            setCurrentPageNumber(0);
+          }
+          break;
+        case "activities":
+          setActivities(null);
+          try {
+            if (currentCountry == null) {
+              const country = await getCountryByName(
+                searchParams.get("country") || ""
+              );
+              setCurrentCountry(country);
+            }
+            if (currentState == null) {
+              const state = await getStateByName(
+                searchParams.get("state") || "",
+                currentCountry?.name || searchParams.get("country") || ""
+              );
+              setCurrentState(state);
+            }
+            if (currentCity == null) {
+              const city = await getCityByName(
+                searchParams.get("city") || "",
                 currentCountry?.name || searchParams.get("country") || "",
-                currentPageNumber,
-                search
+                currentState?.name || searchParams.get("state") || ""
               );
-              setStates(response.data);
-              setTotal(response.total);
-            } catch (e) {
-              setStates([]);
-              setTotal(0);
-              setCurrentPageNumber(0);
+              setCurrentCity(city);
             }
-            break;
-          case "cities":
-            setCities(null);
-            try {
-              if (currentCountry == null) {
-                const country = await getCountryByName(
-                  searchParams.get("country") || ""
-                );
-                setCurrentCountry(country);
-              }
-              if (currentState == null) {
-                const state = await getStateByName(
-                  searchParams.get("state") || "",
-                  currentCountry?.name ||
-                    searchParams.get("") ||
-                    "United States"
-                );
-                setCurrentState(state);
-              }
-            } catch (e) {
-              setCurrentCountry(null);
-              setCurrentState(null);
-              setCurrentPageNumber(0);
-            }
-            try {
-              response = await getAllCities(
-                currentState?.name || searchParams.get("state") || "California",
-                currentCountry?.name ||
-                  searchParams.get("country") ||
-                  "United States",
-                currentPageNumber,
-                search
-              );
-
-              setCities(response.data);
-              setTotal(response.total);
-            } catch (e) {
-              setCities([]);
-              setTotal(0);
-              setCurrentPageNumber(0);
-            }
-            break;
-          case "activities":
-            setActivities(null);
-            try {
-              if (currentCountry == null) {
-                const country = await getCountryByName(
-                  searchParams.get("country") || ""
-                );
-                console.log(country);
-                setCurrentCountry(country);
-              }
-              if (currentState == null) {
-                const state = await getStateByName(
-                  searchParams.get("state") || "",
-                  currentCountry?.name || searchParams.get("country") || ""
-                );
-                setCurrentState(state);
-              }
-              if (currentCity == null) {
-                const city = await getCityByName(
-                  searchParams.get("city") || "",
+          } catch (e) {
+            setCurrentCountry(null);
+            setCurrentState(null);
+            setCurrentCity(null);
+            setCurrentPageNumber(0);
+          }
+          switch (activityType) {
+            case "Hotels":
+              try {
+                response = await getAllHotels(
+                  currentCity?.name || searchParams.get("city") || "",
                   currentCountry?.name || searchParams.get("country") || "",
-                  currentState?.name || searchParams.get("state") || ""
+                  currentPageNumber,
+                  search
                 );
-                console.log(city);
-                setCurrentCity(city);
+                setActivities(response.data);
+                setTotal(response.total);
+              } catch (e) {
+                setActivities([]);
+                setTotal(0);
+                setCurrentPageNumber(0);
               }
-            } catch (e) {
-              setCurrentCountry(null);
-              setCurrentState(null);
-              setCurrentCity(null);
-              setCurrentPageNumber(0);
-            }
-            switch (activityType) {
-              case "Hotels":
-                try {
-                  response = await getAllHotels(
-                    currentCity?.name || searchParams.get("city") || "",
-                    currentCountry?.name || searchParams.get("country") || "",
-                    currentPageNumber,
-                    search
-                  );
-                  setActivities(response.data);
-                  setTotal(response.total);
-                } catch (e) {
-                  setActivities([]);
-                  setTotal(0);
-                  setCurrentPageNumber(0);
-                }
 
-                break;
-              case "Airports":
-                try {
-                  response = await getAllAirports(
-                    currentCity?.name ||
-                      searchParams.get("city") ||
-                      "Los Angeles",
-                    currentState?.name ||
-                      searchParams.get("state") ||
-                      "California",
-                    currentPageNumber,
-                    search
-                  );
+              break;
+            case "Airports":
+              try {
+                response = await getAllAirports(
+                  currentCity?.name ||
+                    searchParams.get("city") ||
+                    "Los Angeles",
+                  currentState?.name ||
+                    searchParams.get("state") ||
+                    "California",
+                  currentPageNumber,
+                  search
+                );
 
-                  setActivities(response.data);
-                  setTotal(response.total);
-                } catch (e) {
-                  setActivities([]);
-                  setTotal(0);
-                  setCurrentPageNumber(0);
-                }
-                break;
-              case "Restaurants":
-                try {
-                  response = await getAllAttractions(
-                    currentCity?.name || searchParams.get("city") || "",
-                    currentState?.name || searchParams.get("state") || "",
-                    "restaurants",
-                    currentPageNumber,
-                    search
-                  );
-                  setActivities(response.data);
-                  setTotal(response.total);
-                } catch (e) {
-                  setActivities([]);
-                  setTotal(0);
-                  setCurrentPageNumber(0);
-                }
-                break;
-              case "Things To Do":
-                try {
-                  response = await getAllAttractions(
-                    currentCity?.name || searchParams.get("city") || "",
-                    currentState?.name || searchParams.get("state") || "",
-                    "attractions",
-                    currentPageNumber,
-                    search
-                  );
-                  setActivities(response.data);
-                  setTotal(response.total);
-                } catch (e) {
-                  setActivities([]);
-                  setTotal(0);
-                  setCurrentPageNumber(0);
-                }
-                break;
-              case "Videos":
-                try {
-                  response = await getAllVideos(
-                    currentCity?.name ||
-                      searchParams.get("city") ||
-                      "Los Angeles",
-                    currentPageNumber,
-                    search
-                  );
-                  setActivities(response.data);
-                  setTotal(response.total);
-                } catch (e) {
-                  setActivities([]);
-                  setTotal(0);
-                  setCurrentPageNumber(0);
-                }
-                break;
-            }
-
-            break;
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Handle error state
+                setActivities(response.data);
+                setTotal(response.total);
+              } catch (e) {
+                setActivities([]);
+                setTotal(0);
+                setCurrentPageNumber(0);
+              }
+              break;
+            case "Restaurants":
+              try {
+                response = await getAllAttractions(
+                  currentCity?.name || searchParams.get("city") || "",
+                  currentState?.name || searchParams.get("state") || "",
+                  "restaurants",
+                  currentPageNumber,
+                  search
+                );
+                setActivities(response.data);
+                setTotal(response.total);
+              } catch (e) {
+                setActivities([]);
+                setTotal(0);
+                setCurrentPageNumber(0);
+              }
+              break;
+            case "Things To Do":
+              try {
+                response = await getAllAttractions(
+                  currentCity?.name || searchParams.get("city") || "",
+                  currentState?.name || searchParams.get("state") || "",
+                  "attractions",
+                  currentPageNumber,
+                  search
+                );
+                setActivities(response.data);
+                setTotal(response.total);
+              } catch (e) {
+                setActivities([]);
+                setTotal(0);
+                setCurrentPageNumber(0);
+              }
+              break;
+            case "Videos":
+              try {
+                response = await getAllVideos(
+                  currentCity?.name ||
+                    searchParams.get("city") ||
+                    "Los Angeles",
+                  currentPageNumber,
+                  search
+                );
+                setActivities(response.data);
+                setTotal(response.total);
+              } catch (e) {
+                setActivities([]);
+                setTotal(0);
+                setCurrentPageNumber(0);
+              }
+              break;
+          }
+          break;
       }
     };
 
@@ -394,25 +396,7 @@ const ExploreLocations = () => {
                   </h1>
                 )
               ) : (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="flex items-center bg-teal mt-4">
-                    <img src={loading} alt="Loading..." className="mr-4" />
-                    <div className="flex flex-col space-y-2 w-full h-[150px] pt-3">
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={3} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={5} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={7} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={4} />
-                      </Placeholder>
-                    </div>
-                  </div>
-                ))
+                <LocationsLoading />
               )}
             </section>
             <div className="flex justify-end px-12 py-8 mb-auto">
@@ -420,26 +404,14 @@ const ExploreLocations = () => {
                 <FontAwesomeIcon
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
-                  onClick={() =>
-                    setCurrentPageNumber((prevPage) =>
-                      prevPage == 1
-                        ? (prevPage = Math.ceil(total / 10))
-                        : (prevPage -= 1)
-                    )
-                  }
+                  onClick={updatePageNumber("back")}
                 />{" "}
                 Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                 {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
                   className="text-2xl hover:cursor-pointer hover:cursor-pointer"
-                  onClick={() =>
-                    setCurrentPageNumber((prevPage) =>
-                      prevPage == Math.ceil(total / 10)
-                        ? (prevPage = 1)
-                        : (prevPage += 1)
-                    )
-                  }
+                  onClick={updatePageNumber("next")}
                 />
               </h1>
             </div>
@@ -498,52 +470,22 @@ const ExploreLocations = () => {
                   </h1>
                 )
               ) : (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="flex items-center bg-teal mt-4">
-                    <img src={loading} alt="Loading..." className="mr-4" />
-                    <div className="flex flex-col space-y-2 w-full h-[150px] pt-3">
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={3} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={5} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={7} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={4} />
-                      </Placeholder>
-                    </div>
-                  </div>
-                ))
+                <LocationsLoading />
               )}
             </section>
             <div className="flex justify-end px-12 py-8 mb-auto">
-              <h1 className="text-xl font-Oswald ">
+              <h1 className="text-xl font-Oswald">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
-                  onClick={() =>
-                    setCurrentPageNumber((prevPage) =>
-                      prevPage == 1
-                        ? (prevPage = Math.ceil(total / 10))
-                        : (prevPage -= 1)
-                    )
-                  }
+                  onClick={updatePageNumber("back")}
                 />{" "}
                 Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                 {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl hover:cursor-pointer"
-                  onClick={() =>
-                    setCurrentPageNumber((prevPage) =>
-                      prevPage == Math.ceil(total / 10)
-                        ? (prevPage = 1)
-                        : (prevPage += 1)
-                    )
-                  }
+                  className="text-2xl hover:cursor-pointer hover:cursor-pointer"
+                  onClick={updatePageNumber("next")}
                 />
               </h1>
             </div>
@@ -604,25 +546,7 @@ const ExploreLocations = () => {
                   </h1>
                 )
               ) : (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="flex items-center bg-teal mt-4">
-                    <img src={loading} alt="Loading..." className="mr-4" />
-                    <div className="flex flex-col space-y-2 w-full h-[150px] pt-3">
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={3} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={5} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={7} />
-                      </Placeholder>
-                      <Placeholder as="p" animation="glow">
-                        <Placeholder xs={4} />
-                      </Placeholder>
-                    </div>
-                  </div>
-                ))
+                <LocationsLoading />
               )}
             </section>
             <div className="flex justify-end px-12 py-8 mb-auto">
@@ -630,26 +554,14 @@ const ExploreLocations = () => {
                 <FontAwesomeIcon
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
-                  onClick={() =>
-                    setCurrentPageNumber((prevPage) =>
-                      prevPage == 1
-                        ? (prevPage = Math.ceil(total / 10))
-                        : (prevPage -= 1)
-                    )
-                  }
+                  onClick={updatePageNumber("back")}
                 />{" "}
                 Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                 {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl hover:cursor-pointer"
-                  onClick={() =>
-                    setCurrentPageNumber((prevPage) =>
-                      prevPage == Math.ceil(total / 10)
-                        ? (prevPage = 1)
-                        : (prevPage += 1)
-                    )
-                  }
+                  className="text-2xl hover:cursor-pointer hover:cursor-pointer"
+                  onClick={updatePageNumber("next")}
                 />
               </h1>
             </div>
@@ -683,7 +595,7 @@ const ExploreLocations = () => {
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
                 } font-Oswald`}
-                onClick={() => setActivityType("Hotels")}
+                onClick={handleActivityTypeChange("Hotels")}
               >
                 Hotels
               </p>
@@ -693,7 +605,7 @@ const ExploreLocations = () => {
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
                 } font-Oswald`}
-                onClick={() => setActivityType("Airports")}
+                onClick={handleActivityTypeChange("Airports")}
               >
                 Airports
               </p>
@@ -703,7 +615,7 @@ const ExploreLocations = () => {
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
                 } font-Oswald`}
-                onClick={() => setActivityType("Restaurants")}
+                onClick={handleActivityTypeChange("Restaurants")}
               >
                 Restaurants
               </p>
@@ -713,7 +625,7 @@ const ExploreLocations = () => {
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
                 } font-Oswald`}
-                onClick={() => setActivityType("Things To Do")}
+                onClick={handleActivityTypeChange("Things To Do")}
               >
                 Things To Do
               </p>
@@ -723,7 +635,7 @@ const ExploreLocations = () => {
                     ? "text-oxford-blue underline font-bold"
                     : "hover:cursor-pointer"
                 } font-Oswald`}
-                onClick={() => setActivityType("Videos")}
+                onClick={handleActivityTypeChange("Videos")}
               >
                 Videos
               </p>
@@ -786,25 +698,7 @@ const ExploreLocations = () => {
                     </h1>
                   )
                 ) : (
-                  Array.from({ length: 5 }).map((_, i) => (
-                    <div key={i} className="flex items-center bg-teal mt-4">
-                      <img src={loading} alt="Loading..." className="mr-4" />
-                      <div className="flex flex-col space-y-2 w-full h-[150px] pt-3">
-                        <Placeholder as="p" animation="glow">
-                          <Placeholder xs={3} />
-                        </Placeholder>
-                        <Placeholder as="p" animation="glow">
-                          <Placeholder xs={5} />
-                        </Placeholder>
-                        <Placeholder as="p" animation="glow">
-                          <Placeholder xs={7} />
-                        </Placeholder>
-                        <Placeholder as="p" animation="glow">
-                          <Placeholder xs={4} />
-                        </Placeholder>
-                      </div>
-                    </div>
-                  ))
+                  <LocationsLoading />
                 )}
 
                 <div className="flex justify-end px-12 py-8 mb-auto">
@@ -812,26 +706,14 @@ const ExploreLocations = () => {
                     <FontAwesomeIcon
                       icon={faCaretLeft}
                       className="text-2xl hover:cursor-pointer"
-                      onClick={() =>
-                        setCurrentPageNumber((prevPage) =>
-                          prevPage == 1
-                            ? (prevPage = Math.ceil(total / 10))
-                            : (prevPage -= 1)
-                        )
-                      }
+                      onClick={updatePageNumber("back")}
                     />{" "}
                     Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                     {Math.ceil(total / 10)}{" "}
                     <FontAwesomeIcon
                       icon={faCaretRight}
-                      className="text-2xl hover:cursor-pointer"
-                      onClick={() =>
-                        setCurrentPageNumber((prevPage) =>
-                          prevPage == Math.ceil(total / 10)
-                            ? (prevPage = 1)
-                            : (prevPage += 1)
-                        )
-                      }
+                      className="text-2xl hover:cursor-pointer hover:cursor-pointer"
+                      onClick={updatePageNumber("next")}
                     />
                   </h1>
                 </div>
@@ -846,15 +728,29 @@ const ExploreLocations = () => {
           </div>
         );
       default:
-        return <h1>country</h1>;
+        return (
+          <div className="min-h-screen flex flex-col justify-center items-center text-white">
+            <div className="text-center">
+              <h1 className="text-9xl font-bold mb-4 text-oxford-blue">404</h1>
+              <h2 className="text-6xl font-bold mb-8 text-oxford-blue">
+                Page Not Found
+              </h2>
+              <p className="text-2xl mb-8 text-teal">
+                Oops! The page you're looking for doesn't exist.
+              </p>
+              <Link
+                to="/"
+                className="bg-white text-teal py-2 px-4 rounded-full text-xl font-semibold hover:bg-opacity-90 transition duration-300"
+              >
+                Return Home
+              </Link>
+            </div>
+          </div>
+        );
     }
   };
 
-  return (
-    <>
-      <div className="mb-auto">{renderLocations()}</div>
-    </>
-  );
+  return <div className="mb-auto">{renderLocations()}</div>;
 };
 
 export default ExploreLocations;

@@ -2,11 +2,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-const childVariant = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1 },
-};
-
+import { childVariant } from "../../data/animation";
 type Props = {
   countryName: string;
   imgSrc: string;

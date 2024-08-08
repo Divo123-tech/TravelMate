@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useState, useContext } from "react";
+import { useState, useContext, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewTrip } from "../../services/users.service";
 import { UserContext } from "../../App";
@@ -22,14 +22,13 @@ const NewTripModal = ({ show, onHide }: Props) => {
     startDate: "",
     endDate: "",
   });
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTripDetails({
       ...tripDetails,
       [e.target.name]: e.target.value,
     });
-    console.log(tripDetails);
   };
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const createTrip = async () => {
       try {
@@ -47,7 +46,7 @@ const NewTripModal = ({ show, onHide }: Props) => {
           };
         });
       } catch (err: any) {
-        console.log(err);
+        setUser(null);
       }
     };
     createTrip();
