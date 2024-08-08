@@ -5,10 +5,9 @@ const getAllCountries = async (req, res) => {
         const searchQuery = typeof req.query.searchQuery == "string"
             ? req.query.searchQuery
             : undefined;
-        const limit = typeof req.query.limit == "string" ? Number(req.query.limit) : undefined;
         res
             .status(200)
-            .json(await locationsService.getAllCountries(req.params.continent, page, searchQuery, limit));
+            .json(await locationsService.getAllCountries(req.params.continent, page, searchQuery));
     }
     catch (err) {
         res.status(403).json({ message: err.message });

@@ -32,5 +32,4 @@ server.listen(port, async () => {
     console.error("Error connecting to Server", err);
   }
 });
-
 sockets.listenForTrips(io);
