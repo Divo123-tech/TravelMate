@@ -32,12 +32,7 @@ import Attraction from "./Attraction";
 import Video from "./Video";
 import AddToTrip from "./AddToTrip";
 import LocationsLoading from "./LocationsLoading";
-const container = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.2 },
-  },
-};
+import { container } from "../../data/animation";
 
 const ExploreLocations = () => {
   const [locationType, setLocationType] = useState<string | null>("countries");
@@ -99,7 +94,7 @@ const ExploreLocations = () => {
   const { setCurrentPage } = pageContext;
 
   useEffect(() => {
-    setCurrentPage("Locations");
+    setCurrentPage("Explore");
   }, []);
   const changeContinent = (e: ChangeEvent<HTMLSelectElement>) => {
     setContinent(e.target.value);

@@ -172,7 +172,7 @@ const CollaboratorsModal = ({
                               className="text-4xl font-bold text-teal hover:cursor-pointer"
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.9 }}
-                              onClick={() => addCollaboratorToTrip()}
+                              onClick={addCollaboratorToTrip}
                             >
                               +
                             </motion.p>
