@@ -9,16 +9,14 @@ const getAllCountries = async (req: Request, res: Response): Promise<void> => {
       typeof req.query.searchQuery == "string"
         ? req.query.searchQuery
         : undefined;
-    const limit =
-      typeof req.query.limit == "string" ? Number(req.query.limit) : undefined;
+
     res
       .status(200)
       .json(
         await locationsService.getAllCountries(
           req.params.continent,
           page,
-          searchQuery,
-          limit
+          searchQuery
         )
       );
   } catch (err: any) {

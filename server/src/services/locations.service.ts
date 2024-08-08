@@ -17,8 +17,7 @@ export type countryType = {
 const getAllCountries = async (
   continent: string,
   page: number = 1,
-  searchQuery?: string,
-  limit: number = 10
+  searchQuery?: string
 ): Promise<{ total: number; data: countryType[] }> => {
   let url = `https://restfulcountries.com/api/v1/countries`;
   if (continent != "all") {
@@ -32,10 +31,6 @@ const getAllCountries = async (
       },
     });
 
-    //if data doesn't exist throw an error
-    if (!data.data) {
-      throw new Error("failed to get countries");
-    }
     let countriesArray = data.data;
 
     // Filter and map the data only if searchQuery is provided
@@ -45,8 +40,8 @@ const getAllCountries = async (
       );
     }
     // Calculate the start and end indices for pagination
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
+    const startIndex = (page - 1) * 10;
+    const endIndex = startIndex + 10;
     // Slice and map the data in one pass
     return {
       total: countriesArray.length,
@@ -66,27 +61,27 @@ const getAllCountries = async (
 };
 
 const getCountryByName = async (name: string): Promise<countryType> => {
-  let url = `https://restfulcountries.com/api/v1/countries/${name}`;
-  const { data } = await axios.get(url, {
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
-    },
-  });
+  try {
+    let url = `https://restfulcountries.com/api/v1/countries/${name}`;
+    const { data } = await axios.get(url, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${process.env.COUNTRIES_KEY}`,
+      },
+    });
 
-  //if data doesn't exist throw an error
-  if (!data.data) {
-    throw new Error("failed to get countries");
+    const country = data.data;
+    return {
+      name: country.name,
+      iso2: country.iso2,
+      currency: country.currency,
+      capital: country.capital,
+      continent: country.continent,
+      type: "countries",
+    };
+  } catch (err) {
+    throw new Error("No Country Found");
   }
-  const country = data.data;
-  return {
-    name: country.name,
-    iso2: country.iso2,
-    currency: country.currency,
-    capital: country.capital,
-    continent: country.continent,
-    type: "countries",
-  };
 };
 
 export type stateType = {
@@ -115,10 +110,7 @@ const getAllStates = async (
         maxBodyLength: Infinity,
       }
     );
-    //if data doesn't exist throw an error
-    if (!response.data.data) {
-      throw new Error("failed to get states");
-    }
+
     let statesArray = response.data.data.states;
 
     // Filter and map the data only if searchQuery is provided
@@ -177,33 +169,34 @@ const getStateByName = async (
   name: string,
   country: string
 ): Promise<stateType> => {
-  const url = "https://countriesnow.space/api/v0.1/countries/states";
+  try {
+    const url = "https://countriesnow.space/api/v0.1/countries/states";
 
-  const response = await axios.post(
-    url,
-    { country },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      maxBodyLength: Infinity,
+    const response = await axios.post(
+      url,
+      { country },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        maxBodyLength: Infinity,
+      }
+    );
+
+    const state = binarySearch(response.data.data.states, name);
+    if (state) {
+      return {
+        name: state.name,
+        code: state.state_code,
+        countryName: response.data.data.name,
+        countryCode: response.data.data.iso2,
+        type: "states",
+      };
+    } else {
+      throw new Error("No State Found");
     }
-  );
-  //if data doesn't exist throw an error
-  if (!response.data.data) {
-    throw new Error("failed to get states");
-  }
-  const state = binarySearch(response.data.data.states, name);
-  if (state) {
-    return {
-      name: state.name,
-      code: state.state_code,
-      countryName: response.data.data.name,
-      countryCode: response.data.data.iso2,
-      type: "states",
-    };
-  } else {
-    throw new Error("failed to get states");
+  } catch (err) {
+    throw new Error("No State Found");
   }
 };
 
@@ -269,34 +262,35 @@ const getAllCities = async (
 };
 
 const getCityByName = async (name: string, country: string, state: string) => {
-  const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
-  const { data } = await axios.post(
-    url,
-    {
-      country,
-      state,
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
+  try {
+    const url = "https://countriesnow.space/api/v0.1/countries/state/cities";
+    const { data } = await axios.post(
+      url,
+      {
+        country,
+        state,
       },
-      maxBodyLength: Infinity,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        maxBodyLength: Infinity,
+      }
+    );
+
+    let citiesArray = data.data;
+    if (citiesArray) {
+      return {
+        name: binarySearch(citiesArray, name),
+        state,
+        country,
+        type: "cities",
+      };
+    } else {
+      throw new Error("No City Found");
     }
-  );
-  //if data doesn't exist throw an error
-  if (!data.data) {
-    throw new Error("failed to get states");
-  }
-  let citiesArray = data.data;
-  if (citiesArray) {
-    return {
-      name: binarySearch(citiesArray, name),
-      state,
-      country,
-      type: "cities",
-    };
-  } else {
-    throw new Error("failed to fetch city");
+  } catch (err: any) {
+    throw new Error("No City Found");
   }
 };
 
