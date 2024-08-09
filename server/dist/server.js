@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
-import app, { isAuthenticated } from "./middleware/middleware.js";
+import app from "./app.js";
+import { isAuthenticated } from "./controllers/auth.controller.js";
 import locationRouter from "./routes/locations.router.js";
 import authRouter from "./routes/auth.router.js";
 import usersRouter from "./routes/users.router.js";
