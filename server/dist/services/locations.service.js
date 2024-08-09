@@ -263,6 +263,9 @@ const getAllAirports = async (city, region, page = 1, searchQuery) => {
         if (searchQuery) {
             airportsArray = airportsArray.filter((airport) => airport.name.toLowerCase().includes(searchQuery.toLowerCase()));
         }
+        if (airportsArray.length == 0) {
+            throw new Error("No Airports Found");
+        }
         //Map the data of the response to fit the airport interface
         return {
             total: airportsArray.length,

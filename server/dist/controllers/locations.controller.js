@@ -10,7 +10,7 @@ const getAllCountries = async (req, res) => {
             .json(await locationsService.getAllCountries(req.params.continent, page, searchQuery));
     }
     catch (err) {
-        res.status(403).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 const getCountryByName = async (req, res) => {
@@ -20,7 +20,7 @@ const getCountryByName = async (req, res) => {
             .json(await locationsService.getCountryByName(req.params.name));
     }
     catch (err) {
-        res.status(403).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 const getAllStates = async (req, res) => {
@@ -34,7 +34,7 @@ const getAllStates = async (req, res) => {
             .json(await locationsService.getAllStates(req.params.country, page, searchQuery));
     }
     catch (err) {
-        res.status(403).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 const getStateByName = async (req, res) => {
@@ -44,7 +44,7 @@ const getStateByName = async (req, res) => {
             .json(await locationsService.getStateByName(req.params.name, req.params.country));
     }
     catch (err) {
-        res.status(403).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 const getAllCities = async (req, res) => {
@@ -58,7 +58,7 @@ const getAllCities = async (req, res) => {
             .json(await locationsService.getAllCities(req.params.state, req.params.country, page, searchQuery));
     }
     catch (err) {
-        res.status(403).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 const getCityByName = async (req, res) => {
@@ -68,7 +68,7 @@ const getCityByName = async (req, res) => {
             .json(await locationsService.getCityByName(req.params.name, req.params.country, req.params.state));
     }
     catch (err) {
-        res.status(403).json({ message: err.message });
+        res.status(400).json({ message: err.message });
     }
 };
 const getAllAirports = async (req, res) => {
@@ -79,10 +79,10 @@ const getAllAirports = async (req, res) => {
     try {
         res
             .status(200)
-            .json(await locationsService.getAllAirports(req.params.region, req.params.countryCode, page, searchQuery));
+            .json(await locationsService.getAllAirports(req.params.city, req.params.region, page, searchQuery));
     }
     catch (err) {
-        res.status(403).json({ message: "No Airports found" });
+        res.status(400).json({ message: err.message });
     }
 };
 const getAllFlights = async (req, res) => {

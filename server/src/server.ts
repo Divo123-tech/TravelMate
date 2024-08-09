@@ -2,10 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import mongoose from "mongoose";
 import app from "./app.js";
-import { isAuthenticated } from "./controllers/auth.controller.js";
-import locationRouter from "./routes/locations.router.js";
-import authRouter from "./routes/auth.router.js";
-import usersRouter from "./routes/users.router.js";
+
 import { Server } from "socket.io";
 import http from "http";
 import sockets from "./utils/sockets.js";
@@ -19,9 +16,6 @@ const io: Server = new Server(server, {
 
 const port = 3000;
 
-app.use("/locations", locationRouter);
-app.use("/auth/google", authRouter);
-app.use("/users", isAuthenticated, usersRouter);
 // app.use("/users", usersRouter);
 
 server.listen(port, async () => {
