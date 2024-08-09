@@ -20,7 +20,7 @@ const getAllCountries = async (req: Request, res: Response): Promise<void> => {
         )
       );
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -30,7 +30,7 @@ const getCountryByName = async (req: Request, res: Response): Promise<void> => {
       .status(200)
       .json(await locationsService.getCountryByName(req.params.name));
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -52,7 +52,7 @@ const getAllStates = async (req: Request, res: Response): Promise<void> => {
         )
       );
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -67,7 +67,7 @@ const getStateByName = async (req: Request, res: Response) => {
         )
       );
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -90,7 +90,7 @@ const getAllCities = async (req: Request, res: Response): Promise<void> => {
         )
       );
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -106,7 +106,7 @@ const getCityByName = async (req: Request, res: Response): Promise<void> => {
         )
       );
   } catch (err: any) {
-    res.status(403).json({ message: err.message });
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -122,14 +122,14 @@ const getAllAirports = async (req: Request, res: Response): Promise<void> => {
       .status(200)
       .json(
         await locationsService.getAllAirports(
+          req.params.city,
           req.params.region,
-          req.params.countryCode,
           page,
           searchQuery
         )
       );
   } catch (err: any) {
-    res.status(403).json({ message: "No Airports found" });
+    res.status(400).json({ message: err.message });
   }
 };
 

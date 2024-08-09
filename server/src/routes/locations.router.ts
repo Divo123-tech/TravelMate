@@ -7,10 +7,7 @@ router.get("/states/:country", locationsController.getAllStates);
 router.get("/state/:country/:name", locationsController.getStateByName);
 router.get("/cities/:state/:country", locationsController.getAllCities);
 router.get("/city/:country/:state/:name", locationsController.getCityByName);
-router.get(
-  "/airports/:region/:countryCode",
-  locationsController.getAllAirports
-);
+router.get("/airports/:city/:region", locationsController.getAllAirports);
 router.get("/flights", locationsController.getAllFlights);
 router.get("/hotels/:city/:countryCode", locationsController.getAllHotels);
 router.get(
