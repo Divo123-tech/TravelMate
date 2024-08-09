@@ -39,7 +39,7 @@ const deleteTrip = async (req, res) => {
             throw new Error("Trip Not Found");
         }
         //get the owner of the trip
-        const tripOwner = await usersService.findUserById(trip.owner);
+        const tripOwner = await usersService.getUserDetails(trip.owner, "_id");
         //check if the user trying to delete the trip is the owner
         //delete the trip from the owner's trips array
         await usersService.deleteTrip(req.params.id, req.params.tripId);
@@ -48,7 +48,7 @@ const deleteTrip = async (req, res) => {
         if (tripOwner?.googleId == req.params.id) {
             for (const collaboratorId of trip.collaborators || []) {
                 //find the collaborator
-                const collaborator = await usersService.findUserById(collaboratorId);
+                const collaborator = await usersService.getUserDetails(collaboratorId, "_id");
                 if (!collaborator) {
                     throw new Error("User Not Found");
                 }

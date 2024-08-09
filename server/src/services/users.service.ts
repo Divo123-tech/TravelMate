@@ -1,4 +1,4 @@
-import userModel from "../models/users.model.js";
+import userModel, { UserInterface } from "../models/users.model.js";
 import mongoose from "mongoose";
 const userExists = async (email: string): Promise<boolean> => {
   const user = await userModel.findOne({ email });
@@ -9,8 +9,8 @@ const addUser = async (
   googleId: string,
   email: string,
   picture: string
-): Promise<void> => {
-  await userModel.create({
+): Promise<UserInterface> => {
+  return await userModel.create({
     googleId,
     email,
     picture,
@@ -36,15 +36,14 @@ const editUserDetails = async (
   );
 };
 
-const getUserDetails = async (collaboratorInfo: string, searchBy: string) => {
+const getUserDetails = async (
+  info: string | mongoose.Types.ObjectId,
+  searchBy: string
+) => {
   return await userModel
-    .findOne({ [`${searchBy}`]: collaboratorInfo })
+    .findOne({ [`${searchBy}`]: info })
     .populate("trips")
     .exec();
-};
-
-const findUserById = async (id: mongoose.Types.ObjectId) => {
-  return await userModel.findById(id);
 };
 
 const addTrip = async (
@@ -84,5 +83,4 @@ export default {
   getUserDetails,
   addTrip,
   deleteTrip,
-  findUserById,
 };
