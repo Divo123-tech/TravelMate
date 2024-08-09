@@ -45,8 +45,9 @@ const deleteTrip = async (req: Request, res: Response): Promise<void> => {
       throw new Error("Trip Not Found");
     }
     //get the owner of the trip
-    const tripOwner: UserInterface | null = await usersService.findUserById(
-      trip.owner
+    const tripOwner: UserInterface | null = await usersService.getUserDetails(
+      trip.owner,
+      "_id"
     );
     //check if the user trying to delete the trip is the owner
 
@@ -59,7 +60,7 @@ const deleteTrip = async (req: Request, res: Response): Promise<void> => {
       for (const collaboratorId of trip.collaborators || []) {
         //find the collaborator
         const collaborator: UserInterface | null =
-          await usersService.findUserById(collaboratorId);
+          await usersService.getUserDetails(collaboratorId, "_id");
         if (!collaborator) {
           throw new Error("User Not Found");
         }
