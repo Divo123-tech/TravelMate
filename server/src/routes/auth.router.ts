@@ -4,7 +4,7 @@ import {
   googleAuthCallback,
   redirectToHome,
   logOut,
-} from "../middleware/middleware.js";
+} from "../controllers/auth.controller.js";
 const router = Router();
 router.get("/", googleAuth);
 router.post("/logout", logOut);

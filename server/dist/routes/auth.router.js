@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { googleAuth, googleAuthCallback, redirectToHome, logOut, } from "../middleware/middleware.js";
+import { googleAuth, googleAuthCallback, redirectToHome, logOut, } from "../controllers/auth.controller.js";
 const router = Router();
 router.get("/", googleAuth);
 router.post("/logout", logOut);
