@@ -94,7 +94,7 @@ const ExploreLocations = () => {
   const { setCurrentPage } = pageContext;
 
   useEffect(() => {
-    setCurrentPage("Explore");
+    setCurrentPage(locationType == "activities" ? "Explore" : "Locations");
   }, []);
   const changeContinent = (e: ChangeEvent<HTMLSelectElement>) => {
     setContinent(e.target.value);

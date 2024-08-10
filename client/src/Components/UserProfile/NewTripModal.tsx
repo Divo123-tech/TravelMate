@@ -15,7 +15,7 @@ const NewTripModal = ({ show, onHide }: Props) => {
   if (!context) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
-  const { user, setUser } = context;
+  const { setUser } = context;
   const navigate = useNavigate();
   const [tripDetails, setTripDetails] = useState({
     name: "",
@@ -35,8 +35,7 @@ const NewTripModal = ({ show, onHide }: Props) => {
         const newTrip = await createNewTrip(
           tripDetails.name,
           tripDetails.startDate,
-          tripDetails.endDate,
-          user?.googleId || ""
+          tripDetails.endDate
         );
         navigate(`/trip/${newTrip._id}`);
         setUser((prevUser: any) => {

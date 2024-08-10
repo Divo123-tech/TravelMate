@@ -71,7 +71,7 @@ const UserProfile: FC = () => {
   }, []);
   const handleDelete = async (tripId: string) => {
     try {
-      await deleteTrip(user?.googleId || "", tripId);
+      await deleteTrip(tripId);
       setUser(await getCurrentUser());
     } catch (err) {
       return;
@@ -109,7 +109,6 @@ const UserProfile: FC = () => {
           throw new Error("user not found");
         }
         const userData = await editUserDetails(
-          user.googleId,
           user.name,
           user.passport,
           user.currencyUsed

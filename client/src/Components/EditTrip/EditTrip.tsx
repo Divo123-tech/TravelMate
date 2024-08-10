@@ -95,7 +95,7 @@ const EditTrip = () => {
           throw new Error("404 not found");
         }
 
-        const tripDetails = await getTripDetails(userDetails._id, tripId);
+        const tripDetails = await getTripDetails(tripId);
         setTrip(tripDetails); // Set trip state with the fetched data
       } catch (err) {
         setTrip(null);
