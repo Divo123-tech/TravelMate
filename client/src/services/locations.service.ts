@@ -29,7 +29,6 @@ export const getCountryByName = (countryName: string) => {
   try {
     const cacheKey = `country_${countryName}`;
     const url = `${ServerAPI}/locations/country/${countryName}`;
-    console.log(url);
     return cachedApiCall(cacheKey, async () => {
       const { data } = await axios.get(url, { withCredentials: true });
       return data;
@@ -176,7 +175,6 @@ export const getAllAirports = async (
   if (searchQuery) {
     url += `searchQuery=${searchQuery}&`;
   }
-  console.log(url);
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
     return data;

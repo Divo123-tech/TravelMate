@@ -19,14 +19,12 @@ export const logOutAPI = async () => {
   }
 };
 export const editUserDetails = async (
-  googleId: string,
   name: string,
   passport: PassportType,
   currencyUsed: string
 ): Promise<UserType> => {
-  const url = ServerAPI + "/users/details";
+  const url = ServerAPI + "/users";
   const body = {
-    googleId,
     name,
     passport,
     currencyUsed,
@@ -37,7 +35,7 @@ export const editUserDetails = async (
 
 export const getCurrentUser = async (): Promise<UserType | null> => {
   try {
-    const url = `${ServerAPI}/users/current`;
+    const url = `${ServerAPI}/users`;
     const { data } = await axios.get(url, { withCredentials: true });
     return data;
   } catch (err: any) {
@@ -58,17 +56,14 @@ export const searchUserDetails = async (
   }
 };
 
-export const deleteTrip = async (
-  userId: string,
-  tripId: string
-): Promise<TripType> => {
-  const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
+export const deleteTrip = async (tripId: string): Promise<TripType> => {
+  const url = `${ServerAPI}/users/trips/${tripId}`;
   const { data } = await axios.delete(url, { withCredentials: true });
   return data;
 };
 
-export const getTripDetails = async (userId: string, tripId: string) => {
-  const url = `${ServerAPI}/users/${userId}/trips/${tripId}`;
+export const getTripDetails = async (tripId: string) => {
+  const url = `${ServerAPI}/users/trips/${tripId}`;
   const { data } = await axios.get(url, { withCredentials: true });
   return data;
 };
@@ -76,10 +71,9 @@ export const getTripDetails = async (userId: string, tripId: string) => {
 export const createNewTrip = async (
   name: string,
   startDate: string,
-  endDate: string,
-  userId: string
+  endDate: string
 ) => {
-  const url = `${ServerAPI}/users/${userId}/trips`;
+  const url = `${ServerAPI}/users/trips`;
   const body = {
     name,
     startDate,
