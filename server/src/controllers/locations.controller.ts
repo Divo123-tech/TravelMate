@@ -1,4 +1,4 @@
-import locationsService from "../services/locations.service.js";
+import locationsService, { flightType } from "../services/locations.service.js";
 import { Request, Response } from "express";
 
 const getAllCountries = async (req: Request, res: Response): Promise<void> => {
@@ -133,22 +133,8 @@ const getAllAirports = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
-interface FlightInterface {
-  origin: string;
-  destination: string;
-  departureDate: string;
-  adults: number;
-  nonstop: boolean;
-  currency: string;
-  children?: number;
-  infants?: number;
-  maxPrice?: number;
-  travelClass?: travelClassType;
-  page?: number;
-}
 const getAllFlights = async (
-  req: Request<any, any, any, FlightInterface>,
+  req: Request<any, any, any, flightType>,
   res: Response
 ): Promise<void> => {
   const {

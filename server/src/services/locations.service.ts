@@ -457,22 +457,20 @@ const getFlightURL = (
 };
 
 //initialize the travelClassType which can only be 4 strings
-type travelClassType = "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
 
 //create a flight interface to output
 export type flightType = {
   origin: string;
   destination: string;
-  duration: string;
-  stops: number;
   departureDate: string;
-  arrivalDate: string;
-  cabin: string;
-  url: string;
-  price: number;
-  airline: string;
+  adults: number;
+  nonstop: boolean;
   currency: string;
-  type: string;
+  children?: number;
+  infants?: number;
+  maxPrice?: number;
+  travelClass?: string;
+  page?: number;
 };
 //function that gets all flights on various parameters
 const getAllFlights = async (
@@ -485,7 +483,7 @@ const getAllFlights = async (
   children?: number,
   infants?: number,
   maxPrice?: number,
-  travelClass?: travelClassType,
+  travelClass?: string,
   page: number = 1
 ): Promise<{ total: number; data: flightType[] }> => {
   let url = `https://api.amadeus.com/v2/shopping/flight-offers?originLocationCode=${origin}&destinationLocationCode=${destination}&departureDate=${departureDate}&adults=${adults}&nonStop=${nonstop}&currencyCode=${currencyCode}`;

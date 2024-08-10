@@ -141,3 +141,7 @@ describe("Get All Airports", () => {
     expect(response.body.message).toBe("No Airports Found");
   });
 });
+
+describe("Get All Flights", () => {
+  jest.mock("./locationsService");
+});
