@@ -5,13 +5,11 @@ import {
   getAllStates,
   getStateByName,
   getAllCities,
-  getCityByName,
   getAllFlights,
   getAllAirports,
   getAllHotels,
   getCountryExchange,
   getCountryVisa,
-  getAllVideos,
   getAllAttractions,
   getLocationTime,
 } from "../services/locations.service";
@@ -95,7 +93,7 @@ describe("getCountryByName", () => {
     const mockResponseData = { name: "Japan", code: "JP" };
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
-    const result = await getCountryByName(countryName);
+    await getCountryByName(countryName);
     const expectedUrl = `http://localhost:3000/locations/country/${countryName}`;
     const expectedCacheKey = `country_${countryName}`;
 
@@ -131,7 +129,7 @@ describe("getAllStates", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllStates(country);
+    await getAllStates(country);
 
     const expectedUrl = `http://localhost:3000/locations/states/${country}?`;
     const expectedCacheKey = `states_${country}_undefined_undefined`;
@@ -210,7 +208,7 @@ describe("getStateByName", () => {
     // Mock the axios get method to resolve with mock data
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getStateByName(name, country);
+    await getStateByName(name, country);
 
     // Define the expected URL and cacheKey
     const expectedCacheKey = `state_${country}_${name}`;
@@ -264,7 +262,7 @@ describe("getAllCities", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllCities(state, country, page, searchQuery, limit);
+    await getAllCities(state, country, page, searchQuery, limit);
 
     const expectedUrl = `http://localhost:3000/locations/cities/${state}/${country}?page=${page}&searchQuery=${searchQuery}&limit=${limit}&`;
     const expectedCacheKey = `cities_${state}_${country}_${page}_${searchQuery}`;
@@ -352,7 +350,7 @@ describe("getAllHotels", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllHotels(city, country, page, searchQuery);
+    await getAllHotels(city, country, page, searchQuery);
 
     const expectedUrl = `http://localhost:3000/locations/hotels/${city}/${country}?page=${page}&searchQuery=${searchQuery}&`;
     const expectedCacheKey = `hotels_${city}_${country}_${page}_${searchQuery}`;
@@ -403,7 +401,7 @@ describe("getAllAirports", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllAirports(city, country, page, searchQuery);
+    await getAllAirports(city, country, page, searchQuery);
 
     const expectedUrl = `${ServerAPI}/locations/airports/${city}/${country}?page=${page}&searchQuery=${searchQuery}&`;
     const expectedCacheKey = `airports_${city}_${country}_${page}_${searchQuery}`;
@@ -432,7 +430,7 @@ describe("getAllAirports", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllAirports(city, country);
+    await getAllAirports(city, country);
 
     const expectedUrl = `${ServerAPI}/locations/airports/${city}/${country}?`;
     const expectedCacheKey = `airports_${city}_${country}_undefined_undefined`;
@@ -488,13 +486,7 @@ describe("getAllAttractions", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllAttractions(
-      city,
-      country,
-      category,
-      page,
-      searchQuery
-    );
+    await getAllAttractions(city, country, category, page, searchQuery);
 
     const expectedUrl = `${ServerAPI}/locations/attractions/${city}/${country}?category=${category}&page=${page}&searchQuery=${searchQuery}&`;
     const expectedCacheKey = `${category}_${city}_${country}_${page}_${searchQuery}`;
@@ -529,7 +521,7 @@ describe("getAllAttractions", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllAttractions(city, country, category);
+    await getAllAttractions(city, country, category);
 
     const expectedUrl = `${ServerAPI}/locations/attractions/${city}/${country}?category=${category}&`;
     const expectedCacheKey = `${category}_${city}_${country}_undefined_undefined`;
@@ -573,7 +565,7 @@ describe("getAllFlights", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllFlights(
+    await getAllFlights(
       origin,
       destination,
       departureDate,
@@ -621,7 +613,7 @@ describe("getAllFlights", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
 
-    const result = await getAllFlights(
+    await getAllFlights(
       origin,
       destination,
       departureDate,

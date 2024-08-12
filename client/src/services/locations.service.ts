@@ -241,7 +241,6 @@ export const getAllFlights = async (
   }
   return cachedApiCall(cacheKey, async () => {
     const { data } = await axios.get(url, { withCredentials: true });
-    console.log(data);
     return data;
   });
 };
