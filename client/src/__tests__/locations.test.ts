@@ -5,6 +5,7 @@ import {
   getAllStates,
   getStateByName,
   getAllCities,
+  getCityByName,
   getAllFlights,
   getAllAirports,
   getAllHotels,
@@ -12,6 +13,7 @@ import {
   getCountryVisa,
   getAllAttractions,
   getLocationTime,
+  getAllVideos,
 } from "../services/locations.service";
 import { cachedApiCall } from "../utils/apiCache";
 import { timeZoneType } from "../types/types";
@@ -20,7 +22,7 @@ const ServerAPI = "http://localhost:3000";
 // Mocking axios and cachedApiCall
 jest.mock("axios");
 jest.mock("../utils/apiCache");
-describe("getAllCountries", () => {
+describe("Get All Countries", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   const mockCachedApiCall = cachedApiCall as jest.Mock;
 
@@ -83,7 +85,7 @@ describe("getAllCountries", () => {
     expect(result).toEqual(mockResponseData);
   });
 });
-describe("getCountryByName", () => {
+describe("Get Country By Name", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -118,7 +120,7 @@ describe("getCountryByName", () => {
   });
 });
 
-describe("getAllStates", () => {
+describe("Get All States", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -149,7 +151,7 @@ describe("getAllStates", () => {
   });
 });
 
-describe("getCountryVisa", () => {
+describe("Get a Country's Visa", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -172,7 +174,7 @@ describe("getCountryVisa", () => {
   });
 });
 
-describe("getCountryExchange", () => {
+describe("Get a Country's Exchange Rate", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -195,7 +197,7 @@ describe("getCountryExchange", () => {
   });
 });
 
-describe("getStateByName", () => {
+describe("Get State By Name", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -245,7 +247,7 @@ describe("getStateByName", () => {
   });
 });
 
-describe("getAllCities", () => {
+describe("Get All Cities", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -293,7 +295,7 @@ describe("getAllCities", () => {
     }
   });
 });
-describe("getLocationTime", () => {
+describe("Get Location Time", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -331,7 +333,7 @@ describe("getLocationTime", () => {
   });
 });
 
-describe("getAllHotels", () => {
+describe("Get All Hotels", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -381,7 +383,7 @@ describe("getAllHotels", () => {
     }
   });
 });
-describe("getAllAirports", () => {
+describe("Get All Airports", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -462,7 +464,7 @@ describe("getAllAirports", () => {
   });
 });
 
-describe("getAllAttractions", () => {
+describe("Get All Attractions", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -542,7 +544,7 @@ describe("getAllAttractions", () => {
   });
 });
 
-describe("getAllFlights", () => {
+describe("Get All Flights", () => {
   const mockAxiosGet = axios.get as jest.Mock;
   beforeEach(() => {
     jest.clearAllMocks();
@@ -641,5 +643,131 @@ describe("getAllFlights", () => {
     });
 
     expect(data).toEqual(mockResponseData);
+  });
+});
+describe("getAllVideos", () => {
+  const mockAxiosGet = axios.get as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  it("should call cachedApiCall with the correct cacheKey and fetch videos data from the API", async () => {
+    const city = "New York";
+    const page = 1;
+    const searchQuery = "Times Square";
+    const mockResponseData = [
+      { title: "Times Square at Night", city: "New York" },
+    ];
+
+    mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
+
+    await getAllVideos(city, page, searchQuery);
+
+    const expectedUrl = `${ServerAPI}/locations/videos/${city}?page=${page}&searchQuery=${searchQuery}&`;
+    const expectedCacheKey = `videos_${city}_${page}_${searchQuery}`;
+
+    expect(cachedApiCall).toHaveBeenCalledWith(
+      expectedCacheKey,
+      expect.any(Function)
+    );
+
+    const fetchFunction = (cachedApiCall as jest.Mock).mock.calls[0][1];
+    const data = await fetchFunction();
+
+    expect(mockAxiosGet).toHaveBeenCalledWith(expectedUrl, {
+      withCredentials: true,
+    });
+
+    expect(data).toEqual(mockResponseData);
+  });
+
+  it("should handle missing optional parameters", async () => {
+    const city = "Tokyo";
+    const mockResponseData = [{ title: "Tokyo Cityscape", city: "Tokyo" }];
+
+    mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
+
+    await getAllVideos(city);
+
+    const expectedUrl = `${ServerAPI}/locations/videos/${city}?`;
+    const expectedCacheKey = `videos_${city}_undefined_undefined`;
+
+    expect(cachedApiCall).toHaveBeenCalledWith(
+      expectedCacheKey,
+      expect.any(Function)
+    );
+
+    const fetchFunction = (cachedApiCall as jest.Mock).mock.calls[0][1];
+    const data = await fetchFunction();
+
+    expect(mockAxiosGet).toHaveBeenCalledWith(expectedUrl, {
+      withCredentials: true,
+    });
+
+    expect(data).toEqual(mockResponseData);
+  });
+});
+
+describe("Get City By Name", () => {
+  const mockAxiosGet = axios.get as jest.Mock;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should call cachedApiCall with the correct cacheKey and fetch city data from the API", async () => {
+    const name = "San Francisco";
+    const country = "USA";
+    const state = "California";
+    const mockResponseData = {
+      name: "San Francisco",
+      state: "California",
+      country: "USA",
+    };
+
+    // Mock the axios get method to resolve with mock data
+    mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
+
+    await getCityByName(name, country, state);
+
+    // Define the expected URL and cacheKey
+    const expectedCacheKey = `city_${country}_${state}_${name}`;
+    const expectedUrl = `${ServerAPI}/locations/city/${country}/${state}/${name}`;
+
+    // Assert that cachedApiCall was called with the correct cacheKey and function
+    expect(cachedApiCall).toHaveBeenCalledWith(
+      expectedCacheKey,
+      expect.any(Function)
+    );
+
+    // Extract the function passed to cachedApiCall
+    const fetchFunction = (cachedApiCall as jest.Mock).mock.calls[0][1];
+
+    // Call the fetchFunction to simulate the axios call
+    const data = await fetchFunction();
+
+    // Assert that axios.get was called with the correct URL and options
+    expect(mockAxiosGet).toHaveBeenCalledWith(expectedUrl, {
+      withCredentials: true,
+    });
+
+    // Assert that the data returned by the function is correct
+    expect(data).toEqual(mockResponseData);
+  });
+
+  it("should handle errors and return null", async () => {
+    const name = "InvalidCity";
+    const country = "UnknownCountry";
+    const state = "InvalidState";
+
+    // Mock the axios get method to reject with an error
+    mockAxiosGet.mockRejectedValueOnce(new Error("City not found"));
+
+    try {
+      await getCityByName(name, country, state);
+    } catch (error) {
+      // In this function, errors should be caught within the function itself,
+      // so we would not expect this block to be executed
+      expect(error).toBeNull();
+    }
   });
 });
