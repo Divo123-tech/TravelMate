@@ -7,9 +7,11 @@ import {
   mockTripLocationAdded,
 } from "../../__mocks__/services/trips.mocks";
 
+// Tests for adding a trip
 describe("Add a trip", () => {
   const mockAddTrip = jest.fn();
   tripsService.addTrip = mockAddTrip;
+  // Mocking users service for adding trips
   jest.mock("../../services/users.service", () => {
     return {
       default: {
@@ -17,9 +19,11 @@ describe("Add a trip", () => {
       },
     };
   });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   it("Should return the details of the newly added trip", async () => {
     mockAddTrip.mockResolvedValue(mockTrip);
     const response = await tripsService.addTrip(
@@ -32,9 +36,11 @@ describe("Add a trip", () => {
   });
 });
 
+// Tests for deleting a trip
 describe("Delete A Trip", () => {
   const mockDeleteTrip = jest.fn();
   tripsService.deleteTrip = mockDeleteTrip;
+  // Mocking users service for deleting trips
   jest.mock("../../services/users.service", () => {
     return {
       default: {
@@ -42,10 +48,12 @@ describe("Delete A Trip", () => {
       },
     };
   });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it("Should return the details of the newly added trip", async () => {
+
+  it("Should return the details of the deleted trip", async () => {
     mockDeleteTrip.mockResolvedValue(mockTrip);
     const response = await tripsService.deleteTrip("66a0704655cdf4fcde3d858d");
     expect(response?.name).toBe("newTrip");
@@ -54,9 +62,11 @@ describe("Delete A Trip", () => {
   });
 });
 
+// Tests for getting a trip's details
 describe("Get a trip's details", () => {
   const mockGetTrip = jest.fn();
   tripsService.getTripDetails = mockGetTrip;
+  // Mocking users service for getting trip details
   jest.mock("../../services/users.service", () => {
     return {
       default: {
@@ -64,10 +74,12 @@ describe("Get a trip's details", () => {
       },
     };
   });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it("Should return the details of the newly added trip", async () => {
+
+  it("Should return the details of the trip", async () => {
     mockGetTrip.mockResolvedValue(mockTrip);
     const response = await tripsService.getTripDetails(
       "66a0704655cdf4fcde3d858d"
@@ -76,6 +88,7 @@ describe("Get a trip's details", () => {
     expect(response?.startDate).toBe("2024-07-18");
     expect(response?.endDate).toBe("2024-07-29");
   });
+
   it("Should throw an error if the wrong id is provided", async () => {
     mockGetTrip.mockResolvedValue([]);
     const response = await tripsService.getTripDetails("wrongId");
@@ -83,10 +96,12 @@ describe("Get a trip's details", () => {
   });
 });
 
+// Tests for managing trip collaborators
 describe("Trip Collaborators", () => {
   describe("Add Collaborator", () => {
     const mockAddCollaborator = jest.fn();
     tripsService.addCollaborator = mockAddCollaborator;
+    // Mocking users service for adding collaborators
     jest.mock("../../services/users.service", () => {
       return {
         default: {
@@ -94,9 +109,11 @@ describe("Trip Collaborators", () => {
         },
       };
     });
+
     afterEach(() => {
       jest.clearAllMocks();
     });
+
     it("Should return the new trip with the newly added collaborator", async () => {
       mockAddCollaborator.mockResolvedValue(mockTripCollaboratorAdded);
       const response = await tripsService.addCollaborator(
@@ -110,16 +127,19 @@ describe("Trip Collaborators", () => {
   describe("Delete Collaborator", () => {
     const mockRemoveCollaborator = jest.fn();
     tripsService.removeCollaborator = mockRemoveCollaborator;
+    // Mocking users service for removing collaborators
     jest.mock("../../services/users.service", () => {
       return {
         default: {
-          addCollaborator: jest.fn(),
+          removeCollaborator: jest.fn(),
         },
       };
     });
+
     afterEach(() => {
       jest.clearAllMocks();
     });
+
     it("Should return the new trip with the removed collaborator", async () => {
       mockRemoveCollaborator.mockResolvedValue(mockTrip);
       const response = await tripsService.removeCollaborator(
@@ -131,9 +151,11 @@ describe("Trip Collaborators", () => {
   });
 });
 
+// Tests for editing trip details
 describe("Edit Trip's Details", () => {
   const mockEditTrip = jest.fn();
   tripsService.editTripDetails = mockEditTrip;
+  // Mocking users service for editing trip details
   jest.mock("../../services/users.service", () => {
     return {
       default: {
@@ -141,9 +163,11 @@ describe("Edit Trip's Details", () => {
       },
     };
   });
+
   afterEach(() => {
     jest.clearAllMocks();
   });
+
   it("Should return the trip with the newly edited trip details", async () => {
     mockEditTrip.mockResolvedValue(mockTripDetailsEdited);
     const response = await tripsService.editTripDetails(
@@ -158,10 +182,12 @@ describe("Edit Trip's Details", () => {
   });
 });
 
+// Tests for managing trip locations
 describe("Trip Locations", () => {
   describe("Add Location To Trip", () => {
     const mockAddLocation = jest.fn();
     tripsService.addLocationToTrip = mockAddLocation;
+    // Mocking users service for adding locations to a trip
     jest.mock("../../services/users.service", () => {
       return {
         default: {
@@ -169,9 +195,11 @@ describe("Trip Locations", () => {
         },
       };
     });
+
     afterEach(() => {
       jest.clearAllMocks();
     });
+
     it("Should return the trip with the newly added location in its corresponding array", async () => {
       mockAddLocation.mockResolvedValue(mockTripLocationAdded);
       const response = await tripsService.addLocationToTrip(
@@ -188,20 +216,24 @@ describe("Trip Locations", () => {
       expect(response?.states?.length).toBe(1);
     });
   });
+
   describe("Delete Location To Trip", () => {
     const mockRemoveLocation = jest.fn();
     tripsService.removeLocationFromTrip = mockRemoveLocation;
+    // Mocking users service for removing locations from a trip
     jest.mock("../../services/users.service", () => {
       return {
         default: {
-          addLocationToTrip: jest.fn(),
+          removeLocationFromTrip: jest.fn(),
         },
       };
     });
+
     afterEach(() => {
       jest.clearAllMocks();
     });
-    it("Should return the trip with the newly added location in its corresponding array", async () => {
+
+    it("Should return the trip with the location removed from its corresponding array", async () => {
       mockRemoveLocation.mockResolvedValue(mockTrip);
       const response = await tripsService.removeLocationFromTrip(
         "66a0704655cdf4fcde3f855g",
