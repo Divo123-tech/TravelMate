@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "build": "tsc",
     "watch": "nodemon dist/server.js"
   },

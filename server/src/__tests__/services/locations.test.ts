@@ -7,7 +7,7 @@ import {
   mockAttractionResponse,
   mockFlightReponse,
   mockVideoResponse,
-} from "../../__mocks__/locations.mocks";
+} from "../../__mocks__/services/locations.mocks";
 describe("Get All Countries", () => {
   it("should return a total of 186 with 10 in the data and Afghanistan as the first country when fetching from all continents", async () => {
     const response = await locationsService.getAllCountries(

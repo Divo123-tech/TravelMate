@@ -23,17 +23,21 @@ const editUserDetails = async (
   passport: object,
   currencyUsed: string
 ) => {
-  return await userModel.findOneAndUpdate(
-    { googleId },
-    {
-      $set: {
-        name,
-        passport,
-        currencyUsed,
+  try {
+    return await userModel.findOneAndUpdate(
+      { googleId },
+      {
+        $set: {
+          name,
+          passport,
+          currencyUsed,
+        },
       },
-    },
-    { new: true }
-  );
+      { new: true }
+    );
+  } catch (error) {
+    throw new Error("Failed To Edit User");
+  }
 };
 
 const getUserDetails = async (

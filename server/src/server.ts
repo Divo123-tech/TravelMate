@@ -16,8 +16,6 @@ const io: Server = new Server(server, {
 
 const port = 3000;
 
-// app.use("/users", usersRouter);
-
 server.listen(port, async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL as string);

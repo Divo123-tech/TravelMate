@@ -3,7 +3,7 @@ import {
   mockNewUserResponse,
   mockTripAddedResponse,
   mockUserDetailsResponse,
-} from "../../__mocks__/users.mocks";
+} from "../../__mocks__/services/users.mocks";
 import usersService from "../../services/users.service";
 
 describe("Find if User exists", () => {

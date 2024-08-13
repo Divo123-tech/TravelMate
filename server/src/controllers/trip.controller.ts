@@ -3,12 +3,14 @@ import tripsService from "../services/trips.service.js";
 import usersService from "../services/users.service.js";
 import { TripInterface } from "../models/trips.model.js";
 import { UserInterface } from "../models/users.model.js";
+import { User } from "./users.controller.js";
 
 //function to add a trip into the trips database and the trips array of the user
 const addTrip = async (req: Request, res: Response): Promise<void> => {
+  const currentUser = req.user as User & { id: string };
   try {
     //get the user
-    const user = await usersService.getUserDetails(req.params.id, "googleId");
+    const user = await usersService.getUserDetails(currentUser.id, "googleId");
     //check if the user exists
     if (!user) {
       throw new Error("User Not Found");
@@ -16,7 +18,7 @@ const addTrip = async (req: Request, res: Response): Promise<void> => {
     //add the trip and get the newly created trip
     const trip = await tripsService.addTrip(req.body, user._id);
     //add a trip to the given user's trips array
-    await usersService.addTrip(req.params.id, trip._id);
+    await usersService.addTrip(currentUser.id, trip._id);
     res.status(200).json(trip);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -35,6 +37,7 @@ const getTripDetails = async (req: Request, res: Response): Promise<void> => {
 //function to delete a trip from both the trips database
 //from the owners trip array and the collaborators trips array
 const deleteTrip = async (req: Request, res: Response): Promise<void> => {
+  const currentUser = req.user as User & { id: string };
   try {
     //get the trip wanting to be deleted
     const trip: TripInterface | null = await tripsService.getTripDetails(
@@ -52,11 +55,11 @@ const deleteTrip = async (req: Request, res: Response): Promise<void> => {
     //check if the user trying to delete the trip is the owner
 
     //delete the trip from the owner's trips array
-    await usersService.deleteTrip(req.params.id, req.params.tripId);
+    await usersService.deleteTrip(currentUser.id, req.params.tripId);
     //go through all the collaborators from the trip being deleted
 
     //if the owner deletes the trip
-    if (tripOwner?.googleId == req.params.id) {
+    if (tripOwner?.googleId == currentUser.id) {
       for (const collaboratorId of trip.collaborators || []) {
         //find the collaborator
         const collaborator: UserInterface | null =

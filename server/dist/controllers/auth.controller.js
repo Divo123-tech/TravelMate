@@ -4,16 +4,22 @@ import passport from "../utils/passportSetup.js";
 import usersService from "../services/users.service.js";
 import jwt from "jsonwebtoken";
 export const isAuthenticated = (req, res, next) => {
-    const token = req.session.token;
-    if (!token)
-        return res.redirect("http://localhost:3000/auth/google");
-    jwt.verify(token, process.env.JWT_KEY, (err, user) => {
-        if (err) {
+    if (process.env.NODE_ENV !== "test") {
+        const token = req.session.token;
+        if (!token)
             return res.redirect("http://localhost:3000/auth/google");
-        }
-        req.user = user;
+        jwt.verify(token, process.env.JWT_KEY, (err, user) => {
+            if (err) {
+                return res.redirect("http://localhost:3000/auth/google");
+            }
+            req.user = user;
+            next();
+        });
+    }
+    else {
+        req.user = { id: "12345" };
         next();
-    });
+    }
 };
 export const googleAuth = passport.authenticate("google", {
     scope: ["profile", "email"],

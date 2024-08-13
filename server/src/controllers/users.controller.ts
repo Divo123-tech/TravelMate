@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
 import usersService from "../services/users.service.js";
-interface User {
+export interface User {
   id: string;
 }
 const editUserDetails = async (req: Request, res: Response) => {
+  const user = req.user as User & { id: string };
   try {
-    // const user = req.user as User & { id: string };
     //find the req.user and pass it into the googleId
     res
       .status(200)
       .json(
         await usersService.editUserDetails(
-          req.body.googleId,
+          user.id,
           req.body.name,
           req.body.passport,
           req.body.currencyUsed
         )
       );
   } catch (err: any) {
-    res.status(400).json({ message: err.message });
+    res.status(401).json({ message: err.message });
   }
 };
 

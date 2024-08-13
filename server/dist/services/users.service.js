@@ -12,13 +12,18 @@ const addUser = async (googleId, email, picture) => {
     });
 };
 const editUserDetails = async (googleId, name, passport, currencyUsed) => {
-    return await userModel.findOneAndUpdate({ googleId }, {
-        $set: {
-            name,
-            passport,
-            currencyUsed,
-        },
-    }, { new: true });
+    try {
+        return await userModel.findOneAndUpdate({ googleId }, {
+            $set: {
+                name,
+                passport,
+                currencyUsed,
+            },
+        }, { new: true });
+    }
+    catch (error) {
+        throw new Error("Failed To Edit User");
+    }
 };
 const getUserDetails = async (info, searchBy) => {
     return await userModel

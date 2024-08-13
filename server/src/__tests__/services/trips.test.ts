@@ -5,7 +5,7 @@ import {
   mockTripCollaboratorAdded,
   mockTripDetailsEdited,
   mockTripLocationAdded,
-} from "../../__mocks__/trips.mocks";
+} from "../../__mocks__/services/trips.mocks";
 
 describe("Add a trip", () => {
   const mockAddTrip = jest.fn();
