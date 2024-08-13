@@ -511,19 +511,28 @@ const getCountryVisa = async (countryCodeFrom, countryCodeTo) => {
         visaDuration: visaStatus.dur,
     };
 };
+// Function to get the exchange rate between two currencies
 const getCountryExchangeRate = async (currencyFrom, currencyTo) => {
+    // Construct the URL to fetch the exchange rate data
     const excRateURL = `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencyFrom.toLowerCase()}.json`;
     try {
+        // Fetch the exchange rate data from the API
         const exchangeRate = (await axios.get(excRateURL)).data;
+        // Return the exchange rate from currencyFrom to currencyTo
         return exchangeRate[currencyFrom.toLowerCase()][currencyTo.toLowerCase()];
     }
     catch (err) {
-        throw new Error("failed to get details");
+        // Handle errors by throwing a specific error message
+        throw new Error("Failed to get exchange rate details");
     }
 };
+// Function to get the current time and timezone of a location
 const getLocationTime = async (city, country) => {
+    // Get the coordinates (latitude and longitude) of the city
     const { lat, lon } = await getCoords(city, country);
+    // Fetch the current time and timezone based on the coordinates
     const response = await axios.get(`https://timeapi.io/api/Time/current/coordinate?latitude=${lat}&longitude=${lon}`);
+    // Return the current date, time, and timezone
     return {
         date: response.data.date,
         time: response.data.time,
