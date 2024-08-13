@@ -96,7 +96,7 @@ describe("Get Country By Name", () => {
 
     mockAxiosGet.mockResolvedValueOnce({ data: mockResponseData });
     await getCountryByName(countryName);
-    const expectedUrl = `http://localhost:3000/locations/country/${countryName}`;
+    const expectedUrl = `${ServerAPI}/locations/country/${countryName}`;
     const expectedCacheKey = `country_${countryName}`;
 
     expect(cachedApiCall).toHaveBeenCalledWith(
@@ -133,7 +133,7 @@ describe("Get All States", () => {
 
     await getAllStates(country);
 
-    const expectedUrl = `http://localhost:3000/locations/states/${country}?`;
+    const expectedUrl = `${ServerAPI}/locations/states/${country}?`;
     const expectedCacheKey = `states_${country}_undefined_undefined`;
 
     expect(cachedApiCall).toHaveBeenCalledWith(
@@ -165,7 +165,7 @@ describe("Get a Country's Visa", () => {
 
     const result = await getCountryVisa(countryCodeFrom, countryCodeTo);
 
-    const expectedUrl = `http://localhost:3000/locations/visa/${countryCodeFrom}/${countryCodeTo}`;
+    const expectedUrl = `${ServerAPI}/locations/visa/${countryCodeFrom}/${countryCodeTo}`;
 
     expect(mockAxiosGet).toHaveBeenCalledWith(expectedUrl, {
       withCredentials: true,
@@ -188,7 +188,7 @@ describe("Get a Country's Exchange Rate", () => {
 
     const result = await getCountryExchange(currencyFrom, currencyTo);
 
-    const expectedUrl = `http://localhost:3000/locations/exchange/${currencyFrom}/${currencyTo}`;
+    const expectedUrl = `${ServerAPI}/locations/exchange/${currencyFrom}/${currencyTo}`;
 
     expect(mockAxiosGet).toHaveBeenCalledWith(expectedUrl, {
       withCredentials: true,
@@ -266,7 +266,7 @@ describe("Get All Cities", () => {
 
     await getAllCities(state, country, page, searchQuery, limit);
 
-    const expectedUrl = `http://localhost:3000/locations/cities/${state}/${country}?page=${page}&searchQuery=${searchQuery}&limit=${limit}&`;
+    const expectedUrl = `${ServerAPI}/locations/cities/${state}/${country}?page=${page}&searchQuery=${searchQuery}&limit=${limit}&`;
     const expectedCacheKey = `cities_${state}_${country}_${page}_${searchQuery}`;
 
     expect(cachedApiCall).toHaveBeenCalledWith(
@@ -313,7 +313,7 @@ describe("Get Location Time", () => {
 
     const result = await getLocationTime(city, country);
 
-    const expectedUrl = `http://localhost:3000/locations/time/${city}/${country}`;
+    const expectedUrl = `${ServerAPI}/locations/time/${city}/${country}`;
 
     expect(mockAxiosGet).toHaveBeenCalledWith(expectedUrl, {
       withCredentials: true,
@@ -354,7 +354,7 @@ describe("Get All Hotels", () => {
 
     await getAllHotels(city, country, page, searchQuery);
 
-    const expectedUrl = `http://localhost:3000/locations/hotels/${city}/${country}?page=${page}&searchQuery=${searchQuery}&`;
+    const expectedUrl = `${ServerAPI}/locations/hotels/${city}/${country}?page=${page}&searchQuery=${searchQuery}&`;
     const expectedCacheKey = `hotels_${city}_${country}_${page}_${searchQuery}`;
 
     expect(cachedApiCall).toHaveBeenCalledWith(

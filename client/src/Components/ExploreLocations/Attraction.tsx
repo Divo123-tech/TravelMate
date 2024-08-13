@@ -1,12 +1,12 @@
 import { attractionType } from "../../types/types";
-import { useState } from "react";
+import { FC, useState } from "react";
 import loading from "../../assets/loading.png";
 
 type Props = {
   attraction: attractionType;
 };
 
-const Attraction = ({ attraction }: Props) => {
+const Attraction: FC<Props> = ({ attraction }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (

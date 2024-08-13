@@ -1,4 +1,11 @@
-import { useState, useEffect, useContext, useMemo, ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  ChangeEvent,
+  FC,
+} from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,7 +41,7 @@ import AddToTrip from "./AddToTrip";
 import LocationsLoading from "./LocationsLoading";
 import { container } from "../../data/animation";
 
-const ExploreLocations = () => {
+const ExploreLocations: FC = () => {
   const [locationType, setLocationType] = useState<string | null>("countries");
   const [searchParams] = useSearchParams();
   const [continent, setContinent] = useState<string>("all");

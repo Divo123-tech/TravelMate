@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,7 +11,7 @@ type Props = {
   city: cityType;
   setCurrentCity?: (city: cityType) => void;
 };
-const City = ({ city, setCurrentCity }: Props) => {
+const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [timeZoneShown, setTimeZoneShown] = useState(false);

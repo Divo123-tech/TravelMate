@@ -3,13 +3,14 @@ import Card from "react-bootstrap/Card";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { childVariant } from "../../data/animation";
+import { FC } from "react";
 type Props = {
   countryName: string;
   imgSrc: string;
   desc: string;
   url: string;
 };
-const Itinerary = ({ countryName, imgSrc, desc, url }: Props) => {
+const Itinerary: FC<Props> = ({ countryName, imgSrc, desc, url }: Props) => {
   const navigate = useNavigate();
   return (
     <motion.div

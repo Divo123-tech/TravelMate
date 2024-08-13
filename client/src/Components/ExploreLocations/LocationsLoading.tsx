@@ -1,6 +1,7 @@
 import Placeholder from "react-bootstrap/Placeholder";
 import loading from "../../assets/loading.png";
-const LocationsLoading = () => {
+import { FC } from "react";
+const LocationsLoading: FC = () => {
   return Array.from({ length: 5 }).map((_, i) => (
     <div key={i} className="flex items-center bg-teal mt-4">
       <img src={loading} alt="Loading..." className="mr-4" />

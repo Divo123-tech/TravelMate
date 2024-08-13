@@ -1,7 +1,7 @@
 import CreateTripImage from "../../assets/CreateTripImage.png";
-import { useState } from "react";
+import { FC, useState } from "react";
 import NewTripModal from "./NewTripModal";
-const CreateNewTrip = () => {
+const CreateNewTrip: FC = () => {
   const [modalShow, setModalShow] = useState(false);
   return (
     <section className="relative inline-block bg-oxford-blue mb-16">

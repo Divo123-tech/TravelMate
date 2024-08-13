@@ -1,3 +1,4 @@
+import { FC } from "react";
 import Toast from "react-bootstrap/Toast";
 
 type Props = {
@@ -5,7 +6,10 @@ type Props = {
   setEditSuccess: (value: boolean) => void;
 };
 
-const EditSuccessToast = ({ editSuccess, setEditSuccess }: Props) => {
+const EditSuccessToast: FC<Props> = ({
+  editSuccess,
+  setEditSuccess,
+}: Props) => {
   return (
     <div className="flex justify-center">
       <Toast

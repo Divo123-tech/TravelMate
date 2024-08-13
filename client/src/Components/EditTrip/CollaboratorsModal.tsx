@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { TripType, UserType } from "../../types/types";
 import {
   searchUserDetails,
@@ -22,7 +22,7 @@ type Props = {
   isOwner: boolean;
 };
 
-const CollaboratorsModal = ({
+const CollaboratorsModal: FC<Props> = ({
   show,
   onHide,
   collaborators,

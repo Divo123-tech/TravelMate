@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { stateType } from "../../types/types";
@@ -9,7 +9,7 @@ type Props = {
   setCurrentState?: (state: stateType) => void;
   setSearch?: (searchQuery: string) => void;
 };
-const State = ({ state, setCurrentState, setSearch }: Props) => {
+const State: FC<Props> = ({ state, setCurrentState, setSearch }: Props) => {
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const goToCities = () => {

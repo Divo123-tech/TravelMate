@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import animationData from "../assets/LoadingAnimation.json";
 
@@ -6,7 +6,7 @@ interface PreloaderProps {
   onLoaded: () => void;
 }
 
-const Preloader: React.FC<PreloaderProps> = ({ onLoaded }) => {
+const Preloader: FC<PreloaderProps> = ({ onLoaded }) => {
   const [animationComplete, setAnimationComplete] = useState(false);
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 

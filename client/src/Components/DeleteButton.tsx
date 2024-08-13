@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { FC } from "react";
 type Props = {
   deleteFunction: () => void;
 };
-const DeleteButton = ({ deleteFunction }: Props) => {
+const DeleteButton: FC<Props> = ({ deleteFunction }: Props) => {
   return (
     <div className="md:ml-auto flex flex-col items-center justify-center">
       <motion.button

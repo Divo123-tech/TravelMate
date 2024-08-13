@@ -3,6 +3,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import CustomToggle from "./CustomToggle";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
+import { FC } from "react";
 
 type Props = {
   eventKey: string;
@@ -10,7 +11,7 @@ type Props = {
   answer: string;
 };
 
-const FAQAccordion = ({ eventKey, question, answer }: Props) => {
+const FAQAccordion: FC<Props> = ({ eventKey, question, answer }: Props) => {
   return (
     <>
       <Card className="mb-4">

@@ -1,12 +1,12 @@
 import { airportType } from "../../types/types";
-import { useState } from "react";
+import { FC, useState } from "react";
 import loading from "../../assets/loading.png";
 
 type Props = {
   airport: airportType;
 };
 
-const Airport = ({ airport }: Props) => {
+const Airport: FC<Props> = ({ airport }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (

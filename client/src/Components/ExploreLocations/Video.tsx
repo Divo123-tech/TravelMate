@@ -1,10 +1,11 @@
+import { FC } from "react";
 import { videoType } from "../../types/types";
 
 type Props = {
   video: videoType;
 };
 
-const Video = ({ video }: Props) => {
+const Video: FC<Props> = ({ video }: Props) => {
   return (
     <>
       <div className="flex flex-col md:flex-row justify-center items-center gap-4">

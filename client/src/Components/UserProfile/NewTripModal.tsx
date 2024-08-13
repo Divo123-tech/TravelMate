@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useState, useContext, ChangeEvent } from "react";
+import { useState, useContext, ChangeEvent, FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { createNewTrip } from "../../services/users.service";
 import { UserContext } from "../../App";
@@ -9,7 +9,7 @@ type Props = {
   onHide: () => void;
 };
 
-const NewTripModal = ({ show, onHide }: Props) => {
+const NewTripModal: FC<Props> = ({ show, onHide }: Props) => {
   const context = useContext(UserContext);
 
   if (!context) {

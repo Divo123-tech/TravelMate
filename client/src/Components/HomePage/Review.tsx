@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { childVariant } from "../../data/animation";
+import { FC } from "react";
 
 type Props = {
   imgSrc: string;
@@ -10,7 +11,7 @@ type Props = {
   body: string;
 };
 
-const Review = ({ imgSrc, name, title, body }: Props) => {
+const Review: FC<Props> = ({ imgSrc, name, title, body }: Props) => {
   return (
     <motion.div
       className="review w-full md:w-1/4 lg:w-1/4 flex flex-col items-center text-justify px-4 md:px-10 gap-4"

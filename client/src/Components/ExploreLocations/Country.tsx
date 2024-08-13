@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,12 +15,16 @@ import { countryType, VisaRequirementsType } from "../../types/types";
 import { UserContext } from "../../App";
 import loading from "../../assets/loading.png";
 
-type CountryProps = {
+type Props = {
   country: countryType;
   setCurrentCountry?: (country: countryType) => void;
   setSearch?: (searchQuery: string) => void;
 };
-const Country = ({ country, setCurrentCountry, setSearch }: CountryProps) => {
+const Country: FC<Props> = ({
+  country,
+  setCurrentCountry,
+  setSearch,
+}: Props) => {
   const navigate = useNavigate();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 

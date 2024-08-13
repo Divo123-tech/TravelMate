@@ -9,8 +9,9 @@ import {
   faMagnifyingGlassLocation,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { FC } from "react";
 
-const CarouselComponent = () => {
+const CarouselComponent: FC = () => {
   return (
     <motion.div
       className="relative mb-0 md:mb-32"

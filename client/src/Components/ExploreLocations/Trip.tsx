@@ -2,13 +2,13 @@ import { TripType } from "../../types/types";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 type Props = {
   trip: TripType;
   addItinerariesToTrip: (tripId: string) => void;
 };
 
-const Trip = ({ trip, addItinerariesToTrip }: Props) => {
+const Trip: FC<Props> = ({ trip, addItinerariesToTrip }: Props) => {
   const [successfullyAdded, setSuccessfullyAdded] = useState<boolean>(false);
   useEffect(() => {
     if (successfullyAdded) {

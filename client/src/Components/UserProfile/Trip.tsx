@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { FC, useState } from "react";
 import loading from "../../assets/loading.png";
 type Props = {
   role: string;
@@ -11,7 +11,7 @@ type Props = {
   userId: string;
 };
 
-const Trip = ({ role, id, name, startDate, endDate }: Props) => {
+const Trip: FC<Props> = ({ role, id, name, startDate, endDate }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (

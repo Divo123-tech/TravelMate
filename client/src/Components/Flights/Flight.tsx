@@ -2,13 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlane } from "@fortawesome/free-solid-svg-icons";
 import { flightType } from "../../types/types";
 import { motion } from "framer-motion";
-import { ReactElement } from "react";
+import { FC, ReactElement } from "react";
 type Props = {
   flight: flightType;
   Button: ReactElement;
 };
 
-const Flight = ({ flight, Button }: Props) => {
+const Flight: FC<Props> = ({ flight, Button }: Props) => {
   return (
     <motion.div className="bg-teal flex items-center mb-4 h-[150px] pl-4 md:pl-12 md:gap-24 ">
       <a href={flight.url}>

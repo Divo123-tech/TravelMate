@@ -1,12 +1,12 @@
 import { hotelType } from "../../types/types";
-import { useState } from "react";
+import { FC, useState } from "react";
 import loading from "../../assets/loading.png";
 
 type Props = {
   hotel: hotelType;
 };
 
-const Hotel = ({ hotel }: Props) => {
+const Hotel: FC<Props> = ({ hotel }: Props) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (

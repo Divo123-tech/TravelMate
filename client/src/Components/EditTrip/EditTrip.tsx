@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, FC } from "react";
 import { getTripDetails, getCurrentUser } from "../../services/users.service";
 import { faUserGroup, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -26,7 +26,7 @@ import CustomActivityModal from "./CustomActivityModal";
 import Attraction from "../ExploreLocations/Attraction";
 import { container } from "../../data/animation";
 
-const EditTrip = () => {
+const EditTrip: FC = () => {
   const context = useContext(UserContext);
 
   if (!context) {
