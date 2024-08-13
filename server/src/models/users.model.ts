@@ -6,6 +6,7 @@ interface PassportInterface {
 }
 
 export interface UserInterface {
+  _id: mongoose.Types.ObjectId;
   googleId: string;
   email: string;
   picture: string;
