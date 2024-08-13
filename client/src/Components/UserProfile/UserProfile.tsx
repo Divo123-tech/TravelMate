@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePen } from "@fortawesome/free-solid-svg-icons";
 import DeleteButton from "../DeleteButton";
-import { TripType, countryType } from "../../types/types";
+import { countryType } from "../../types/types";
 import { container, childVariant } from "../../data/animation";
 const UserProfile: FC = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation

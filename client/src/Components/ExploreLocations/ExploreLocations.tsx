@@ -42,293 +42,294 @@ import LocationsLoading from "./LocationsLoading";
 import { container } from "../../data/animation";
 
 const ExploreLocations: FC = () => {
+  // State to manage the type of location being explored
   const [locationType, setLocationType] = useState<string | null>("countries");
+
+  // State to manage search parameters from the URL
   const [searchParams] = useSearchParams();
+
+  // State to manage continent filter
   const [continent, setContinent] = useState<string>("all");
+
+  // State to manage the list of countries, states, and cities
   const [countries, setCountries] = useState<countryType[] | null>(null);
   const [states, setStates] = useState<stateType[] | null>(null);
   const [cities, setCities] = useState<cityType[] | null>(null);
+
+  // State to manage the total number of items and pagination
   const [total, setTotal] = useState<number>(0);
   const [currentPageNumber, setCurrentPageNumber] = useState<number>(1);
+
+  // State for search input and currently selected location
   const [search, setSearch] = useState<string>("");
   const [currentCountry, setCurrentCountry] = useState<countryType | null>(
     null
   );
   const [currentState, setCurrentState] = useState<stateType | null>(null);
   const [currentCity, setCurrentCity] = useState<cityType | null>(null);
+
+  // State to manage activity type and list of activities
   const [activityType, setActivityType] = useState<string>("");
   const [activities, setActivities] = useState<[] | null>(null);
+
+  // State to manage current location input
   const [currentLocations, setCurrentLocations] = useState<string>("");
+
+  // Navigate to a new location based on form submission
   const exploreNewLocation = (e: ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setActivities(null);
-    setActivityType("Hotels");
-    const locations = currentLocations.split(",");
+    e.preventDefault(); // Prevent default form submission
+    setActivities(null); // Clear activities when a new location is explored
+    setActivityType("Hotels"); // Set the default activity type
+    const locations = currentLocations.split(","); // Split locations input
     navigate(
       `/explore?locationType=activities&country=${locations[2]}&state=${locations[1]}&city=${locations[0]}`
-    );
+    ); // Navigate to the new location with query parameters
   };
-  const navigate = useNavigate();
+
+  const navigate = useNavigate(); // Hook for programmatic navigation
+
+  // Debounced search handler to reduce the number of search calls
   const debouncedHandleSearch = useMemo(
     () =>
       debounce((value: string) => {
-        setSearch(value);
-        setCurrentPageNumber(1);
-      }, 300),
+        setSearch(value); // Update search state
+        setCurrentPageNumber(1); // Reset page number to 1 on search
+      }, 300), // 300ms debounce delay
     []
   );
+
+  // Handle input changes for search
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    debouncedHandleSearch(e.target.value);
+    debouncedHandleSearch(e.target.value); // Debounced search call
   };
+
+  // Handle changes to the activity type
   const handleActivityTypeChange = (newActivityType: string) => () => {
-    setActivityType(newActivityType);
+    setActivityType(newActivityType); // Update activity type state
   };
+
+  // Update the current page number for pagination
   const updatePageNumber = (direction: string) => () => {
-    if (direction == "next") {
+    if (direction === "next") {
+      // Navigate to the next page or loop back to the first page
       setCurrentPageNumber((prevPage) =>
         prevPage === Math.ceil(total / 10) ? 1 : prevPage + 1
       );
     } else {
+      // Navigate to the previous page or loop back to the last page
       setCurrentPageNumber((prevPage) =>
-        prevPage == 1 ? (prevPage = Math.ceil(total / 10)) : (prevPage -= 1)
+        prevPage === 1 ? Math.ceil(total / 10) : prevPage - 1
       );
     }
   };
+
+  // Access page context to update the current page
   const pageContext = useContext(PageContext);
   if (!pageContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
+
   const { setCurrentPage } = pageContext;
 
-  useEffect(() => {
-    setCurrentPage(locationType == "activities" ? "Explore" : "Locations");
-  }, []);
+  // Handle changes to the continent filter
   const changeContinent = (e: ChangeEvent<HTMLSelectElement>) => {
-    setContinent(e.target.value);
-    setCurrentPageNumber(1);
+    setContinent(e.target.value); // Update continent state
+    setCurrentPageNumber(1); // Reset page number to 1 when continent changes
   };
 
+  // Effect to set the locationType state based on URL parameters
   useEffect(() => {
-    if (searchParams.get("locationType") != null) {
-      setLocationType(searchParams.get("locationType"));
-    } else {
-      setLocationType("countries");
-    }
-    setCurrentPageNumber(1);
+    const locationTypeParam = searchParams.get("locationType");
+    setLocationType(locationTypeParam ?? "countries"); // Default to "countries" if parameter is null
+    setCurrentPageNumber(1); // Reset page number to 1 when locationType changes
   }, [searchParams]);
 
+  // Effect to set the current page in the PageContext based on locationType
   useEffect(() => {
+    setCurrentPage(
+      searchParams.get("locationType") === "activities"
+        ? "Explore"
+        : "Locations"
+    );
+  }, [searchParams, setCurrentPage]);
+
+  useEffect(() => {
+    // Define an asynchronous function to fetch data based on locationType
     const fetchData = async () => {
       let response;
+
+      // Determine the type of data to fetch based on locationType
       switch (locationType) {
         case "countries":
+          // Reset the countries state before fetching new data
           setCountries(null);
-          try {
-            response = await getAllCountries(
-              continent,
-              currentPageNumber,
-              search
-            );
-            setCountries(response.data);
-            setTotal(response.total);
-          } catch (e) {
-            setCountries([]);
-            setTotal(0);
-            setCurrentPageNumber(0);
-          }
-          break;
-        case "states":
-          setStates(null);
-          try {
-            if (currentCountry == null) {
-              const country = await getCountryByName(
-                searchParams.get("country") || ""
-              );
-              setCurrentCountry(country);
-            }
-            response = await getAllStates(
-              currentCountry?.name || searchParams.get("country") || "",
-              currentPageNumber,
-              search
-            );
-            setStates(response.data);
-            setTotal(response.total);
-          } catch (e) {
-            setStates([]);
-            setTotal(0);
-            setCurrentPageNumber(0);
-          }
-          break;
-        case "cities":
-          setCities(null);
-          try {
-            if (currentCountry == null) {
-              const country = await getCountryByName(
-                searchParams.get("country") || ""
-              );
-              setCurrentCountry(country);
-            }
-            if (currentState == null) {
-              const state = await getStateByName(
-                searchParams.get("state") || "",
-                currentCountry?.name || searchParams.get("") || ""
-              );
-              setCurrentState(state);
-            }
-          } catch (e) {
-            setCurrentCountry(null);
-            setCurrentState(null);
-            setCurrentPageNumber(0);
-          }
-          try {
-            response = await getAllCities(
-              currentState?.name || searchParams.get("state") || "",
-              currentCountry?.name || searchParams.get("country") || "",
-              currentPageNumber,
-              search
-            );
 
-            setCities(response.data);
-            setTotal(response.total);
-          } catch (e) {
-            setCities([]);
-            setTotal(0);
-            setCurrentPageNumber(0);
-          }
+          // Fetch countries data based on continent, current page, and search term
+          response = await getAllCountries(
+            continent,
+            currentPageNumber,
+            search
+          );
+
+          // Update the states with the fetched data
+          setCountries(response.data);
+          setTotal(response.total); // Update the total number of countries
           break;
-        case "activities":
-          setActivities(null);
-          try {
-            if (currentCountry == null) {
-              const country = await getCountryByName(
-                searchParams.get("country") || ""
-              );
-              setCurrentCountry(country);
-            }
-            if (currentState == null) {
-              const state = await getStateByName(
-                searchParams.get("state") || "",
-                currentCountry?.name || searchParams.get("country") || ""
-              );
-              setCurrentState(state);
-            }
-            if (currentCity == null) {
-              const city = await getCityByName(
-                searchParams.get("city") || "",
-                currentCountry?.name || searchParams.get("country") || "",
-                currentState?.name || searchParams.get("state") || ""
-              );
-              setCurrentCity(city);
-            }
-          } catch (e) {
-            setCurrentCountry(null);
-            setCurrentState(null);
-            setCurrentCity(null);
-            setCurrentPageNumber(0);
+
+        case "states":
+          // Reset the states state before fetching new data
+          setStates(null);
+
+          // If no current country is set, fetch the country based on the URL parameter
+          if (currentCountry == null) {
+            const country = await getCountryByName(
+              searchParams.get("country") || ""
+            );
+            setCurrentCountry(country);
           }
+
+          // Fetch states data based on the current or fetched country, page number, and search term
+          response = await getAllStates(
+            currentCountry?.name || searchParams.get("country") || "",
+            currentPageNumber,
+            search
+          );
+
+          // Update the states with the fetched data
+          setStates(response.data);
+          setTotal(response.total); // Update the total number of states
+          break;
+
+        case "cities":
+          // Reset the cities state before fetching new data
+          setCities(null);
+
+          // If no current country is set, fetch the country based on the URL parameter
+          if (currentCountry == null) {
+            const country = await getCountryByName(
+              searchParams.get("country") || ""
+            );
+            setCurrentCountry(country);
+          }
+
+          // If no current state is set, fetch the state based on the URL parameter and current country
+          if (currentState == null) {
+            const state = await getStateByName(
+              searchParams.get("state") || "",
+              currentCountry?.name || searchParams.get("country") || ""
+            );
+            setCurrentState(state);
+          }
+
+          // Fetch cities data based on the current or fetched state and country, page number, and search term
+          response = await getAllCities(
+            currentState?.name || searchParams.get("state") || "",
+            currentCountry?.name || searchParams.get("country") || "",
+            currentPageNumber,
+            search
+          );
+
+          // Update the states with the fetched data
+          setCities(response.data);
+          setTotal(response.total); // Update the total number of cities
+          break;
+
+        case "activities":
+          // Reset the activities state before fetching new data
+          setActivities(null);
+
+          // If no current country is set, fetch the country based on the URL parameter
+          if (currentCountry == null) {
+            const country = await getCountryByName(
+              searchParams.get("country") || ""
+            );
+            setCurrentCountry(country);
+          }
+
+          // If no current state is set, fetch the state based on the URL parameter and current country
+          if (currentState == null) {
+            const state = await getStateByName(
+              searchParams.get("state") || "",
+              currentCountry?.name || searchParams.get("country") || ""
+            );
+            setCurrentState(state);
+          }
+
+          // If no current city is set, fetch the city based on the URL parameter, current state, and country
+          if (currentCity == null) {
+            const city = await getCityByName(
+              searchParams.get("city") || "",
+              currentCountry?.name || searchParams.get("country") || "",
+              currentState?.name || searchParams.get("state") || ""
+            );
+            setCurrentCity(city);
+          }
+
+          // Fetch activities data based on activityType and current or fetched location data
           switch (activityType) {
             case "Hotels":
-              try {
-                response = await getAllHotels(
-                  currentCity?.name || searchParams.get("city") || "",
-                  currentCountry?.name || searchParams.get("country") || "",
-                  currentPageNumber,
-                  search
-                );
-                setActivities(response.data);
-                setTotal(response.total);
-              } catch (e) {
-                setActivities([]);
-                setTotal(0);
-                setCurrentPageNumber(0);
-              }
-
+              response = await getAllHotels(
+                currentCity?.name || searchParams.get("city") || "",
+                currentCountry?.name || searchParams.get("country") || "",
+                currentPageNumber,
+                search
+              );
               break;
+
             case "Airports":
-              try {
-                response = await getAllAirports(
-                  currentCity?.name ||
-                    searchParams.get("city") ||
-                    "Los Angeles",
-                  currentState?.name ||
-                    searchParams.get("state") ||
-                    "California",
-                  currentPageNumber,
-                  search
-                );
+              response = await getAllAirports(
+                currentCity?.name || searchParams.get("city") || "Los Angeles",
+                currentState?.name || searchParams.get("state") || "California",
+                currentPageNumber,
+                search
+              );
+              break;
 
-                setActivities(response.data);
-                setTotal(response.total);
-              } catch (e) {
-                setActivities([]);
-                setTotal(0);
-                setCurrentPageNumber(0);
-              }
-              break;
             case "Restaurants":
-              try {
-                response = await getAllAttractions(
-                  currentCity?.name || searchParams.get("city") || "",
-                  currentState?.name || searchParams.get("state") || "",
-                  "restaurants",
-                  currentPageNumber,
-                  search
-                );
-                setActivities(response.data);
-                setTotal(response.total);
-              } catch (e) {
-                setActivities([]);
-                setTotal(0);
-                setCurrentPageNumber(0);
-              }
+              response = await getAllAttractions(
+                currentCity?.name || searchParams.get("city") || "",
+                currentState?.name || searchParams.get("state") || "",
+                "restaurants",
+                currentPageNumber,
+                search
+              );
               break;
+
             case "Things To Do":
-              try {
-                response = await getAllAttractions(
-                  currentCity?.name || searchParams.get("city") || "",
-                  currentState?.name || searchParams.get("state") || "",
-                  "attractions",
-                  currentPageNumber,
-                  search
-                );
-                setActivities(response.data);
-                setTotal(response.total);
-              } catch (e) {
-                setActivities([]);
-                setTotal(0);
-                setCurrentPageNumber(0);
-              }
+              response = await getAllAttractions(
+                currentCity?.name || searchParams.get("city") || "",
+                currentState?.name || searchParams.get("state") || "",
+                "attractions",
+                currentPageNumber,
+                search
+              );
               break;
+
             case "Videos":
-              try {
-                response = await getAllVideos(
-                  currentCity?.name ||
-                    searchParams.get("city") ||
-                    "Los Angeles",
-                  currentPageNumber,
-                  search
-                );
-                setActivities(response.data);
-                setTotal(response.total);
-              } catch (e) {
-                setActivities([]);
-                setTotal(0);
-                setCurrentPageNumber(0);
-              }
+              response = await getAllVideos(
+                currentCity?.name || searchParams.get("city") || "Los Angeles",
+                currentPageNumber,
+                search
+              );
               break;
           }
+
+          // Update the activities state with the fetched data
+          setActivities(response.data);
+          setTotal(response.total); // Update the total number of activities
           break;
       }
     };
 
+    // Call the fetchData function to initiate data fetching
     fetchData();
   }, [
-    locationType,
-    continent,
-    currentPageNumber,
-    search,
-    searchParams,
-    activityType,
+    locationType, // Dependency: Trigger effect when locationType changes
+    continent, // Dependency: Trigger effect when continent changes
+    currentPageNumber, // Dependency: Trigger effect when currentPageNumber changes
+    search, // Dependency: Trigger effect when search term changes
+    searchParams, // Dependency: Trigger effect when search parameters change
+    activityType, // Dependency: Trigger effect when activityType changes
   ]);
 
   const renderLocations = () => {

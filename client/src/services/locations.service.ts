@@ -38,9 +38,10 @@ export const getAllCountries = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching countries from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
@@ -61,8 +62,6 @@ export const getCountryByName = (countryName: string) => {
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching country ${countryName} from ${url}:`, err);
       return null; // Return null if an error occurs
     }
   });
@@ -86,8 +85,6 @@ export const getCountryVisa = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching visa information from ${url}:`, err);
       return null; // Return null if an error occurs
     }
   });
@@ -111,8 +108,6 @@ export const getCountryExchange = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching exchange rate from ${url}:`, err);
       return null; // Return null if an error occurs
     }
   });
@@ -160,9 +155,10 @@ export const getAllStates = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching states from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
@@ -184,8 +180,6 @@ export const getStateByName = (name: string, country: string) => {
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching state ${name} from ${url}:`, err);
       return null; // Return null if an error occurs
     }
   });
@@ -234,9 +228,10 @@ export const getAllCities = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching cities from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
@@ -259,8 +254,6 @@ export const getCityByName = (name: string, country: string, state: string) => {
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching city ${name} from ${url}:`, err);
       return null; // Return null if an error occurs
     }
   });
@@ -354,9 +347,10 @@ export const getAllAirports = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching airports from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
@@ -395,9 +389,10 @@ export const getAllAttractions = (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching attractions from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
@@ -432,9 +427,10 @@ export const getAllVideos = (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching videos from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
@@ -480,9 +476,10 @@ export const getAllFlights = async (
       const { data } = await axios.get(url, { withCredentials: true }); // Send a GET request with credentials
       return data; // Return the response data
     } catch (err: any) {
-      // Log any errors that occur during the API call
-      console.error(`Error fetching flights from ${url}:`, err);
-      return null; // Return null if an error occurs
+      return {
+        total: 0,
+        data: [],
+      };
     }
   });
 };
