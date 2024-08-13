@@ -7,9 +7,7 @@ import { useContext, FC } from "react";
 import { UserContext, PageContext } from "../App";
 import { googleAuthenticate, logOutAPI } from "../services/users.service";
 import logo from "../assets/logo.png";
-// Functional component for the navigation bar
 const NavigationBar: FC = () => {
-  // Access user and page context
   const userContext = useContext(UserContext);
   const pageContext = useContext(PageContext);
   if (!userContext || !pageContext) {
@@ -18,7 +16,6 @@ const NavigationBar: FC = () => {
 
   const { user, setUser } = userContext;
   const { currentPage, setCurrentPage } = pageContext;
-  // Style for the active navigation link
   const currentPageStyle = "bg-teal rounded-full px-4 text-white";
   const logOut = async () => {
     try {
@@ -36,7 +33,6 @@ const NavigationBar: FC = () => {
       >
         <Container className="flex">
           <Navbar.Brand href="#home">
-            {/* Site logo with alt text for accessibility */}
             <img src={logo} className="w-20"></img>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -45,7 +41,6 @@ const NavigationBar: FC = () => {
             className="justify-content-end"
           >
             <Nav className="text-black flex gap-3 text-lg">
-              {/* Navigation link to Home */}
               <Link to={"/"}>
                 <Nav.Link
                   className={`${
@@ -57,21 +52,19 @@ const NavigationBar: FC = () => {
                   Home
                 </Nav.Link>
               </Link>
-              {/* Navigation link to Locations */}
               <Link to={"/explore"}>
                 <Nav.Link
                   className={`${
                     currentPage == "Locations"
                       ? currentPageStyle
                       : "text-black hover:font-bold"
-                  } font-Rethink rounded-full `}
+                  } font-Rethink rounded-full`}
                   onClick={() => setCurrentPage("Locations")}
                   href="#features"
                 >
                   Locations
                 </Nav.Link>
               </Link>
-              {/* Navigation link to Explore */}
               <Link to={"/explore?locationType=activities"}>
                 <Nav.Link
                   className={`${
@@ -85,7 +78,6 @@ const NavigationBar: FC = () => {
                   Explore
                 </Nav.Link>
               </Link>
-              {/* Navigation link to Flights */}
               <Link to={"/flights"}>
                 <Nav.Link
                   className={`${
@@ -99,7 +91,6 @@ const NavigationBar: FC = () => {
                   Flights
                 </Nav.Link>
               </Link>
-              {/* Navigation link to Contact */}
               <Link to={"/contact"}>
                 <Nav.Link
                   className={`${
@@ -113,7 +104,6 @@ const NavigationBar: FC = () => {
                   Contact
                 </Nav.Link>
               </Link>
-              {/* Conditional link for user login or sign up */}
               {user == null ? (
                 <Nav.Link
                   className="text-black hover:font-bold font-Rethink"
@@ -138,7 +128,6 @@ const NavigationBar: FC = () => {
                   </Link>
                 </Nav.Link>
               )}
-              {/* Conditional log out link */}
               {user && (
                 <Nav.Link
                   className="text-black hover:font-bold font-Rethink"
