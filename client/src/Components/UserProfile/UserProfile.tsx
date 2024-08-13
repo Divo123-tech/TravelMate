@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePen } from "@fortawesome/free-solid-svg-icons";
 import DeleteButton from "../DeleteButton";
-import { countryType } from "../../types/types";
+import { TripType, countryType } from "../../types/types";
 import { container, childVariant } from "../../data/animation";
 const UserProfile: FC = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
@@ -300,7 +300,7 @@ const UserProfile: FC = () => {
               transition={{ duration: 1 }}
               variants={container}
             >
-              {user.trips.map((trip: any, index: number) => {
+              {user.trips.map((trip: any) => {
                 return (
                   <motion.div
                     className="bg-oxford-blue flex gap-4 md:gap-12 pr-4 md:pr-24 items-center"
