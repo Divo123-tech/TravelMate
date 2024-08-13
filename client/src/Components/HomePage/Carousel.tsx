@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { FC } from "react";
 
+// Functional Component for Carousel
 const CarouselComponent: FC = () => {
   return (
     <motion.div
@@ -24,7 +25,9 @@ const CarouselComponent: FC = () => {
         visible: { opacity: 1 },
       }}
     >
+      {/* Bootstrap Carousel Component */}
       <Carousel className="h-full">
+        {/* Carousel Item 1 */}
         <Carousel.Item interval={5000}>
           <img
             className="w-full object-cover"
@@ -32,6 +35,7 @@ const CarouselComponent: FC = () => {
             alt="Carousel1"
           />
         </Carousel.Item>
+        {/* Carousel Item 2 */}
         <Carousel.Item interval={5000}>
           <img
             className="w-full object-cover"
@@ -39,6 +43,7 @@ const CarouselComponent: FC = () => {
             alt="Carousel2"
           />
         </Carousel.Item>
+        {/* Carousel Item 3 */}
         <Carousel.Item interval={5000}>
           <img
             className="w-full object-cover"
@@ -47,7 +52,10 @@ const CarouselComponent: FC = () => {
           />
         </Carousel.Item>
       </Carousel>
+
+      {/* Overlay content positioned over the carousel */}
       <div className="absolute inset-0 flex flex-col items-center justify-around">
+        {/* Text section with background styling */}
         <div className="text-center text-white bg-black bg-opacity-50 rounded-md p-6 md:p-16 flex flex-col gap-8">
           <h1 className="text-lg md:text-6xl font-FatFace">
             Global Traveling, Easy Planning
@@ -56,7 +64,10 @@ const CarouselComponent: FC = () => {
             Plan Your Vacations Anywhere in The World
           </p>
         </div>
+
+        {/* Button section with navigation links */}
         <div className="flex flex-row gap-24 md:gap-48">
+          {/* Explore Button */}
           <Link to={"/countries"} className="rounded-full bg-black">
             <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-teal flex items-center justify-center">
               <div className="flex flex-col gap-2 md:gap-4 items-center">
@@ -68,6 +79,7 @@ const CarouselComponent: FC = () => {
               </div>
             </button>
           </Link>
+          {/* Create A Trip Button */}
           <Link to={"/profile"} className="rounded-full bg-black">
             <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-oxford-blue flex items-center justify-center">
               <div className="flex flex-col gap-2 md:gap-4 items-center">

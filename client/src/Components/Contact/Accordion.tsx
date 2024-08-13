@@ -4,7 +4,7 @@ import CustomToggle from "./CustomToggle";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import { FC } from "react";
-
+//Props for the FAQ Acordion
 type Props = {
   eventKey: string;
   question: string;

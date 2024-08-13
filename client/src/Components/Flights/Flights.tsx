@@ -10,7 +10,10 @@ import Placeholder from "react-bootstrap/Placeholder";
 import DetailsModal from "./DetailsModal";
 import Flight from "./Flight";
 import AddToTrip from "../ExploreLocations/AddToTrip";
+
+// Functional component to display flight search and results
 const Flights: FC = () => {
+  // State to manage flight search criteria
   const [flightDetails, setFlightDetails] = useState({
     origin: "",
     destination: "",
@@ -21,22 +24,34 @@ const Flights: FC = () => {
     cabin: "ECONOMY",
     maxPrice: 1000000000,
   });
+
+  // Contexts for user and page information
   const userContext = useContext(UserContext);
   const pageContext = useContext(PageContext);
+
+  // Ensure the component is used within the necessary providers
   if (!userContext || !pageContext) {
     throw new Error("YourComponent must be used within a UserProvider");
   }
+
   const { user } = userContext;
   const { setCurrentPage } = pageContext;
 
+  // Set the current page to "Flights" on component mount
   useEffect(() => {
     setCurrentPage("Flights");
   }, []);
+
+  // State to manage modal visibility
   const [modalShow, setModalShow] = useState(false);
+
+  // State to manage flight data and pagination
   const [flights, setFlights] = useState<flightType[] | null>(null);
   const [showFlights, setShowFlights] = useState(false);
   const [totalFlights, settotalFlights] = useState(0);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
+
+  // Function to fetch flights based on current search criteria
   const getFlights = async () => {
     const {
       origin,
@@ -48,9 +63,12 @@ const Flights: FC = () => {
       cabin,
       maxPrice,
     } = flightDetails;
+
     setShowFlights(true);
     setFlights(null);
+
     try {
+      // Fetch flight data from the service
       const fetchedFlights = await getAllFlights(
         origin,
         destination,
@@ -71,29 +89,33 @@ const Flights: FC = () => {
       setCurrentPageNumber(0);
     }
   };
+
+  // Fetch flights when the page number or showFlights changes
   useEffect(() => {
     if (showFlights) {
       getFlights();
     }
   }, [currentPageNumber, showFlights]);
 
+  // Handle input changes in the flight search form
   const handleChange = (event: any) => {
     const { value, name } = event.target;
-    setFlightDetails((prevFlightDetails) => {
-      return {
-        ...prevFlightDetails,
-        [`${name}`]: value,
-      };
-    });
+    setFlightDetails((prevFlightDetails) => ({
+      ...prevFlightDetails,
+      [`${name}`]: value,
+    }));
   };
+
   return (
     <>
+      {/* Background image and overlay */}
       <div
         className="relative bg-cover bg-center h-screen mb-auto"
         style={{ backgroundImage: `url(${FlightsWP})` }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
+        {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
           <h1
             className="text-4xl text-white mb-8 text-center font-FatFace"
@@ -101,7 +123,9 @@ const Flights: FC = () => {
           >
             Millions of Cheap Flights. One Simple Search.
           </h1>
+          {/* Flight search form */}
           <form className="bg-teal flex py-3 px-4 gap-4 justify-center rounded-full flex-wrap">
+            {/* Origin input */}
             <div className="flex flex-col justify-center items-center gap-1">
               <label className="text-baby-powder font-medium text-xl font-Oswald">
                 Origin
@@ -112,8 +136,9 @@ const Flights: FC = () => {
                 placeholder="Airport Code eg.CGK, LHR, LAX"
                 name="origin"
                 onChange={handleChange}
-              ></input>
+              />
             </div>
+            {/* Destination input */}
             <div className="flex flex-col justify-center items-center gap-1">
               <label className="text-baby-powder font-medium text-xl font-Oswald">
                 Destination
@@ -124,8 +149,9 @@ const Flights: FC = () => {
                 placeholder="Airport Code eg.CGK, LHR, LAX"
                 name="destination"
                 onChange={handleChange}
-              ></input>
+              />
             </div>
+            {/* Departure Date input */}
             <div className="flex flex-col justify-center items-center">
               <label className="text-baby-powder font-medium text-xl font-Oswald">
                 Departure Date
@@ -135,8 +161,9 @@ const Flights: FC = () => {
                 className="bg-baby-powder p-2 rounded-full text-md text-gray-400 font-Rethink"
                 name="departureDate"
                 onChange={handleChange}
-              ></input>
+              />
             </div>
+            {/* Advanced Filters button */}
             <button
               className="bg-baby-powder text-md px-2 rounded-full text-oxford-blue font-medium font-Oswald"
               type="button"
@@ -144,9 +171,10 @@ const Flights: FC = () => {
             >
               Advanced Filters
             </button>
+            {/* Search button */}
             <button
               className="bg-oxford-blue text-lg px-4 py-2 rounded-full text-baby-powder font-Oswald font-medium disabled:opacity-80 disabled:cursor-not-allowed"
-              disabled={flightDetails.origin == ""}
+              disabled={flightDetails.origin === ""}
               type="button"
               onClick={() => {
                 getFlights();
@@ -161,26 +189,29 @@ const Flights: FC = () => {
         </div>
       </div>
 
+      {/* Container for flight results */}
       <div id="flights"></div>
       <div
         className={`${
           showFlights ? "block" : "hidden"
         } flex flex-col gap-4 py-4`}
       >
+        {/* Flight results header */}
         <h1 className="text-3xl md:text-5xl font-bold text-oxford-blue">
           Flights From {flightDetails.origin} to {flightDetails.destination}
         </h1>
+        {/* Conditional rendering based on flight data */}
         {flights ? (
           flights.length > 0 ? (
             <div>
-              {flights.map((flight: flightType) => {
-                return (
-                  <Flight
-                    flight={flight}
-                    Button={<AddToTrip itineraries={[flight]} />}
-                  />
-                );
-              })}
+              {/* Render a list of Flight components */}
+              {flights.map((flight: flightType) => (
+                <Flight
+                  key={flight.url} // Add a unique key prop for each flight
+                  flight={flight}
+                  Button={<AddToTrip itineraries={[flight]} />}
+                />
+              ))}
             </div>
           ) : (
             <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
@@ -188,6 +219,7 @@ const Flights: FC = () => {
             </h1>
           )
         ) : (
+          // Render loading placeholders
           Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="flex items-center bg-teal mt-4">
               <img src={loading} alt="Loading..." className="mr-4" />
@@ -209,6 +241,7 @@ const Flights: FC = () => {
           ))
         )}
 
+        {/* Pagination controls */}
         <div className="flex justify-end px-12 py-8 mb-auto">
           <h1 className="text-xl">
             <FontAwesomeIcon
@@ -216,28 +249,25 @@ const Flights: FC = () => {
               className="text-2xl"
               onClick={() =>
                 setCurrentPageNumber((prevPage) =>
-                  prevPage == 1
-                    ? (prevPage = Math.ceil(totalFlights / 10))
-                    : (prevPage -= 1)
+                  prevPage === 1 ? Math.ceil(totalFlights / 10) : prevPage - 1
                 )
               }
             />{" "}
-            Page: {totalFlights == 0 ? 0 : currentPageNumber} of{" "}
+            Page: {totalFlights === 0 ? 0 : currentPageNumber} of{" "}
             {Math.ceil(totalFlights / 10)}{" "}
             <FontAwesomeIcon
               icon={faCaretRight}
               className="text-2xl"
               onClick={() =>
                 setCurrentPageNumber((prevPage) =>
-                  prevPage == Math.ceil(totalFlights / 10)
-                    ? (prevPage = 1)
-                    : (prevPage += 1)
+                  prevPage === Math.ceil(totalFlights / 10) ? 1 : prevPage + 1
                 )
               }
             />
           </h1>
         </div>
       </div>
+      {/* Details Modal component */}
       <DetailsModal
         flightDetails={flightDetails}
         setFlightDetails={setFlightDetails}
