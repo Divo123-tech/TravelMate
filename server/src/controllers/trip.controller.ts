@@ -5,142 +5,178 @@ import { TripInterface } from "../models/trips.model.js";
 import { UserInterface } from "../models/users.model.js";
 import { User } from "./users.controller.js";
 
-//function to add a trip into the trips database and the trips array of the user
+// Function to add a trip to the database and update the user's trips array
 const addTrip = async (req: Request, res: Response): Promise<void> => {
   const currentUser = req.user as User & { id: string };
   try {
-    //get the user
+    // Retrieve the current user details from the database
     const user = await usersService.getUserDetails(currentUser.id, "googleId");
-    //check if the user exists
+
+    // Check if the user exists
     if (!user) {
       throw new Error("User Not Found");
     }
-    //add the trip and get the newly created trip
+
+    // Add the trip to the database and get the newly created trip
     const trip = await tripsService.addTrip(req.body, user._id);
-    //add a trip to the given user's trips array
+
+    // Add the newly created trip to the user's trips array
     await usersService.addTrip(currentUser.id, trip._id);
+
+    // Send a success response with the newly created trip
     res.status(200).json(trip);
   } catch (err: any) {
+    // Handle errors and send an appropriate response
     res.status(400).json({ message: err.message });
   }
 };
 
-//function to get the details of a trip
+// Function to get the details of a specific trip
 const getTripDetails = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.status(200).json(await tripsService.getTripDetails(req.params.tripId));
+    // Retrieve the trip details from the database using the trip ID from the request params
+    const tripDetails = await tripsService.getTripDetails(req.params.tripId);
+
+    // Send a success response with the trip details
+    res.status(200).json(tripDetails);
   } catch (err: any) {
+    // Handle errors and send an appropriate response
     res.status(400).json({ message: err.message });
   }
 };
 
-//function to delete a trip from both the trips database
-//from the owners trip array and the collaborators trips array
+// Function to delete a trip from the database and update the user's and collaborators' trips arrays
 const deleteTrip = async (req: Request, res: Response): Promise<void> => {
   const currentUser = req.user as User & { id: string };
   try {
-    //get the trip wanting to be deleted
+    // Retrieve the trip details from the database
     const trip: TripInterface | null = await tripsService.getTripDetails(
       req.params.tripId
     );
-    //check if the trip exists
+
+    // Check if the trip exists
     if (!trip) {
       throw new Error("Trip Not Found");
     }
-    //get the owner of the trip
+
+    // Retrieve the owner of the trip
     const tripOwner: UserInterface | null = await usersService.getUserDetails(
       trip.owner,
       "_id"
     );
-    //check if the user trying to delete the trip is the owner
 
-    //delete the trip from the owner's trips array
-    await usersService.deleteTrip(currentUser.id, req.params.tripId);
-    //go through all the collaborators from the trip being deleted
+    // Check if the user attempting to delete the trip is the owner
+    if (tripOwner?.googleId === currentUser.id) {
+      // Remove the trip from the owner's trips array
+      await usersService.deleteTrip(currentUser.id, req.params.tripId);
 
-    //if the owner deletes the trip
-    if (tripOwner?.googleId == currentUser.id) {
+      // Remove the trip from all collaborators' trips arrays
       for (const collaboratorId of trip.collaborators || []) {
-        //find the collaborator
         const collaborator: UserInterface | null =
           await usersService.getUserDetails(collaboratorId, "_id");
-        if (!collaborator) {
-          throw new Error("User Not Found");
+        if (collaborator) {
+          await usersService.deleteTrip(
+            collaborator.googleId,
+            req.params.tripId
+          );
+        } else {
+          throw new Error("Collaborator Not Found");
         }
-        //delete it from the collaborator's trips array
-        await usersService.deleteTrip(
-          collaborator?.googleId,
-          req.params.tripId
-        );
       }
-      //delete the trip from the owner's database and
-      res.status(200).json(await tripsService.deleteTrip(req.params.tripId));
-    }
-    //else remove the collaborator from the trip
-    else {
-      const user: any = await usersService.getUserDetails(
-        req.params.id,
+
+      // Delete the trip from the database
+      const deletedTrip = await tripsService.deleteTrip(req.params.tripId);
+
+      // Send a success response with the deleted trip details
+      res.status(200).json(deletedTrip);
+    } else {
+      // If the user is not the owner, remove them as a collaborator from the trip
+      const user: UserInterface | null = await usersService.getUserDetails(
+        currentUser.id,
         "googleId"
       );
-      res
-        .status(200)
-        .json(
-          await tripsService.removeCollaborator(req.params.tripId, user?._id)
+      if (user) {
+        const updatedTrip = await tripsService.removeCollaborator(
+          req.params.tripId,
+          user._id
         );
+        res.status(200).json(updatedTrip);
+      } else {
+        throw new Error("User Not Found");
+      }
     }
   } catch (err: any) {
+    // Handle errors and send an appropriate response
     res.status(400).json({ message: err.message });
   }
 };
 
-//
+// Function to add a collaborator to a trip
 const addCollaborator = async (req: Request, res: Response): Promise<void> => {
   try {
+    // Retrieve the collaborator details from the database
     const collaborator = await usersService.getUserDetails(
       req.body.collaborator,
       req.body.searchBy
     );
+
+    // Check if the collaborator exists
     if (!collaborator) {
       throw new Error("User not found");
     }
+
+    // Add the trip to the collaborator's trips array
     await usersService.addTrip(collaborator.googleId, req.params.tripId);
-    res
-      .status(200)
-      .json(
-        await tripsService.addCollaborator(req.params.tripId, collaborator._id)
-      );
+
+    // Add the collaborator to the trip's collaborators list
+    const updatedTrip = await tripsService.addCollaborator(
+      req.params.tripId,
+      collaborator._id
+    );
+
+    // Send a success response with the updated trip
+    res.status(200).json(updatedTrip);
   } catch (err: any) {
+    // Handle errors and send an appropriate response
     res.status(400).json({ message: err.message });
   }
 };
 
+// Function to remove a collaborator from a trip
 const removeCollaborator = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
+    // Retrieve the collaborator details from the database
     const collaborator = await usersService.getUserDetails(
-      //googleId string
       req.body.collaborator,
       req.body.searchBy
     );
+
+    // Check if the collaborator exists
     if (!collaborator) {
       throw new Error("User not found");
     }
+
+    // Remove the trip from the collaborator's trips array
     await usersService.deleteTrip(req.body.collaborator, req.params.tripId);
-    res
-      .status(200)
-      .json(
-        await tripsService.removeCollaborator(
-          req.params.tripId,
-          collaborator._id
-        )
-      );
+
+    // Remove the collaborator from the trip's collaborators list
+    const updatedTrip = await tripsService.removeCollaborator(
+      req.params.tripId,
+      collaborator._id
+    );
+
+    // Send a success response with the updated trip
+    res.status(200).json(updatedTrip);
   } catch (err: any) {
+    // Handle errors and send an appropriate response
     res.status(400).json({ message: err.message });
   }
 };
 
+// Export the controller functions
 export default {
   addTrip,
   getTripDetails,
