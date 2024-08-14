@@ -41,7 +41,7 @@ const addCollaborator = async (
   const trip = await tripsModel
     .findByIdAndUpdate(
       tripId,
-      { $push: { collaborators: collaboratorId } }, // Push new collaborator to the array
+      { $addToSet: { collaborators: collaboratorId } }, // Push new collaborator to the array
       { new: true }
     )
     .populate({ path: "owner", select: "googleId _id email picture name" })

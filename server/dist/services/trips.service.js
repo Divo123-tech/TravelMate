@@ -24,7 +24,7 @@ const deleteTrip = async (tripId) => {
 // Function to add a collaborator to a trip
 const addCollaborator = async (tripId, collaboratorId) => {
     const trip = await tripsModel
-        .findByIdAndUpdate(tripId, { $push: { collaborators: collaboratorId } }, // Push new collaborator to the array
+        .findByIdAndUpdate(tripId, { $addToSet: { collaborators: collaboratorId } }, // Push new collaborator to the array
     { new: true })
         .populate({ path: "owner", select: "googleId _id email picture name" })
         .populate({
