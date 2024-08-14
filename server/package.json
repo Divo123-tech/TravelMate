@@ -7,7 +7,8 @@
   "scripts": {
     "test": "NODE_ENV=test jest",
     "build": "tsc",
-    "watch": "nodemon dist/server.js"
+    "watch": "nodemon dist/server.js",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",

@@ -37,7 +37,7 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
             href={hotel.url} // URL to the hotel website
             className="text-white text-2xl md:text-3xl font-Oswald"
           >
-            {hotel.name} // Display the hotel name
+            {hotel.name}
           </a>
         </div>
       </div>
