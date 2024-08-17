@@ -15,7 +15,7 @@ const io = new Server(server, {
 const port = 3000;
 server.listen(port, async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL);
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("Connected to MongoDB");
         console.log("listening on port " + port);
     }
