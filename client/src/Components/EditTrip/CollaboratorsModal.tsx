@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap"; // Import Bootstrap components for modal
-import { FC, useState } from "react"; // Import React's FC type and useState hook
+import { FC, useEffect, useState } from "react"; // Import React's FC type and useState hook
 import { TripType, UserType } from "../../types/types"; // Import types for trips and users
 import {
   searchUserDetails, // Function to search for a user
@@ -10,7 +10,9 @@ import { motion } from "framer-motion"; // Import Framer Motion for animations
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import FontAwesomeIcon for icons
 import {
   faTrashCan, // Trash can icon for deleting
-  faMagnifyingGlass, // Magnifying glass icon for searching
+  faMagnifyingGlass,
+  faCheck,
+  faPlus, // Magnifying glass icon for searching
 } from "@fortawesome/free-solid-svg-icons";
 
 // Define the Props type for the CollaboratorsModal component
@@ -44,7 +46,18 @@ const CollaboratorsModal: FC<Props> = ({
   const [userShow, setUserShow] = useState(false);
   // Style for the current mode
   const currentModeStyle = "text-oxford-blue underline underline-offset-4";
+  const [successfullyAdded, setSuccessfullyAdded] = useState<boolean>(false); // State to track if itineraries have been successfully added
+  useEffect(() => {
+    if (successfullyAdded) {
+      // Set a timer to reset the successfullyAdded state after 750ms
+      const timer = setTimeout(() => {
+        setSuccessfullyAdded(false);
+      }, 750);
 
+      // Cleanup function to clear the timer if the component unmounts or successfullyAdded changes
+      return () => clearTimeout(timer);
+    }
+  }, [successfullyAdded]); // Dependency array includes successfullyAdded
   // Handle input changes in the search field
   const handleChange = (e: any) => {
     setInputSearch(e.target.value);
@@ -129,7 +142,11 @@ const CollaboratorsModal: FC<Props> = ({
                         {collaborator.name || collaborator.email}
                       </p>
                     </div>
-                    <div>
+                    <motion.div
+                      className="hover:cursor-pointer"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
                       {isOwner && (
                         <FontAwesomeIcon
                           icon={faTrashCan}
@@ -139,7 +156,7 @@ const CollaboratorsModal: FC<Props> = ({
                           }
                         />
                       )}
-                    </div>
+                    </motion.div>
                   </div>
                 ))}
               </div>
@@ -186,13 +203,22 @@ const CollaboratorsModal: FC<Props> = ({
                             </p>
                           </div>
                           <div>
+                            {/* Icon button with animations */}
                             <motion.p
-                              className="text-4xl font-bold text-teal hover:cursor-pointer"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.9 }}
-                              onClick={addCollaboratorToTrip}
+                              className="text-3xl font-bold text-teal hover:cursor-pointer"
+                              whileHover={{ scale: 1.1 }} // Scale up on hover
+                              whileTap={{ scale: 0.9 }} // Scale down on click
+                              onClick={() => {
+                                addCollaboratorToTrip(); // Call function to add itineraries
+                                setSuccessfullyAdded(true); // Set state to show success icon
+                              }}
                             >
-                              +
+                              {/* Display success icon if itineraries have been added, otherwise show plus icon */}
+                              {successfullyAdded ? (
+                                <FontAwesomeIcon icon={faCheck} /> // Success checkmark icon
+                              ) : (
+                                <FontAwesomeIcon icon={faPlus} /> // Plus icon for adding
+                              )}
                             </motion.p>
                           </div>
                         </div>
