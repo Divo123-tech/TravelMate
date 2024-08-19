@@ -16,6 +16,16 @@ app.use(
   })
 );
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "*"],
+      frameSrc: ["'self'", "https://www.youtube.com"],
+      // Add other directives as needed
+    },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(

@@ -64,12 +64,10 @@ const deleteTrip = async (req: Request, res: Response): Promise<void> => {
       trip.owner,
       "_id"
     );
-
+    // Remove the trip from the user's trips array
+    await usersService.deleteTrip(currentUser.id, req.params.tripId);
     // Check if the user attempting to delete the trip is the owner
     if (tripOwner?.googleId === currentUser.id) {
-      // Remove the trip from the owner's trips array
-      await usersService.deleteTrip(currentUser.id, req.params.tripId);
-
       // Remove the trip from all collaborators' trips arrays
       for (const collaboratorId of trip.collaborators || []) {
         const collaborator: UserInterface | null =
