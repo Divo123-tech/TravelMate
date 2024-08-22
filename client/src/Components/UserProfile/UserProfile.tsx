@@ -144,18 +144,20 @@ const UserProfile: FC = () => {
     <>
       {user ? (
         // Render content if the user is authenticated
-        <section>
+        <section className="dark:bg-black dark:bg-opacity-90 dark:text-white">
           {/* User Profile Section */}
-          <div className="pt-16 pb-2 px-32 flex items-center justify-center gap-3 md:justify-around flex-wrap">
-            <div className="flex items-center flex-col gap-2">
+          <div className="pt-16 pb-2 px-32 flex flex-col items-center justify-center gap-3 md:justify-around flex-wrap">
+            <div className="flex items-center flex-col">
               {/* User's profile picture and ID */}
               <img
                 src={user.picture}
-                className="rounded-full"
+                className="w-50 h-50 rounded-full"
                 alt="User Profile"
               />
-              <p className="text-xl font-Oswald">User ID</p>
-              <p className="text-lg italic font-Rethink">{user.googleId}</p>
+              <div className="flex flex-col items-center  text-center md:text-left">
+                <p className="text-xl font-Oswald ">User ID</p>
+                <p className="text-lg italic font-Rethink">{user.googleId}</p>
+              </div>
             </div>
             <div>
               {/* Form for editing user details */}
@@ -166,12 +168,14 @@ const UserProfile: FC = () => {
                     <Col>
                       {/* Input field for user's name */}
                       <div className="flex flex-col">
-                        <label className="text-lg">Name</label>
+                        <label className="text-xl font-semibold pb-1">
+                          Name
+                        </label>
                         <input
                           type="text"
                           defaultValue={user.name}
                           name="name"
-                          className="border-oxford-blue border-2 rounded-lg w-80 h-8"
+                          className="border-oxford-blue border-2 rounded-lg w-96 h-8 pl-2 dark:bg-champion-blue"
                           onChange={handleChange}
                           placeholder="Enter your name"
                         />
@@ -180,10 +184,12 @@ const UserProfile: FC = () => {
                     <Col>
                       {/* Dropdown for selecting currency */}
                       <div className="flex flex-col">
-                        <label className="text-lg">Currency</label>
+                        <label className="text-xl font-semibold pb-1">
+                          Currency
+                        </label>
                         <select
                           defaultValue={user.currencyUsed}
-                          className="border-oxford-blue border-2 rounded-lg w-80 h-8"
+                          className="border-oxford-blue border-2 rounded-lg w-96 h-8 pl-2 dark:bg-champion-blue"
                           onChange={handleChange}
                           name="currencyUsed"
                         >
@@ -212,9 +218,11 @@ const UserProfile: FC = () => {
                     <Col>
                       {/* Dropdown for selecting passport */}
                       <div className="flex flex-col">
-                        <label className="text-lg">Passport</label>
+                        <label className="text-xl font-semibold pb-1">
+                          Passport
+                        </label>
                         <select
-                          className="border-oxford-blue border-2 rounded-lg w-80 h-8"
+                          className="border-oxford-blue border-2 rounded-lg w-96 h-8 pl-2 dark:bg-champion-blue"
                           name="passport"
                           onChange={handleChange}
                         >
@@ -246,7 +254,7 @@ const UserProfile: FC = () => {
                       <div className="flex flex-col items-center justify-center">
                         <motion.button
                           type="submit"
-                          className="bg-teal hover:bg-oxford-blue text-white rounded-lg px-2 py-2 mt-3 w-80 text-lg disabled:opacity-80"
+                          className="bg-oxford-blue hover:bg-champion-blue text-white rounded-lg px-2 py-2 mt-4 w-96 text-lg disabled:opacity-80"
                           disabled={
                             user.name === "" ||
                             user.passport?.code === "" ||
@@ -263,7 +271,7 @@ const UserProfile: FC = () => {
                 </Container>
               </form>
               {/* Message indicating the purpose of the form */}
-              <p className="mt-4 text-center italic">
+              <p className="mt-4 ml-4 text-left italic">
                 Fill in these fields to get personalized visa and exchange
                 information when exploring!
               </p>
@@ -278,19 +286,21 @@ const UserProfile: FC = () => {
           {/* Trips Section */}
           <section className="py-16">
             {/* Section title with animation */}
-            <motion.div
-              className="bg-baby-powder w-48 text-center my-10 p-1"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.5 }}
-              variants={{
-                hidden: { opacity: 0, x: -75 },
-                visible: { opacity: 1, x: 0 },
-              }}
-            >
-              <p className="text-2xl font-medium font-Oswald">MY TRIPS</p>
-            </motion.div>
+            <div>
+              <motion.div
+                className="w-100 text-center my-4 p-1"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5 }}
+                variants={{
+                  hidden: { opacity: 0, x: -75 },
+                  visible: { opacity: 1, x: 0 },
+                }}
+              >
+                <p className="text-4xl font-medium font-Oswald">MY TRIPS</p>
+              </motion.div>
+            </div>
             {/* List of user's trips with animation */}
             <motion.div
               className="flex flex-col gap-8"
@@ -319,7 +329,7 @@ const UserProfile: FC = () => {
                     <div className="flex flex-col gap-3 ml-auto items-center justify-center font-Rethink">
                       {/* Edit button with animation and navigation */}
                       <motion.button
-                        className="text-baby-powder md:text-oxford-blue md:bg-baby-powder rounded-full md:px-12 md:py-2 md:rounded-full text-2xl"
+                        className="text-alice-blue md:text-oxford-blue md:bg-alice-blue rounded-full md:px-12 md:py-2 md:rounded-full text-2xl"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => navigate(`/trip/${trip._id}`)}

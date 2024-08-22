@@ -107,10 +107,10 @@ const EditTrip: FC = () => {
   return (
     <>
       {trip ? (
-        <div>
+        <div className="dark:bg-black">
           <div className="pt-8 px-16 flex justify-end">
             <motion.button
-              className="bg-oxford-blue text-xl px-8 py-3 rounded-full text-baby-powder hover:bg-teal"
+              className="bg-oxford-blue text-xl px-8 py-3 rounded-full text-alice-blue hover:bg-turquoise"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setCollaboratorsModalShow(true)}
@@ -119,22 +119,22 @@ const EditTrip: FC = () => {
               {trip.collaborators?.length})
             </motion.button>
           </div>
-          <header className="text-center flex flex-col gap-4 items-center">
+          <header className="text-center flex flex-col gap-4 items-center dark:bg-black dark:text-white">
             <input
-              className="text-5xl font-medium text-center border-b-2 py-2 w-2/3 md:w-1/3 border-oxford-blue focus:outline-none"
+              className="text-5xl font-medium text-center border-b-2 py-2 w-2/3 md:w-1/3 border-oxford-blue dark:bg-black dark:border-white focus:outline-none"
               defaultValue={trip.name}
               name="name"
               onChange={handleChange}
               onBlur={editDetails}
             ></input>
             <p className="text-lg">
-              Owner: {trip.owner.name || trip.owner.email} ({trip.owner.email})
+              Owner: {trip.owner.name || trip.owner.email}
             </p>
           </header>
           <section>
             <form className="flex justify-center text-center text-2xl md:gap-72 py-8 px-24 flex-wrap gap-8">
               <div className="flex flex-col gap-2">
-                <label className="font-medium">From</label>
+                <label className="font-medium dark:text-white">From</label>
                 <input
                   type="date"
                   defaultValue={String(trip.startDate).slice(0, 10)}
@@ -146,7 +146,7 @@ const EditTrip: FC = () => {
                 ></input>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-medium">To</label>
+                <label className="font-medium dark:text-white">To</label>
                 <input
                   type="date"
                   defaultValue={String(trip.endDate).slice(0, 10)}
@@ -161,7 +161,7 @@ const EditTrip: FC = () => {
           </section>
           <section className="flex justify-center items-center">
             <motion.button
-              className="text-baby-powder font-medium text-2xl px-12 py-4 rounded-full bg-oxford-blue"
+              className="text-alice-blue font-medium text-2xl px-12 py-4 rounded-full bg-oxford-blue"
               onClick={() => setActivityModalShow(true)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -173,7 +173,7 @@ const EditTrip: FC = () => {
             <div id="countries-div">
               <div className="flex justify-between items-center">
                 <motion.div
-                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.5 }}
@@ -183,7 +183,7 @@ const EditTrip: FC = () => {
                     visible: { opacity: 1, x: 0 },
                   }}
                 >
-                  <h1 className="text-3xl text-oxford-blue font-medium">
+                  <h1 className="text-3xl text-alice-blue font-medium">
                     Countries
                   </h1>
                 </motion.div>
@@ -200,7 +200,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={country.iso2}
                     >
                       <Country key={index} country={country} />
@@ -217,7 +217,7 @@ const EditTrip: FC = () => {
             <div id="states-div">
               <div className="flex justify-between items-center">
                 <motion.div
-                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.5 }}
@@ -227,7 +227,7 @@ const EditTrip: FC = () => {
                     visible: { opacity: 1, x: 0 },
                   }}
                 >
-                  <h1 className="text-3xl text-oxford-blue font-medium">
+                  <h1 className="text-3xl text-alice-blue font-medium">
                     States
                   </h1>
                 </motion.div>
@@ -257,9 +257,9 @@ const EditTrip: FC = () => {
               </motion.div>
             </div>
             <div id="cities-div">
-              <div className=" flex justify-between items-center">
+              <div className="flex justify-between items-center">
                 <motion.div
-                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.5 }}
@@ -269,7 +269,7 @@ const EditTrip: FC = () => {
                     visible: { opacity: 1, x: 0 },
                   }}
                 >
-                  <h1 className="text-3xl text-oxford-blue font-medium">
+                  <h1 className="text-3xl text-alice-blue font-medium">
                     Cities
                   </h1>
                 </motion.div>
@@ -286,7 +286,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={city.name}
                     >
                       <City city={city} />
@@ -301,7 +301,7 @@ const EditTrip: FC = () => {
             <div id="hotels-div">
               <div className="flex justify-between items-center">
                 <motion.div
-                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.5 }}
@@ -311,7 +311,7 @@ const EditTrip: FC = () => {
                     visible: { opacity: 1, x: 0 },
                   }}
                 >
-                  <h1 className="text-3xl text-oxford-blue font-medium">
+                  <h1 className="text-3xl text-alice-blue font-medium">
                     Hotels
                   </h1>
                 </motion.div>
@@ -328,7 +328,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
+                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
                       key={hotel.id}
                     >
                       <Hotel hotel={hotel} />
@@ -343,7 +343,7 @@ const EditTrip: FC = () => {
             <div id="attractions-div">
               <div className="flex justify-between items-center">
                 <motion.div
-                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.5 }}
@@ -353,12 +353,12 @@ const EditTrip: FC = () => {
                     visible: { opacity: 1, x: 0 },
                   }}
                 >
-                  <h1 className="text-3xl text-oxford-blue font-medium">
+                  <h1 className="text-3xl text-alice-blue font-medium">
                     Activities
                   </h1>
                 </motion.div>
                 <motion.p
-                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  className="text-7xl font-bold text-oxford-blue text-opacity-70 pr-8 hover:cursor-pointer dark:text-champion-blue"
                   onClick={() => setActivityModalShow(true)}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -393,7 +393,7 @@ const EditTrip: FC = () => {
             <div id="flights-div">
               <div className="flex justify-between items-center">
                 <motion.div
-                  className="bg-baby-powder w-48 text-center my-10 p-1"
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, amount: 0.5 }}
@@ -403,12 +403,12 @@ const EditTrip: FC = () => {
                     visible: { opacity: 1, x: 0 },
                   }}
                 >
-                  <h1 className="text-3xl text-oxford-blue font-medium">
+                  <h1 className="text-3xl text-alice-blue font-medium">
                     Flights
                   </h1>
                 </motion.div>
                 <motion.p
-                  className="text-7xl font-bold text-teal pr-8 hover:cursor-pointer"
+                  className="text-7xl font-bold text-oxford-blue text-opacity-70 pr-8 hover:cursor-pointer dark:text-champion-blue"
                   onClick={() => navigate("/flights")}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
