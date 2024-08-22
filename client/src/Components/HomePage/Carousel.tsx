@@ -78,28 +78,28 @@ const CarouselComponent: FC = () => {
         </div>
 
         {/* Button section with navigation links */}
-        <div className="flex flex-row gap-24 md:gap-48">
+        <div className="flex flex-row gap-24 md:gap-48 ">
           {/* Explore Button */}
-          <Link to={"/explore"} className="rounded-full bg-black">
-            <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-teal flex items-center justify-center">
-              <div className="flex flex-col gap-2 md:gap-4 items-center">
-                <p className="text-lg md:text-2xl font-Rethink">Explore</p>
+          <div className="bg-black">
+            <button className="text-white h-24 w-24 md:h-30 md:w-80 hover:bg-champion-blue flex items-center justify-center">
+              <div className="flex-col md:flex-row gap-3 md:gap-4 items-center">
+                <p className="text-lg md:text-3xl font-Rethink">Explore</p>
                 <FontAwesomeIcon
                   icon={faMagnifyingGlassLocation}
                   className="text-xl md:text-4xl"
                 />
               </div>
             </button>
-          </Link>
+          </div>
           {/* Create A Trip Button */}
-          <div className="bg-black rounded-full">
+          <div className="bg-black">
             <button
-              className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full  hover:bg-oxford-blue flex items-center justify-center"
+              className="text-white h-24 w-24 md:h-30 md:w-80 hover:bg-champion-blue flex items-center justify-center px-4"
               onClick={
                 user ? () => navigate("/profile") : () => setModalShow(true)
               }
             >
-              <div className="flex flex-col gap-2 md:gap-4 items-center">
+              <div className="flex gap-2 md:gap-4 items-center flex-wrap justify-center">
                 <p className="text-md md:text-2xl font-Rethink">
                   Create A Trip
                 </p>

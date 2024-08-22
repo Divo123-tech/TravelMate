@@ -3,7 +3,7 @@ import DenpasarImage from "../assets/Denpasar.jpg";
 import GzImage from "../assets/Guangzhou.jpg";
 import JapanImage from "../assets/Japan.jpg";
 import headshot1 from "../assets/headshot1.jpg";
-import headshot2 from "../assets/headshot3.webp";
+import headshot2 from "../assets/headshot2.jpg";
 import headshot3 from "../assets/headshot4.jpg";
 
 type itinerary = {
@@ -55,7 +55,7 @@ export const reviews: review[] = [
   },
   {
     imgSrc: headshot2,
-    name: "LeBron James",
+    name: "Savannah James",
     title: "Made My Vacation Stress-Free!",
     body: "This travel app is a game changer! The interface is intuitive, and the real-time updates are incredibly helpful. 5 stars!",
   },

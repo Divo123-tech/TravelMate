@@ -53,7 +53,7 @@ const NavigationBar: FC = () => {
       >
         <Container className="flex">
           <Navbar.Brand>
-            <img src={logo} className="w-40 " />
+            <img src={logo} className="w-[200px]" />
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
