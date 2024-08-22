@@ -9,12 +9,15 @@ import {
   faMagnifyingGlassLocation,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { googleAuthenticate } from "../../services/users.service";
 import { UserContext } from "../../App";
+import AuthModal from "../AuthModal";
 
 // Functional Component for Carousel
 const CarouselComponent: FC = () => {
+  const [modalShow, setModalShow] = useState(false);
+
   const userContext = useContext(UserContext);
   // Ensure that the component is used within the necessary context providers
   if (!userContext) {
@@ -92,7 +95,9 @@ const CarouselComponent: FC = () => {
           <div className="bg-black rounded-full">
             <button
               className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full  hover:bg-oxford-blue flex items-center justify-center"
-              onClick={user ? () => navigate("/profile") : googleAuthenticate}
+              onClick={
+                user ? () => navigate("/profile") : () => setModalShow(true)
+              }
             >
               <div className="flex flex-col gap-2 md:gap-4 items-center">
                 <p className="text-md md:text-2xl font-Rethink">
@@ -107,6 +112,7 @@ const CarouselComponent: FC = () => {
           </div>
         </div>
       </div>
+      <AuthModal show={modalShow} onHide={() => setModalShow(false)} />
     </motion.div>
   );
 };

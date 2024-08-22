@@ -9,8 +9,10 @@ import { googleAuthenticate, logOutAPI } from "../services/users.service";
 import logo from "../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import AuthModal from "./AuthModal";
 const NavigationBar: FC = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     // Check for saved dark mode preference in local storage or default to false
@@ -127,7 +129,7 @@ const NavigationBar: FC = () => {
                 <Nav.Link
                   className="text-black hover:font-bold font-Rethink"
                   href="#pricing"
-                  onClick={googleAuthenticate}
+                  onClick={() => setModalShow(true)}
                 >
                   Login/Sign Up
                 </Nav.Link>
@@ -165,6 +167,7 @@ const NavigationBar: FC = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <AuthModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
 };
