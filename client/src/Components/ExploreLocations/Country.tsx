@@ -115,29 +115,29 @@ const Country: FC<Props> = ({
         {/* Container for country details */}
         <div className="flex flex-col gap-2 md:text-left">
           {/* Display the country continent */}
-          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
+          <p className="text-oxford-blue dark:text-white text-base text-lg whitespace-nowrap font-Rethink">
             Region: {country.continent}
           </p>
 
           {/* Display the country name and ISO code, make it clickable to navigate to states */}
           <h1
-            className="text-white text-3xl font-medium hover:cursor-pointer font-Oswald"
+            className="text-oxford-blue dark:text-white text-3xl font-medium hover:cursor-pointer font-Oswald"
             onClick={goToStates}
           >
             {country.name}, {country.iso2}
           </h1>
 
           {/* Display the country capital */}
-          <p className="text-white text-base md:text-lg whitespace-nowrap font-Rethink">
+          <p className="text-oxford-blue dark:text-white text-base md:text-lg whitespace-nowrap font-Rethink">
             Capital: {country.capital}
           </p>
         </div>
       </div>
 
       {/* Container for visa details */}
-      <div className="flex flex-col text-baby-powder text-center hover:cursor-pointer font-Oswald">
+      <div className="flex flex-col bg-oxford-blue dark:bg-champion-blue px-6 py-3 rounded-lg text-baby-powder text-center hover:cursor-pointer font-Oswald">
         <motion.h1
-          className="text-baby-powder font-medium text-2xl"
+          className="text-alice-blue font-medium text-2xl"
           onClick={() => fetchCountryVisa(country)} // Fetch visa details on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap
@@ -163,9 +163,9 @@ const Country: FC<Props> = ({
       </div>
 
       {/* Container for currency exchange details */}
-      <div className="flex flex-col text-baby-powder text-center">
+      <div className="flex flex-col bg-oxford-blue px-6 py-3 rounded-lg text-baby-powder text-center dark:bg-champion-blue">
         <motion.h1
-          className="text-baby-powder font-medium text-2xl hover:cursor-pointer font-Oswald"
+          className="text-alice-blue font-medium text-2xl hover:cursor-pointer font-Oswald"
           onClick={() => fetchCountryExchange(country)} // Fetch exchange rate on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap

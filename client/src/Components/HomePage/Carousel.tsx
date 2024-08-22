@@ -8,11 +8,20 @@ import {
   faPlaneDeparture,
   faMagnifyingGlassLocation,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { FC } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FC, useContext } from "react";
+import { googleAuthenticate } from "../../services/users.service";
+import { UserContext } from "../../App";
 
 // Functional Component for Carousel
 const CarouselComponent: FC = () => {
+  const userContext = useContext(UserContext);
+  // Ensure that the component is used within the necessary context providers
+  if (!userContext) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const navigate = useNavigate();
+  const { user } = userContext; // Destructure user state and updater function
   return (
     <motion.div
       className="relative mb-0 md:mb-32"
@@ -68,7 +77,7 @@ const CarouselComponent: FC = () => {
         {/* Button section with navigation links */}
         <div className="flex flex-row gap-24 md:gap-48">
           {/* Explore Button */}
-          <Link to={"/countries"} className="rounded-full bg-black">
+          <Link to={"/explore"} className="rounded-full bg-black">
             <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-teal flex items-center justify-center">
               <div className="flex flex-col gap-2 md:gap-4 items-center">
                 <p className="text-lg md:text-2xl font-Rethink">Explore</p>
@@ -80,8 +89,11 @@ const CarouselComponent: FC = () => {
             </button>
           </Link>
           {/* Create A Trip Button */}
-          <Link to={"/profile"} className="rounded-full bg-black">
-            <button className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full hover:bg-oxford-blue flex items-center justify-center">
+          <div className="bg-black rounded-full">
+            <button
+              className="text-white h-24 w-24 md:h-48 md:w-48 rounded-full  hover:bg-oxford-blue flex items-center justify-center"
+              onClick={user ? () => navigate("/profile") : googleAuthenticate}
+            >
               <div className="flex flex-col gap-2 md:gap-4 items-center">
                 <p className="text-md md:text-2xl font-Rethink">
                   Create A Trip
@@ -92,7 +104,7 @@ const CarouselComponent: FC = () => {
                 />
               </div>
             </button>
-          </Link>
+          </div>
         </div>
       </div>
     </motion.div>

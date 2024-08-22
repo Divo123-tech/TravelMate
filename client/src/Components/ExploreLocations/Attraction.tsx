@@ -15,7 +15,7 @@ const Attraction: FC<Props> = ({ attraction }: Props) => {
   return (
     <>
       {/* Container div with styling for the attraction information */}
-      <div className="bg-teal flex items-center gap-8 mr-auto w-full">
+      <div className="flex bg-turquoise items-center gap-8 mr-auto w-full">
         {/* Display a loading image while the actual attraction image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -29,14 +29,14 @@ const Attraction: FC<Props> = ({ attraction }: Props) => {
         {/* Container for attraction details */}
         <div className="flex flex-col justify-start">
           {/* Display the attraction's city and country */}
-          <p className="text-white text-md md:text-lg font-Rethink">
+          <p className="text-oxford-blue text-md md:text-lg font-Rethink">
             {attraction.city}, {attraction.country}
           </p>
 
           {/* Display the attraction's name as a link */}
           <a
             href={attraction.url} // URL for the attraction, makes the name a clickable link
-            className="text-white text-2xl md:text-3xl font-Oswald"
+            className="text-oxford-blue text-2xl md:text-3xl font-Oswald"
             target="_blank" // Open the link in a new tab
             rel="noopener noreferrer" // Security best practice for links opening in a new tab
           >
@@ -44,7 +44,7 @@ const Attraction: FC<Props> = ({ attraction }: Props) => {
           </a>
 
           {/* Display the attraction's address */}
-          <p className="text-white text-md md:text-lg font-Rethink">
+          <p className="text-oxford-blue text-md md:text-lg font-Rethink">
             @ {attraction.address}
           </p>
         </div>

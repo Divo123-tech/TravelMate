@@ -14,7 +14,7 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
 
   return (
     <>
-      <div className="bg-teal flex items-center gap-8 mr-auto w-full">
+      <div className="flex items-center gap-8 mr-auto w-full">
         {/* Display the loading image if the hotel image has not loaded yet */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -28,14 +28,14 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
         {/* Container for hotel details */}
         <div className="flex flex-col justify-start">
           {/* Display the hotel location (city) */}
-          <p className="text-white text-md md:text-lg font-Rethink">
+          <p className="text-oxford-blue text-md md:text-lg font-Rethink dark:text-white">
             Location: {hotel.city}
           </p>
 
           {/* Link to the hotel's website */}
           <a
             href={hotel.url} // URL to the hotel website
-            className="text-white text-2xl md:text-3xl font-Oswald"
+            className="text-oxford-blue text-2xl md:text-3xl font-Oswald dark:text-white"
           >
             {hotel.name}
           </a>

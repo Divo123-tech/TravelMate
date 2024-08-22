@@ -29,7 +29,7 @@ const State: FC<Props> = ({ state, setCurrentState, setSearch }: Props) => {
 
   return (
     <>
-      <div className="bg-teal flex items-center gap-8 mr-auto">
+      <div className="flex items-center gap-8 mr-auto">
         {/* Show a loading image while the actual image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -42,12 +42,12 @@ const State: FC<Props> = ({ state, setCurrentState, setSearch }: Props) => {
         {/* Container for state information with an onClick handler for navigation */}
         <div className="flex flex-col md:text-left" onClick={goToCities}>
           {/* Display country information */}
-          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
+          <p className="text-oxford-blue dark:text-white text-base text-lg whitespace-nowrap font-Rethink">
             Country: {state.countryName}, {state.countryCode}
           </p>
 
           {/* Display state name with a hover effect for cursor pointer */}
-          <h1 className="text-white text-3xl font-medium hover:cursor-pointer font-Oswald">
+          <h1 className="text-oxford-blue dark:text-white text-3xl font-medium hover:cursor-pointer font-Oswald">
             {state.name}, {state.code}
           </h1>
         </div>

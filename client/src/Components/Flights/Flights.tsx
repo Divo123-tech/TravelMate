@@ -10,6 +10,7 @@ import Placeholder from "react-bootstrap/Placeholder";
 import DetailsModal from "./DetailsModal";
 import Flight from "./Flight";
 import AddToTrip from "../ExploreLocations/AddToTrip";
+import LocationsLoading from "../ExploreLocations/LocationsLoading";
 
 // Functional component to display flight search and results
 const Flights: FC = () => {
@@ -124,7 +125,7 @@ const Flights: FC = () => {
             Millions of Cheap Flights. One Simple Search.
           </h1>
           {/* Flight search form */}
-          <form className="bg-teal flex py-3 px-4 gap-4 justify-center rounded-full flex-wrap">
+          <form className="bg-oxford-blue flex py-3 px-4 gap-4 justify-center rounded-full flex-wrap">
             {/* Origin input */}
             <div className="flex flex-col justify-center items-center gap-1">
               <label className="text-baby-powder font-medium text-xl font-Oswald">
@@ -165,7 +166,7 @@ const Flights: FC = () => {
             </div>
             {/* Advanced Filters button */}
             <button
-              className="bg-baby-powder text-md px-2 rounded-full text-oxford-blue font-medium font-Oswald"
+              className="bg-alice-blue text-md h-10 px-3 mt-4 text-oxford-blue font-medium rounded-full font-Oswald hover:bg-champion-blue hover:text-white"
               type="button"
               onClick={() => setModalShow(true)}
             >
@@ -173,7 +174,7 @@ const Flights: FC = () => {
             </button>
             {/* Search button */}
             <button
-              className="bg-oxford-blue text-lg px-4 py-2 rounded-full text-baby-powder font-Oswald font-medium disabled:opacity-80 disabled:cursor-not-allowed"
+              className="bg-alice-blue text-lg h-10 px-4 mt-4 text-oxford-blue rounded-full font-Oswald font-medium disabled:bg-champion-blue disabled:cursor-not-allowed"
               disabled={flightDetails.origin === ""}
               type="button"
               onClick={() => {
@@ -194,10 +195,10 @@ const Flights: FC = () => {
       <div
         className={`${
           showFlights ? "block" : "hidden"
-        } flex flex-col gap-4 py-4`}
+        } flex flex-col gap-4 py-4 dark:bg-black dark:bg-opacity-90`}
       >
         {/* Flight results header */}
-        <h1 className="text-3xl md:text-5xl font-bold text-oxford-blue">
+        <h1 className="text-3xl md:text-5xl font-bold text-center text-oxford-blue dark:text-white">
           Flights From {flightDetails.origin} to {flightDetails.destination}
         </h1>
         {/* Conditional rendering based on flight data */}
@@ -219,26 +220,7 @@ const Flights: FC = () => {
             </h1>
           )
         ) : (
-          // Render loading placeholders
-          Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="flex items-center bg-teal mt-4">
-              <img src={loading} alt="Loading..." className="mr-4" />
-              <div className="flex flex-col space-y-2 w-full h-[150px] pt-3">
-                <Placeholder as="p" animation="glow">
-                  <Placeholder xs={3} />
-                </Placeholder>
-                <Placeholder as="p" animation="glow">
-                  <Placeholder xs={5} />
-                </Placeholder>
-                <Placeholder as="p" animation="glow">
-                  <Placeholder xs={7} />
-                </Placeholder>
-                <Placeholder as="p" animation="glow">
-                  <Placeholder xs={4} />
-                </Placeholder>
-              </div>
-            </div>
-          ))
+          <LocationsLoading />
         )}
 
         {/* Pagination controls */}

@@ -46,7 +46,7 @@ const getUserDetails = async (info, searchBy) => {
 const addTrip = async (googleId, tripId) => {
     // Update the user document by pushing the new trip ID to the 'trips' array
     return await userModel.findOneAndUpdate({ googleId }, {
-        $push: {
+        $addToSet: {
             trips: typeof tripId === "string" // Check if tripId is a string
                 ? new mongoose.Types.ObjectId(tripId) // Convert string to ObjectId if necessary
                 : tripId,

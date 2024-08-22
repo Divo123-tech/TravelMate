@@ -22,6 +22,7 @@ app.use(
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "*"],
       frameSrc: ["'self'", "https://www.youtube.com"],
+      scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
       // Add other directives as needed
     },
   })

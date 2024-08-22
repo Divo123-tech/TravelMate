@@ -338,11 +338,11 @@ const ExploreLocations: FC = () => {
         return (
           <div>
             <header className="flex items-center align-center py-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold font-Oswald">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-semibold font-Oswald dark:text-white">
                 SELECT COUNTRY FROM
               </h1>
               <select
-                className="text-oxford-blue text-3xl md:text-4xl font-bold border-2 font-Oswald"
+                className="text-oxford-blue text-3xl md:text-4xl border-2 font-Oswald"
                 onChange={changeContinent}
                 defaultValue={continent}
               >
@@ -380,7 +380,7 @@ const ExploreLocations: FC = () => {
                       return (
                         <motion.div
                           layout
-                          className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
                           key={country.iso2}
                         >
                           <Country
@@ -394,7 +394,7 @@ const ExploreLocations: FC = () => {
                     })}
                   </motion.div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald">
+                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald dark:text-white">
                     No Countries Matched Your Search {":("}
                   </h1>
                 )
@@ -402,7 +402,7 @@ const ExploreLocations: FC = () => {
                 <LocationsLoading />
               )}
             </section>
-            <div className="flex justify-end px-12 py-8 mb-auto">
+            <div className="flex justify-center px-12 py-8 mb-auto dark:text-white">
               <h1 className="text-xl font-Oswald">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
@@ -424,7 +424,7 @@ const ExploreLocations: FC = () => {
         return (
           <div>
             <p
-              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Rethink"
+              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Rethink dark:text-white"
               onClick={() => {
                 navigate(`/explore`);
               }}
@@ -432,7 +432,7 @@ const ExploreLocations: FC = () => {
               <FontAwesomeIcon icon={faCaretLeft} /> Back to Countries
             </p>
             <header className="flex items-center align-center pb-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold font-Oswald">
+              <h1 className="text-oxford-blue dark:text-white text-3xl md:text-4xl font-semibold font-Oswald">
                 SELECT STATE
               </h1>
               <div className="md:ml-auto flex">
@@ -454,7 +454,7 @@ const ExploreLocations: FC = () => {
                       return (
                         <motion.div
                           layout
-                          className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
                           key={state.code}
                         >
                           <State
@@ -468,7 +468,7 @@ const ExploreLocations: FC = () => {
                     })}
                   </div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald">
+                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald dark:text-white">
                     No States Matched your search {":("}
                   </h1>
                 )
@@ -476,7 +476,7 @@ const ExploreLocations: FC = () => {
                 <LocationsLoading />
               )}
             </section>
-            <div className="flex justify-end px-12 py-8 mb-auto">
+            <div className="flex justify-center px-12 py-8 mb-auto">
               <h1 className="text-xl font-Oswald">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
@@ -498,7 +498,7 @@ const ExploreLocations: FC = () => {
         return (
           <div>
             <p
-              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Oswald"
+              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Oswald dark:text-white"
               onClick={() => {
                 navigate(
                   `/explore?locationType=states&country=${searchParams.get(
@@ -510,7 +510,7 @@ const ExploreLocations: FC = () => {
               <FontAwesomeIcon icon={faCaretLeft} /> Back to States
             </p>
             <header className="flex items-center align-center pb-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-bold font-Oswald">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-semibold dark:text-white font-Oswald">
                 SELECT CITY
               </h1>
               <div className="md:ml-auto flex">
@@ -532,7 +532,7 @@ const ExploreLocations: FC = () => {
                       return (
                         <motion.div
                           layout
-                          className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-16  w-full"
+                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-16  w-full"
                           key={city.name}
                         >
                           <City city={city} setCurrentCity={setCurrentCity} />
@@ -544,7 +544,7 @@ const ExploreLocations: FC = () => {
                     })}
                   </div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald">
+                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald dark:text-white">
                     No Cities Matched your search {":("}
                   </h1>
                 )
@@ -552,7 +552,7 @@ const ExploreLocations: FC = () => {
                 <LocationsLoading />
               )}
             </section>
-            <div className="flex justify-end px-12 py-8 mb-auto">
+            <div className="flex justify-center px-12 py-8 mb-auto">
               <h1 className="text-xl font-Oswald">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
@@ -572,8 +572,8 @@ const ExploreLocations: FC = () => {
         );
       case "activities":
         return (
-          <div className="flex flex-col items-center p-16 gap-8">
-            <h1 className="text-6xl font-medium text-oxford-blue text-center font-FatFace">
+          <div className=" flex flex-col items-center p-16 gap-8">
+            <h1 className="text-6xl font-medium text-oxford-blue text-center font-FatFace dark:text-white ">
               Explore {currentCity?.name || searchParams.get("city") || "..."}
             </h1>
             <form className="flex items-center" onSubmit={exploreNewLocation}>
@@ -591,12 +591,12 @@ const ExploreLocations: FC = () => {
                 Search
               </button>
             </form>
-            <div className="flex flex-col md:flex-row items-center gap-4 md:justify-between w-full text-4xl font-medium text-teal px-8 flex-wrap ">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:justify-between w-full text-4xl font-medium text-champion-blue px-8 flex-wrap ">
               <p
                 className={`${
                   activityType == "Hotels"
-                    ? "text-oxford-blue underline font-bold"
-                    : "hover:cursor-pointer"
+                    ? "text-oxford-blue dark:text-white underline font-bold"
+                    : "hover:cursor-pointer hover:underline"
                 } font-Oswald`}
                 onClick={handleActivityTypeChange("Hotels")}
               >
@@ -605,8 +605,8 @@ const ExploreLocations: FC = () => {
               <p
                 className={`${
                   activityType == "Airports"
-                    ? "text-oxford-blue underline font-bold"
-                    : "hover:cursor-pointer"
+                    ? "text-oxford-blue dark:text-white underline font-bold"
+                    : "hover:cursor-pointer hover:underline"
                 } font-Oswald`}
                 onClick={handleActivityTypeChange("Airports")}
               >
@@ -615,8 +615,8 @@ const ExploreLocations: FC = () => {
               <p
                 className={`${
                   activityType == "Restaurants"
-                    ? "text-oxford-blue underline font-bold"
-                    : "hover:cursor-pointer"
+                    ? "text-oxford-blue dark:text-white underline font-bold"
+                    : "hover:cursor-pointer hover:underline"
                 } font-Oswald`}
                 onClick={handleActivityTypeChange("Restaurants")}
               >
@@ -625,8 +625,8 @@ const ExploreLocations: FC = () => {
               <p
                 className={`${
                   activityType == "Things To Do"
-                    ? "text-oxford-blue underline font-bold"
-                    : "hover:cursor-pointer"
+                    ? "text-oxford-blue dark:text-white underline font-bold"
+                    : "hover:cursor-pointer hover:underline"
                 } font-Oswald`}
                 onClick={handleActivityTypeChange("Things To Do")}
               >
@@ -635,8 +635,8 @@ const ExploreLocations: FC = () => {
               <p
                 className={`${
                   activityType == "Videos"
-                    ? "text-oxford-blue underline font-bold"
-                    : "hover:cursor-pointer"
+                    ? "text-oxford-blue dark:text-white underline font-bold"
+                    : "hover:cursor-pointer hover:underline"
                 } font-Oswald`}
                 onClick={handleActivityTypeChange("Videos")}
               >
@@ -663,7 +663,7 @@ const ExploreLocations: FC = () => {
                         return (
                           <motion.div
                             layout
-                            className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                            className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
                             key={activity.id}
                           >
                             {activityType == "Hotels" && (
@@ -696,7 +696,7 @@ const ExploreLocations: FC = () => {
                       })}
                     </div>
                   ) : (
-                    <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
+                    <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 dark:text-white">
                       No {activityType} Matched your search {":("}
                     </h1>
                   )
@@ -723,7 +723,7 @@ const ExploreLocations: FC = () => {
               </section>
             ) : (
               <div className="flex items-center justify-center mt-12">
-                <h1 className="mb-auto text-4xl font-Oswald">
+                <h1 className="text-4xl font-Oswald h-[100px] dark:text-white">
                   Find a City And Explore What it Has to Offer!
                 </h1>
               </div>
@@ -753,7 +753,9 @@ const ExploreLocations: FC = () => {
     }
   };
 
-  return <div className="mb-auto">{renderLocations()}</div>;
+  return (
+    <div className="dark:bg-black dark:bg-opacity-85">{renderLocations()}</div>
+  );
 };
 
 export default ExploreLocations;

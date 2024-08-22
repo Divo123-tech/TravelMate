@@ -369,7 +369,9 @@ const getAllFlights = async (origin, destination, departureDate, adults = 1, non
             return {
                 origin,
                 destination,
-                duration: flight.itineraries[0].duration.substring(2),
+                duration: flight.itineraries[0].duration
+                    .substring(2)
+                    .replace(/H(?!$)/g, "H "),
                 stops: flight.itineraries[0].segments.length - 1,
                 departureDate: flight.itineraries[0].segments[0].departure.at,
                 arrivalDate: flight.itineraries[0].segments[flight.itineraries[0].segments.length - 1].arrival.at,

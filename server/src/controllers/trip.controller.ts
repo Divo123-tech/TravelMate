@@ -4,6 +4,7 @@ import usersService from "../services/users.service.js";
 import { TripInterface } from "../models/trips.model.js";
 import { UserInterface } from "../models/users.model.js";
 import { User } from "./users.controller.js";
+import mongoose from "mongoose";
 
 // Function to add a trip to the database and update the user's trips array
 const addTrip = async (req: Request, res: Response): Promise<void> => {

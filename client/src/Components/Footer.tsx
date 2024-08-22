@@ -6,13 +6,14 @@ import {
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 import { FC } from "react";
+import { Link } from "react-router-dom";
 
 // Define the Footer component
 const Footer: FC = () => {
   return (
     <>
       {/* Main footer container */}
-      <footer className="bg-oxford-blue flex justify-between px-8 md:px-16 py-4 font-light bottom-0 z-50">
+      <footer className="bg-oxford-blue flex justify-between px-8 md:px-16 py-4 font-light bottom-0 z-50 mb-0 ">
         {/* Left section: Menu links */}
         <div className="flex flex-col text-white gap-3 text-md">
           {/* Menu header */}
@@ -21,10 +22,10 @@ const Footer: FC = () => {
             <hr className="w-1/4 border-2" />
           </div>
           {/* Individual menu items */}
-          <p>About Us</p>
-          <p>FAQ</p>
-          <p>Terms and Conditions</p>
-          <p>Privacy Policy</p>
+          <Link to="/explore">Locations</Link>
+          <Link to="/explore?locationType=activities">Explore</Link>
+          <Link to="/flights">Flights</Link>
+          <Link to="/contact">Contact</Link>
         </div>
 
         {/* Center section: Social media links */}

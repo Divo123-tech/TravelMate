@@ -15,7 +15,7 @@ const Airport: FC<Props> = ({ airport }: Props) => {
   return (
     <>
       {/* Container div with styling for the airport information */}
-      <div className="bg-teal flex items-center gap-8 mr-auto w-full">
+      <div className="flex items-center gap-8 mr-auto w-full">
         {/* Display a loading image while the actual airport image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -29,12 +29,12 @@ const Airport: FC<Props> = ({ airport }: Props) => {
         {/* Container for airport details */}
         <div className="flex flex-col justify-start">
           {/* Display the airport location */}
-          <p className="text-white text-md md:text-lg font-Rethink">
+          <p className="text-oxford-blue text-md md:text-lg font-Rethink dark:text-white">
             Location: {airport.city}, {airport.region}
           </p>
 
           {/* Display the airport name */}
-          <a className="text-white text-2xl md:text-3xl font-Oswald">
+          <a className="text-oxford-blue text-2xl md:text-3xl font-Oswald dark:text-white">
             {airport.name}
           </a>
         </div>

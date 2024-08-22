@@ -62,7 +62,7 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
   return (
     <>
       {/* Container for city details */}
-      <div className="bg-teal flex items-center gap-8 mr-auto">
+      <div className="flex items-center gap-8 mr-auto">
         {/* Display a loading image while the actual city image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -74,31 +74,31 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
         />
 
         {/* Container for city details */}
-        <div className="flex flex-col md:text-left gap-3">
+        <div className="flex flex-col md:text-left gap-3 dark:text-white">
           {/* Display the city state */}
-          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
+          <p className="text-oxford-blue text-base text-lg whitespace-nowrap font-Rethink dark:text-white">
             State: {city.state}
           </p>
 
           {/* Display the city name and make it clickable to navigate to activities */}
           <h1
-            className="text-white text-3xl font-medium hover:cursor-pointer font-Oswald"
+            className="text-oxford-blue text-3xl font-medium hover:cursor-pointer font-Oswald dark:text-white"
             onClick={goToActivities}
           >
             {city.name}
           </h1>
 
           {/* Display the city country */}
-          <p className="text-white text-base text-lg whitespace-nowrap font-Rethink">
+          <p className="text-oxford-blue text-base text-lg whitespace-nowrap font-Rethink dark:text-white">
             Country: {city.country}
           </p>
         </div>
       </div>
 
       {/* Container for time zone details */}
-      <div className="flex flex-col text-baby-powder text-center mx-16 hover:cursor-pointer">
+      <div className="flex flex-col bg-oxford-blue dark:bg-champion-blue dark:text-white px-3 py-6 rounded-lg text-baby-powder text-center mx-16 hover:cursor-pointer">
         <motion.h1
-          className="text-baby-powder font-medium text-2xl font-Oswald"
+          className="dark:text-white font-medium text-2xl font-Oswald"
           onClick={() => fetchLocationTimeZone(city)} // Fetch time zone details on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap
@@ -110,10 +110,10 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
         {timeZoneShown ? (
           timeZoneDetails ? (
             <div>
-              <p className="text-lg font-Rethink">
+              <p className="text-lg dark:text-white font-Rethink">
                 Time: {timeZoneDetails.time}, {timeZoneDetails.date}
               </p>
-              <p className="text-lg font-Rethink">
+              <p className="text-lg dark:text-white font-Rethink">
                 TimeZone: {timeZoneDetails.timeZone}
               </p>
             </div>

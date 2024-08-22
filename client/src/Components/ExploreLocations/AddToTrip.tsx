@@ -16,7 +16,7 @@ const AddToTrip: FC<Props> = ({ itineraries }: Props) => {
     <div className="md:ml-auto pr-16 flex flex-col items-center justify-center">
       {/* Button to open the modal */}
       <motion.button
-        className="bg-oxford-blue text-baby-powder px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap font-Rethink"
+        className="bg-oxford-blue dark:bg-champion-blue text-alice-blue px-6 ml-8 py-3 rounded-full text-lg whitespace-nowrap font-Rethink"
         whileHover={{ scale: 1.05 }} // Scale up the button on hover
         whileTap={{ scale: 0.9 }} // Scale down the button on tap
         onClick={() => setModalShow(true)} // Show the modal when the button is clicked

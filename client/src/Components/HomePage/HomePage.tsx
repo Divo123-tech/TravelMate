@@ -23,16 +23,16 @@ const HomePage: FC = () => {
       <CarouselComponent />
 
       {/* Itineraries  */}
-      <section className="">
+      <section className="dark:bg-black dark:bg-opacity-85 pb-24">
         <motion.div
-          className="bg-baby-powder w-48 text-center my-10 p-1"
+          className="w-full text-center my-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 1 }}
           variants={rightSlideVariant}
         >
-          <p className="text-2xl font-medium font-Oswald whitespace-nowrap">
+          <p className="text-oxford-blue dark:text-white text-4xl font-medium font-Oswald whitespace-nowrap">
             TOP DESTINATIONS
           </p>
         </motion.div>
@@ -50,7 +50,7 @@ const HomePage: FC = () => {
         </motion.div>
       </section>
       {/* Reviews */}
-      <section className="bg-baby-powder py-8 mt-24 px-20 pb-12 ">
+      <section className="bg-alice-blue dark:bg-black dark:bg-opacity-90 py-8 px-20 pb-12 ">
         <motion.div
           className="mb-24"
           initial="hidden"
@@ -62,8 +62,8 @@ const HomePage: FC = () => {
           }}
         >
           <div className="text-center">
-            <h1 className="text-oxford-blue text-5xl font-bold font-FatFace">
-              WHAT OUR TRAVELLERS ARE SAYING
+            <h1 className="text-oxford-blue text-5xl dark:text-alice-blue font-bold font-FatFace">
+              Hear From Our Travellers
             </h1>
           </div>
         </motion.div>

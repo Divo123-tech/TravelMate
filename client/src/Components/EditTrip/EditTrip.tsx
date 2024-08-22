@@ -244,7 +244,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={state.code}
                     >
                       <State state={state} />
@@ -257,7 +257,7 @@ const EditTrip: FC = () => {
               </motion.div>
             </div>
             <div id="cities-div">
-              <div className="flex justify-between items-center">
+              <div className=" flex justify-between items-center">
                 <motion.div
                   className="bg-baby-powder w-48 text-center my-10 p-1"
                   initial="hidden"
@@ -378,7 +378,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-teal flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
+                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
                       key={activity.id}
                     >
                       <Attraction attraction={activity} />

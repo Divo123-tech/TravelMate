@@ -3,11 +3,29 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useContext, FC } from "react";
+import { useContext, FC, useState, useEffect } from "react";
 import { UserContext, PageContext } from "../App";
 import { googleAuthenticate, logOutAPI } from "../services/users.service";
 import logo from "../assets/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 const NavigationBar: FC = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Check for saved dark mode preference in local storage or default to false
+    const savedMode = localStorage.getItem("darkMode");
+    setIsDarkMode(savedMode === "true");
+  }, []);
+
+  useEffect(() => {
+    document.body.className = isDarkMode ? "dark" : "";
+    localStorage.setItem("darkMode", isDarkMode ? "true" : "false");
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
   const userContext = useContext(UserContext);
   const pageContext = useContext(PageContext);
   if (!userContext || !pageContext) {
@@ -16,7 +34,7 @@ const NavigationBar: FC = () => {
 
   const { user, setUser } = userContext;
   const { currentPage, setCurrentPage } = pageContext;
-  const currentPageStyle = "bg-teal rounded-full px-4 text-white";
+  const currentPageStyle = "bg-oxford-blue rounded-full px-4 text-white";
   const logOut = async () => {
     try {
       await logOutAPI();
@@ -28,19 +46,20 @@ const NavigationBar: FC = () => {
   return (
     <>
       <Navbar
-        className="bg-baby-powder sticky top-0 z-50 text-white"
+        className="bg-alice-blue sticky top-0 z-50 text-white"
         expand="md"
       >
         <Container className="flex">
-          <Navbar.Brand href="#home">
-            <img src={logo} className="w-20"></img>
+          <Navbar.Brand>
+            <img src={logo} className="w-40 " />
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
             className="justify-content-end"
           >
-            <Nav className="text-black flex gap-3 text-lg">
+            <Nav className="text-black flex gap-3 text-lg items-center ">
               <Link to={"/"}>
                 <Nav.Link
                   className={`${
@@ -136,6 +155,12 @@ const NavigationBar: FC = () => {
                   <Link to={"/"}> Log Out</Link>
                 </Nav.Link>
               )}
+              <Nav.Link
+                onClick={toggleDarkMode}
+                className="material-icons cursor-pointer  "
+              >
+                <FontAwesomeIcon icon={isDarkMode ? faMoon : faSun} />
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

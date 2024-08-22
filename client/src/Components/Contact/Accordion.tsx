@@ -14,9 +14,9 @@ type Props = {
 const FAQAccordion: FC<Props> = ({ eventKey, question, answer }: Props) => {
   return (
     <>
-      <Card className="mb-4">
-        <Card.Header className="bg-teal flex justify-between items-center px-8">
-          <p className="text-white text-2xl font-Oswald">{question}</p>
+      <Card className="mb-4 ml-10 mr-10">
+        <Card.Header className="bg-alice-blue flex justify-between items-center px-8 ">
+          <p className="text-black text-2xl font-Oswald">{question}</p>
           <CustomToggle eventKey={eventKey}>
             {" "}
             <FontAwesomeIcon icon={faCaretDown} className="text-4xl" />

@@ -249,7 +249,7 @@ const UserProfile: FC = () => {
                           className="bg-teal hover:bg-oxford-blue text-white rounded-lg px-2 py-2 mt-3 w-80 text-lg disabled:opacity-80"
                           disabled={
                             user.name === "" ||
-                            user.passport.code === "" ||
+                            user.passport?.code === "" ||
                             user.currencyUsed === ""
                           }
                           whileHover={{ scale: 1.05 }}

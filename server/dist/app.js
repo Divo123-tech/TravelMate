@@ -14,6 +14,15 @@ app.use(session({
     cookie: { secure: false },
 }));
 app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "*"],
+        frameSrc: ["'self'", "https://www.youtube.com"],
+        scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        // Add other directives as needed
+    },
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({

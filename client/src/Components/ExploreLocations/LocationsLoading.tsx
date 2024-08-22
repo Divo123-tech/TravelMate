@@ -7,7 +7,10 @@ const LocationsLoading: FC = () => {
   return (
     // Generate an array of 5 items to render loading placeholders
     Array.from({ length: 5 }).map((_, i) => (
-      <div key={i} className="flex items-center bg-teal mt-4">
+      <div
+        key={i}
+        className="flex items-center bg-turquoise dark:bg-oxford-blue mt-4"
+      >
         {/* Display the loading image */}
         <img src={loading} alt="Loading..." className="mr-4" />
 
