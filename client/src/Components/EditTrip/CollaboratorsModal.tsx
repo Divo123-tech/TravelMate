@@ -3,8 +3,6 @@ import { FC, useContext, useEffect, useState } from "react"; // Import React's F
 import { TripType, UserType } from "../../types/types"; // Import types for trips and users
 import {
   searchUserDetails, // Function to search for a user
-  addCollaborator, // Function to add a collaborator
-  deleteCollaborator, // Function to delete a collaborator
 } from "../../services/users.service"; // Import service functions for user operations
 import { motion } from "framer-motion"; // Import Framer Motion for animations
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import FontAwesomeIcon for icons
@@ -33,7 +31,6 @@ const CollaboratorsModal: FC<Props> = ({
   onHide,
   collaborators,
   tripId,
-  userId,
   setTrip,
   isOwner,
 }: Props) => {
@@ -70,7 +67,7 @@ const CollaboratorsModal: FC<Props> = ({
     setInputSearch(e.target.value);
     setUserShow(false); // Hide user details when input changes
   };
-  
+
   useEffect(() => {
     if (socket) {
       // Set up the listener for 'tripUpdated' event

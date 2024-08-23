@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState, useContext, FC } from "react";
 import { getTripDetails, getCurrentUser } from "../../services/users.service";
 import { faUserGroup, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
@@ -45,7 +45,6 @@ const EditTrip: FC = () => {
     throw new Error("YourComponent must be used within a UserProvider");
   }
   const { user } = context;
-  const navigate = useNavigate();
   const { tripId } = useParams();
   const [collaboratorsModalShow, setCollaboratorsModalShow] =
     useState<boolean>(false);
@@ -72,13 +71,6 @@ const EditTrip: FC = () => {
           setRejectedModalShow(true);
         }
       };
-      // console.log(trip?.owner._id, user?._id)
-      // if (
-      //   trip?.owner._id != user?._id &&
-      //   trip?.collaborators.some((collab) => collab._id != user?._id)
-      // ) {
-      //   setRejectedModalShow(true);
-      // }
 
       socket.on("tripUpdated", handleTripUpdate);
       // Clean up the event listener when the component unmounts
