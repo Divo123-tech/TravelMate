@@ -24,13 +24,13 @@ export const isAuthenticated = (
     const token = req.session.token;
 
     // If no token is found, redirect the user to the Google authentication page
-    if (!token) return res.redirect("http://localhost:3000/auth/google");
+    if (!token) return res.redirect("/api/auth/google");
 
     // Verify the JWT token
     jwt.verify(token, process.env.JWT_KEY as string, (err, user) => {
       if (err) {
         // If verification fails, redirect to the Google authentication page
-        return res.redirect("http://localhost:3000/auth/google");
+        return res.redirect("/api/auth/google");
       }
       // Attach the user information to the request object
       req.user = user;
@@ -88,7 +88,7 @@ export const redirectToHome = async (req: Request, res: Response) => {
     req.session.token = token;
 
     // Redirect the user to their profile page
-    res.redirect(`${process.env.REDIRECT_URI}/profile`);
+    res.redirect(`/profile`);
   } catch (err: any) {
     // Handle errors and send a response with status 400
     res.status(400).json({ message: err.message });
@@ -104,7 +104,7 @@ export const logOut = (req: Request, res: Response) => {
       res.status(500).send("Could not log out");
     } else {
       // Redirect to the redirect URI or a default URL after logout
-      res.redirect(process.env.REDIRECT_URI || "http://localhost:5173");
+      res.redirect("/");
     }
   });
 };

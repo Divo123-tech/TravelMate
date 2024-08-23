@@ -15,7 +15,11 @@ passport.use(
     {
       clientID: config.CLIENT_ID, // Setting the client ID for Google OAuth.
       clientSecret: config.CLIENT_SECRET, // Setting the client secret for Google OAuth.
-      callbackURL: "http://localhost:3000/auth/google/callback", // The URL where Google will redirect users after authentication.
+      callbackURL: `${
+        (process.env.APP_LOCATION as string) == "localhost"
+          ? ""
+          : "https://travel-mate-yz4dtsmfwq-as.a.run.app"
+      }/api/auth/google/callback`, // The URL where Google will redirect users after authentication.
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
