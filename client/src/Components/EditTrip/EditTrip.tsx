@@ -19,7 +19,7 @@ import Hotel from "../ExploreLocations/Hotel";
 import Flight from "../Flights/Flight";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { SocketContext, UserContext } from "../../App";
+import { PageContext, SocketContext, UserContext } from "../../App";
 import DeleteButton from "../DeleteButton";
 import { Spinner } from "react-bootstrap";
 import CollaboratorsModal from "./CollaboratorsModal";
@@ -29,6 +29,14 @@ import { container } from "../../data/animation";
 import Video from "../ExploreLocations/Video";
 
 const EditTrip: FC = () => {
+  const pageContext = useContext(PageContext);
+  if (!pageContext) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const { setCurrentPage } = pageContext;
+  useEffect(() => {
+    setCurrentPage("");
+  }, []);
   const context = useContext(UserContext);
 
   if (!context) {
@@ -457,14 +465,6 @@ const EditTrip: FC = () => {
                     Videos
                   </h1>
                 </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-oxford-blue text-opacity-70 pr-8 hover:cursor-pointer dark:text-champion-blue"
-                  onClick={() => navigate("/flights")}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
               </div>
               <motion.div
                 initial="hidden"
@@ -476,10 +476,10 @@ const EditTrip: FC = () => {
                 {trip.videos?.map((video: videoType) => {
                   return (
                     <motion.div
-                    layout
-                    className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
-                    key={video.url}
-                  >
+                      layout
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
+                      key={video.url}
+                    >
                       <Video
                         video={video}
                         key={Math.random().toString(36).substring(2, 8)}
