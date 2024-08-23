@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap"; // Import Bootstrap components for modal
-import { FC, useEffect, useState } from "react"; // Import React's FC type and useState hook
+import { FC, useContext, useEffect, useState } from "react"; // Import React's FC type and useState hook
 import { TripType, UserType } from "../../types/types"; // Import types for trips and users
 import {
   searchUserDetails, // Function to search for a user
@@ -14,6 +14,7 @@ import {
   faCheck,
   faPlus, // Magnifying glass icon for searching
 } from "@fortawesome/free-solid-svg-icons";
+import { SocketContext } from "../../App";
 
 // Define the Props type for the CollaboratorsModal component
 type Props = {
@@ -47,6 +48,12 @@ const CollaboratorsModal: FC<Props> = ({
   // Style for the current mode
   const currentModeStyle = "text-oxford-blue underline underline-offset-4";
   const [successfullyAdded, setSuccessfullyAdded] = useState<boolean>(false); // State to track if itineraries have been successfully added
+  const socketContext = useContext(SocketContext);
+
+  if (!socketContext) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const { socket, emitEvent } = socketContext;
   useEffect(() => {
     if (successfullyAdded) {
       // Set a timer to reset the successfullyAdded state after 750ms
@@ -63,20 +70,44 @@ const CollaboratorsModal: FC<Props> = ({
     setInputSearch(e.target.value);
     setUserShow(false); // Hide user details when input changes
   };
+  
+  useEffect(() => {
+    if (socket) {
+      // Set up the listener for 'tripUpdated' event
+      const handleTripUpdate = (updatedTrip: TripType) => {
+        setTrip(updatedTrip);
+      };
+
+      socket.on("tripUpdated", handleTripUpdate);
+      // Clean up the event listener when the component unmounts
+      return () => {
+        socket.off("tripUpdated", handleTripUpdate);
+      };
+    }
+  }, [socket]);
 
   // Add a collaborator to the trip
   const addCollaboratorToTrip = async () => {
     try {
-      setTrip(await addCollaborator(userId, tripId, inputSearch, "email"));
+      // setTrip(await addCollaborator(userId, tripId, inputSearch, "email"));
+      emitEvent("AddCollaborator", {
+        tripId,
+        collaboratorDetail: inputSearch,
+        searchBy: "email",
+      });
     } catch (err) {
       return; // Handle error if necessary
     }
   };
 
   // Delete a collaborator from the trip
-  const deleteCollaboratorFromTrip = async (email: string) => {
+  const deleteCollaboratorFromTrip = async (googleId: string) => {
     try {
-      setTrip(await deleteCollaborator(userId, tripId, email, "email"));
+      emitEvent("RemoveCollaborator", {
+        tripId,
+        collaboratorDetail: googleId,
+        searchBy: "googleId",
+      });
     } catch (err) {
       return; // Handle error if necessary
     }
@@ -126,13 +157,13 @@ const CollaboratorsModal: FC<Props> = ({
           <div>
             {mode == "list" ? (
               // Display list of collaborators
-              <div>
+              <div className="">
                 {collaborators.map((collaborator) => (
                   <div
-                    className="bg-oxford-blue py-3 px-4 rounded-full flex flex-col md:flex-row items-center justify-between gap-3"
+                    className="bg-oxford-blue py-3 px-4 rounded-full flex flex-col md:flex-row items-center justify-between mt-2 gap-3"
                     key={collaborator.googleId}
                   >
-                    <div className="flex gap-2 items-center flex-col md:flex-row">
+                    <div className="flex gap-2 items-center flex-col md:flex-row ">
                       <img
                         src={collaborator.picture}
                         className="w-10 rounded-full"
@@ -152,7 +183,7 @@ const CollaboratorsModal: FC<Props> = ({
                           icon={faTrashCan}
                           className="text-red-700 text-2xl"
                           onClick={() =>
-                            deleteCollaboratorFromTrip(collaborator.email)
+                            deleteCollaboratorFromTrip(collaborator.googleId)
                           }
                         />
                       )}

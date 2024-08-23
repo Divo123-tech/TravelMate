@@ -36,12 +36,14 @@ const Trip: FC<Props> = ({ trip, addItinerariesToTrip }: Props) => {
 
       {/* Icon button with animations */}
       <motion.p
-        className="text-2xl font-bold text-oxford-blue hover:cursor-pointer"
+        className="text-2xl font-bold text-alice-blue hover:cursor-pointer"
         whileHover={{ scale: 1.05 }} // Scale up on hover
         whileTap={{ scale: 0.9 }} // Scale down on click
         onClick={() => {
           addItinerariesToTrip(trip._id); // Call function to add itineraries
-          setSuccessfullyAdded(true); // Set state to show success icon
+          setSuccessfullyAdded(true);
+
+          // Set state to show success icon
         }}
       >
         {/* Display success icon if itineraries have been added, otherwise show plus icon */}

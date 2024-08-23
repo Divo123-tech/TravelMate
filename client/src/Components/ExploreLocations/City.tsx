@@ -62,7 +62,7 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
   return (
     <>
       {/* Container for city details */}
-      <div className="flex items-center gap-8 mr-auto">
+      <div className="flex flex-col md:flex-row items-center gap-8 md:mr-auto">
         {/* Display a loading image while the actual city image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -98,7 +98,7 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
       {/* Container for time zone details */}
       <div className="flex flex-col dark:text-white text-oxford-blue text-center mx-16 hover:cursor-pointer">
         <motion.h1
-          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue text-center px-6 ml-60 py-3 text-lg whitespace-nowrap font-Raleway"
+          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue text-center px-6 py-3 text-lg whitespace-nowrap font-Raleway"
           onClick={() => fetchLocationTimeZone(city)} // Fetch time zone details on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap

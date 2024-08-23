@@ -67,7 +67,7 @@ function App() {
       <UserContext.Provider value={{ user, setUser }}>
         <SocketContext.Provider value={{ socket, emitEvent }}>
           <PageContext.Provider value={{ currentPage, setCurrentPage }}>
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen dark:bg-black dark:bg-opacity-85  ">
               <NavigationBar />
               <SwitchTransition>
                 <CSSTransition

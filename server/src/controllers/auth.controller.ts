@@ -104,7 +104,7 @@ export const logOut = (req: Request, res: Response) => {
       res.status(500).send("Could not log out");
     } else {
       // Redirect to the redirect URI or a default URL after logout
-      res.redirect("/");
+      res.redirect(`/`);
     }
   });
 };

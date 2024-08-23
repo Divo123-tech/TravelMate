@@ -2,8 +2,11 @@ import { FC, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { UserContext, SocketContext } from "../../App";
-import { TripType } from "../../types/types";
-import { googleAuthenticate } from "../../services/users.service";
+import { TripType, UserType } from "../../types/types";
+import {
+  getTripDetails,
+  googleAuthenticate,
+} from "../../services/users.service";
 import Trip from "./Trip";
 
 // Define the type for component props
@@ -28,8 +31,17 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
   const { emitEvent } = socketContext; // Socket context to handle real-time events
 
   // Function to add itineraries to a specific trip
-  const addItinerariesToTrip = (tripId: string) => {
+  const addItinerariesToTrip = async (tripId: string) => {
     try {
+      const tripDetails = await getTripDetails(tripId);
+      if (
+        tripDetails?.owner._id != user?._id &&
+        !tripDetails.collaborators.some(
+          (collab: UserType) => collab._id == user?._id
+        )
+      ) {
+        return;
+      }
       itineraries.map((itinerary: any) => {
         // Emit an event to add the itinerary to the trip
         emitEvent("AddLocationToTrip", {
@@ -38,7 +50,7 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
         });
       });
     } catch (err) {
-      console.error("Error adding itineraries to trip:", err);
+      throw new Error("Error Adding Location to Trip");
     }
   };
 

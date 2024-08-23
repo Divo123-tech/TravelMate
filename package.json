@@ -6,6 +6,8 @@
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
     "build-server": "npm run build --prefix server",
+    "server": "npm start --prefix server",
+    "client": "npm run dev --prefix client",
     "install": "npm-run-all install-server install-client",
     "start": "npm start --prefix server",
     "deploy": "npm run build --prefix client && npm start --prefix server"

@@ -183,7 +183,7 @@ const Flights: FC = () => {
                   ?.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              Search!
+              Search
             </button>
           </form>
         </div>
@@ -194,7 +194,7 @@ const Flights: FC = () => {
       <div
         className={`${
           showFlights ? "block" : "hidden"
-        } flex flex-col gap-4 py-4 dark:bg-black dark:bg-opacity-90`}
+        } flex flex-col gap-4 py-4`}
       >
         {/* Flight results header */}
         <h1 className="text-3xl md:text-5xl font-bold text-center text-oxford-blue dark:text-white">
@@ -214,7 +214,7 @@ const Flights: FC = () => {
               ))}
             </div>
           ) : (
-            <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24">
+            <h1 className="text-oxford-blue dark:text-alice-blue text-2xl md:text-3xl text-center my-24">
               No Flights Matched your search {":("}
             </h1>
           )

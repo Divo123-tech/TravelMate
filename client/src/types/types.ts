@@ -54,7 +54,7 @@ export type TripType = {
   _id: string; // Unique identifier for the trip
   name: string; // Name of the trip
   owner: UserType; // The user who owns the trip
-  collaborators: []; // Array of collaborators on the trip (currently an empty array)
+  collaborators: UserType[]; // Array of collaborators on the trip (currently an empty array)
   startDate: Date; // Start date of the trip
   endDate?: Date; // Optional end date of the trip
   countries?: []; // Optional array of countries involved in the trip

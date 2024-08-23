@@ -11,6 +11,7 @@ import {
   flightType,
   attractionType,
   videoType,
+  UserType,
 } from "../../types/types";
 import Country from "../ExploreLocations/Country";
 import State from "../ExploreLocations/State";
@@ -27,6 +28,7 @@ import CustomActivityModal from "./CustomActivityModal";
 import Attraction from "../ExploreLocations/Attraction";
 import { container } from "../../data/animation";
 import Video from "../ExploreLocations/Video";
+import RejectedModal from "./RejectedModal";
 
 const EditTrip: FC = () => {
   const pageContext = useContext(PageContext);
@@ -49,6 +51,7 @@ const EditTrip: FC = () => {
     useState<boolean>(false);
   const [trip, setTrip] = useState<TripType | null>(null);
   const [activityModalShow, setActivityModalShow] = useState<boolean>(false);
+  const [rejectedModalShow, setRejectedModalShow] = useState<boolean>(false);
   const socketContext = useContext(SocketContext);
 
   if (!socketContext) {
@@ -61,7 +64,21 @@ const EditTrip: FC = () => {
       // Set up the listener for 'tripUpdated' event
       const handleTripUpdate = (updatedTrip: TripType) => {
         setTrip(updatedTrip);
+
+        if (
+          updatedTrip?.owner._id != user?._id &&
+          !updatedTrip.collaborators.some((collab) => collab._id == user?._id)
+        ) {
+          setRejectedModalShow(true);
+        }
       };
+      // console.log(trip?.owner._id, user?._id)
+      // if (
+      //   trip?.owner._id != user?._id &&
+      //   trip?.collaborators.some((collab) => collab._id != user?._id)
+      // ) {
+      //   setRejectedModalShow(true);
+      // }
 
       socket.on("tripUpdated", handleTripUpdate);
       // Clean up the event listener when the component unmounts
@@ -106,6 +123,14 @@ const EditTrip: FC = () => {
         }
 
         const tripDetails = await getTripDetails(tripId);
+        if (
+          tripDetails?.owner._id != user?._id &&
+          !tripDetails.collaborators.some(
+            (collab: UserType) => collab._id == user?._id
+          )
+        ) {
+          setRejectedModalShow(true);
+        }
         setTrip(tripDetails); // Set trip state with the fetched data
       } catch (err) {
         setTrip(null);
@@ -367,14 +392,6 @@ const EditTrip: FC = () => {
                     Activities
                   </h1>
                 </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-oxford-blue text-opacity-70 pr-8 hover:cursor-pointer dark:text-champion-blue"
-                  onClick={() => setActivityModalShow(true)}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
               </div>
               <motion.div
                 className=""
@@ -400,55 +417,7 @@ const EditTrip: FC = () => {
                 })}
               </motion.div>
             </div>
-            <div id="flights-div">
-              <div className="flex justify-between items-center">
-                <motion.div
-                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.6 }}
-                  variants={{
-                    hidden: { opacity: 0, x: -75 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                >
-                  <h1 className="text-3xl text-alice-blue font-medium">
-                    Flights
-                  </h1>
-                </motion.div>
-                <motion.p
-                  className="text-7xl font-bold text-oxford-blue text-opacity-70 pr-8 hover:cursor-pointer dark:text-champion-blue"
-                  onClick={() => navigate("/flights")}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  +
-                </motion.p>
-              </div>
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 1 }}
-                variants={container}
-              >
-                {trip.flights?.map((flight: flightType) => {
-                  return (
-                    <Flight
-                      flight={flight}
-                      Button={
-                        <DeleteButton
-                          deleteFunction={() => deleteFromTrip(flight)}
-                        />
-                      }
-                      key={Math.random().toString(36).substring(2, 8)}
-                    />
-                  );
-                })}
-              </motion.div>
-            </div>
-            <div id="flights-div">
+            <div id="videos-div">
               <div className="flex justify-between items-center">
                 <motion.div
                   className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
@@ -492,6 +461,46 @@ const EditTrip: FC = () => {
                 })}
               </motion.div>
             </div>
+            <div id="flights-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-alice-blue font-medium">
+                    Flights
+                  </h1>
+                </motion.div>
+              </div>
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.flights?.map((flight: flightType) => {
+                  return (
+                    <Flight
+                      flight={flight}
+                      Button={
+                        <DeleteButton
+                          deleteFunction={() => deleteFromTrip(flight)}
+                        />
+                      }
+                      key={Math.random().toString(36).substring(2, 8)}
+                    />
+                  );
+                })}
+              </motion.div>
+            </div>
           </section>
           <CollaboratorsModal
             show={collaboratorsModalShow}
@@ -506,6 +515,10 @@ const EditTrip: FC = () => {
             show={activityModalShow}
             onHide={() => setActivityModalShow(false)}
             tripId={trip._id}
+          />
+          <RejectedModal
+            show={rejectedModalShow}
+            onHide={() => setRejectedModalShow(false)}
           />
         </div>
       ) : (

@@ -144,7 +144,7 @@ const UserProfile: FC = () => {
     <>
       {user ? (
         // Render content if the user is authenticated
-        <section className="dark:bg-black dark:bg-opacity-90 dark:text-white">
+        <section className="dark:text-white">
           {/* User Profile Section */}
           <div className="pt-16 pb-2 px-32 flex flex-col items-center justify-center gap-3 md:justify-around flex-wrap">
             <div className="flex items-center flex-col">

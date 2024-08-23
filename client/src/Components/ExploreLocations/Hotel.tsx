@@ -14,7 +14,7 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
 
   return (
     <>
-      <div className="flex dark:bg-oxford-blue items-center gap-8 mr-auto w-full">
+      <div className="flex flex-col md:flex-row items-center gap-8 md:mr-auto">
         {/* Display the loading image if the hotel image has not loaded yet */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 

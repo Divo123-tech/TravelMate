@@ -23,7 +23,7 @@ const HomePage: FC = () => {
       <CarouselComponent />
 
       {/* Itineraries  */}
-      <section className="dark:bg-black dark:bg-opacity-85 pb-24">
+      <section className=" pb-24">
         <motion.div
           className="w-full text-center my-10"
           initial="hidden"
@@ -62,13 +62,13 @@ const HomePage: FC = () => {
           }}
         >
           <div className="text-center">
-            <h1 className="text-oxford-blue text-5xl dark:text-alice-blue font-bold font-Playfair">
+            <h1 className="text-oxford-blue text-3xl md:text-5xl dark:text-alice-blue font-bold font-Playfair">
               Hear From Our Travellers
             </h1>
           </div>
         </motion.div>
         <motion.div
-          className="px-6 flex flex-wrap justify-between gap-4 md:gap-8"
+          className="px-2 md:px-6 flex flex-wrap justify-between gap-4 md:gap-8"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}

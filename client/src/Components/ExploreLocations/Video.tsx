@@ -11,28 +11,32 @@ const Video: FC<Props> = ({ video }: Props) => {
   return (
     <>
       {/* Container for video and details */}
-      <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-oxford-blue dark:text-white">
+      <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-oxford-blue dark:text-white">
         {/* Container for the iframe */}
-        <div className="h-[300px] w-[420px]">
+        <div className="w-full md:w-auto">
           <iframe
-            src={video.url} // URL of the video
-            width="420px" // Width of the iframe
-            height="300px" // Height of the iframe
-            title="My Iframe" // Title for the iframe
+            src={video.url}
+            className="w-full max-w-[640px] h-[56.25vw] max-h-[300px]"
+            title={video.title}
+            allowFullScreen
           />
         </div>
         {/* Container for video details */}
-        <div className="flex flex-col gap-4 justify-center md:text-start p-2 font-Rethink">
+        <div className="flex flex-col gap-4 justify-center text-center md:text-start p-2 font-Rethink w-full md:w-auto md:max-w-[400px]">
           {/* Video title */}
-          <p className="text-3xl font-Raleway">{video.title}</p>
+          <p className="text-xl md:text-2xl lg:text-3xl font-Raleway">
+            {video.title}
+          </p>
           {/* Channel name */}
-          <p className="text-xl">{video.channel}</p>
+          <p className="text-base md:text-lg lg:text-xl">{video.channel}</p>
           {/* Video views and date */}
-          <p className="text-xl ">
+          <p className="text-base md:text-lg lg:text-xl">
             {video.views} - {video.date}
           </p>
           {/* Video length */}
-          <p className="text-xl">Duration: {video.length}</p>
+          <p className="text-base md:text-lg lg:text-xl">
+            Duration: {video.length}
+          </p>
         </div>
       </div>
     </>

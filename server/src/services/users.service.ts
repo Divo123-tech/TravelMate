@@ -91,10 +91,7 @@ const deleteTrip = async (
     { googleId },
     {
       $pull: {
-        trips:
-          typeof tripId === "string" // Check if tripId is a string
-            ? new mongoose.Types.ObjectId(tripId) // Convert string to ObjectId if necessary
-            : tripId,
+        trips: tripId,
       },
     },
     { new: true }

@@ -15,7 +15,7 @@ const Attraction: FC<Props> = ({ attraction }: Props) => {
   return (
     <>
       {/* Container div with styling for the attraction information */}
-      <div className="flex dark:bg-oxford-blue bg-turquoise items-center gap-8 mr-auto w-full">
+      <div className="flex flex-col md:flex-row items-center gap-8 md:mr-auto">
         {/* Display a loading image while the actual attraction image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 

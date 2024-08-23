@@ -73,7 +73,7 @@ const CustomActivityModal: FC<Props> = ({ show, onHide, tripId }: Props) => {
                 <input
                   type="text"
                   className="border-1 rounded-full px-3 py-2 border-black text-lg"
-                  placeholder="Name your trip!"
+                  placeholder="Name your Activity!"
                   name="name"
                   maxLength={25}
                   onChange={handleChange} // Update state on change

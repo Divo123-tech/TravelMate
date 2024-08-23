@@ -101,7 +101,10 @@ const Country: FC<Props> = ({
   return (
     <>
       {/* Container for country details */}
-      <div className="flex items-center gap-8 mr-auto" id="image-header-div">
+      <div
+        className="flex flex-col md:flex-row items-center gap-8 md:mr-auto"
+        id="image-header-div"
+      >
         {/* Display a loading image while the actual country image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -133,8 +136,9 @@ const Country: FC<Props> = ({
           </p>
         </div>
       </div>
+
       {/* Container for visa details */}
-      <div className="flex flex-col dark:text-white text-oxford-blue text-center hover:cursor-pointer font-Raleway">
+      <div className="flex flex-col dark:text-white text-oxford-blue  text-center hover:cursor-pointer font-Raleway">
         <motion.h1
           className="bg-oxford-blue dark:bg-champion-blue text-alice-blue text-center px-6 py-3 text-lg whitespace-nowrap font-Rethink"
           onClick={() => fetchCountryVisa(country)} // Fetch visa details on click
@@ -164,7 +168,7 @@ const Country: FC<Props> = ({
       {/* Container for currency exchange details */}
       <div className="flex flex-col dark:text-white text-oxford-blue text-center">
         <motion.h1
-          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue px-6 py-3 text-lg whitespace-nowrap font-Rethink hover:cursor-pointer"
+          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue px-6  py-3 text-lg whitespace-nowrap font-Rethink hover:cursor-pointer"
           onClick={() => fetchCountryExchange(country)} // Fetch exchange rate on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap

@@ -29,7 +29,7 @@ const State: FC<Props> = ({ state, setCurrentState, setSearch }: Props) => {
 
   return (
     <>
-      <div className="flex items-center gap-8 mr-auto">
+      <div className="flex flex-col md:flex-row items-center gap-8 md:mr-auto">
         {/* Show a loading image while the actual image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 

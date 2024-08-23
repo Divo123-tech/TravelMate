@@ -15,7 +15,7 @@ const Airport: FC<Props> = ({ airport }: Props) => {
   return (
     <>
       {/* Container div with styling for the airport information */}
-      <div className="flex items-center gap-8 mr-auto w-full">
+      <div className="flex flex-col md:flex-row items-center gap-8 md:mr-auto">
         {/* Display a loading image while the actual airport image is loading */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 

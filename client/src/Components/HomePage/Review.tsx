@@ -17,7 +17,7 @@ const Review: FC<Props> = ({ imgSrc, name, title, body }: Props) => {
   return (
     <motion.div
       // Apply animation variants to the container div
-      className="review w-full md:w-1/4 lg:w-1/4 flex flex-col items-center text-justify px-4 md:px-10 gap-4 dark:text-alice-blue"
+      className="review w-full md:w-1/4 lg:w-1/4 flex flex-col items-center text-justify md:px-10 gap-4 dark:text-alice-blue"
       variants={childVariant}
     >
       {/* Display the reviewer's profile image */}

@@ -573,7 +573,7 @@ const ExploreLocations: FC = () => {
       case "activities":
         return (
           <div className=" flex flex-col items-center p-16 gap-8">
-            <h1 className="text-6xl font-medium text-oxford-blue text-center font-Playfair dark:text-white ">
+            <h1 className="text-4xl md:text-6xl font-medium text-oxford-blue text-center font-Playfair dark:text-white ">
               Explore {currentCity?.name || searchParams.get("city") || "..."}
             </h1>
             <form className="flex items-center" onSubmit={exploreNewLocation}>
@@ -591,7 +591,7 @@ const ExploreLocations: FC = () => {
                 Search
               </button>
             </form>
-            <div className="flex flex-col md:flex-row items-center gap-4 md:justify-between w-full text-4xl font-medium text-champion-blue px-8 flex-wrap ">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:justify-between w-full text-2xl sm:text-4xl font-medium text-champion-blue px-8 flex-wrap ">
               <p
                 className={`${
                   activityType == "Hotels"
@@ -723,7 +723,7 @@ const ExploreLocations: FC = () => {
               </section>
             ) : (
               <div className="flex items-center justify-center mt-12">
-                <h1 className="text-4xl font-Raleway h-[100px] dark:text-white">
+                <h1 className="text-2xl text-center md:text-4xl font-Raleway h-[100px] dark:text-white">
                   Find a City And Explore What it Has to Offer!
                 </h1>
               </div>
@@ -753,11 +753,7 @@ const ExploreLocations: FC = () => {
     }
   };
 
-  return (
-    <div className="dark:bg-black dark:bg-opacity-85 mb-auto">
-      {renderLocations()}
-    </div>
-  );
+  return <div className="mb-auto">{renderLocations()}</div>;
 };
 
 export default ExploreLocations;

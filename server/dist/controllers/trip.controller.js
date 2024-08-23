@@ -1,5 +1,6 @@
 import tripsService from "../services/trips.service.js";
 import usersService from "../services/users.service.js";
+import mongoose from "mongoose";
 // Function to add a trip to the database and update the user's trips array
 const addTrip = async (req, res) => {
     const currentUser = req.user;
@@ -114,7 +115,7 @@ const removeCollaborator = async (req, res) => {
             throw new Error("User not found");
         }
         // Remove the trip from the collaborator's trips array
-        await usersService.deleteTrip(req.body.collaborator, req.params.tripId);
+        await usersService.deleteTrip(req.body.collaborator, new mongoose.Types.ObjectId(req.params.tripId));
         // Remove the collaborator from the trip's collaborators list
         const updatedTrip = await tripsService.removeCollaborator(req.params.tripId, collaborator._id);
         // Send a success response with the updated trip

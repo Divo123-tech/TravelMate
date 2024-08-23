@@ -1,5 +1,7 @@
 import { Socket, Server } from "socket.io";
 import tripsService from "../services/trips.service.js"; // Importing the trips service that handles the business logic for managing trips.
+import usersService from "../services/users.service.js";
+import mongoose from "mongoose";
 
 const listenForTrips = (io: Server) => {
   // The main function that listens for trip-related events using the provided socket.io instance.
@@ -53,21 +55,71 @@ const listenForTrips = (io: Server) => {
         }
       }
     );
+    socket.on(
+      "AddCollaborator",
+      async (payload: {
+        tripId: string;
+        collaboratorDetail: string;
+        searchBy: string;
+      }) => {
+        const { tripId, collaboratorDetail, searchBy } = payload;
+        const collaborator = await usersService.getUserDetails(
+          collaboratorDetail,
+          searchBy
+        );
 
-    // Event listener for fetching the details of a specific trip.
-    socket.on("GetTrip", async (tripId: string) => {
-      try {
-        // Attempt to retrieve the trip details.
-        const trip = await tripsService.getTripDetails(tripId);
+        // Check if the collaborator exists
+        if (!collaborator) {
+          throw new Error("User not found");
+        }
 
-        // Emit the retrieved trip details to the requesting client.
-        io.emit("TripGot", trip);
-      } catch (err: any) {
-        // Handle any errors by emitting an error message back to the client.
-        socket.emit("error", "Error retrieving trip details");
+        // Add the trip to the collaborator's trips array
+        await usersService.addTrip(collaborator.googleId, tripId);
+
+        // Add the collaborator to the trip's collaborators list
+        const updatedTrip = await tripsService.addCollaborator(
+          tripId,
+          collaborator._id
+        );
+        io.emit("tripUpdated", updatedTrip);
       }
-    });
+    );
 
+    socket.on(
+      "RemoveCollaborator",
+      async (payload: {
+        tripId: string;
+        collaboratorDetail: string;
+        searchBy: string;
+      }) => {
+        const { tripId, collaboratorDetail, searchBy } = payload;
+        // Retrieve the collaborator details from the database
+        const collaborator = await usersService.getUserDetails(
+          collaboratorDetail,
+          searchBy
+        );
+
+        // Check if the collaborator exists
+        if (!collaborator) {
+          throw new Error("User not found");
+        }
+
+        // Remove the trip from the collaborator's trips array
+        await usersService.deleteTrip(
+          collaboratorDetail,
+          new mongoose.Types.ObjectId(tripId)
+        );
+
+        // Remove the collaborator from the trip's collaborators list
+        const updatedTrip = await tripsService.removeCollaborator(
+          tripId,
+          collaborator._id
+        );
+
+        // Send a success response with the updated trip
+        io.emit("tripUpdated", updatedTrip);
+      }
+    );
     // Event listener for editing the details of an existing trip.
     socket.on(
       "EditTrip",

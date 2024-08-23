@@ -58,9 +58,7 @@ const deleteTrip = async (googleId, tripId) => {
     // Update the user document by pulling the trip ID from the 'trips' array
     return await userModel.findOneAndUpdate({ googleId }, {
         $pull: {
-            trips: typeof tripId === "string" // Check if tripId is a string
-                ? new mongoose.Types.ObjectId(tripId) // Convert string to ObjectId if necessary
-                : tripId,
+            trips: tripId,
         },
     }, { new: true });
 };

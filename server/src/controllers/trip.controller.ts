@@ -159,7 +159,10 @@ const removeCollaborator = async (
     }
 
     // Remove the trip from the collaborator's trips array
-    await usersService.deleteTrip(req.body.collaborator, req.params.tripId);
+      await usersService.deleteTrip(
+        req.body.collaborator,
+        new mongoose.Types.ObjectId(req.params.tripId)
+      );
 
     // Remove the collaborator from the trip's collaborators list
     const updatedTrip = await tripsService.removeCollaborator(

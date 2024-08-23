@@ -28,8 +28,10 @@ const Contact: FC = () => {
         <div className="relative">
           <img src={contactUsImage} className="w-full" alt="Contact Us" />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-white text-8xl p-4 font-Playfair">Contact Us</p>
-            <p className="text-white text-3xl p-4 font-Raleway">
+            <p className="text-white text-4xl sm:text-6xl md:text-8xl p-4 font-Playfair">
+              Contact Us
+            </p>
+            <p className="text-white text-xl md:text-3xl p-4 font-Raleway">
               We'd love to hear from you
             </p>
           </div>
@@ -38,15 +40,19 @@ const Contact: FC = () => {
         {/* Contact details section */}
         <section className="text-center mt-8">
           <div className="font-Raleway font-medium text-black ">
-            <h1 className=" text-5xl mb-5 dark:text-white">Contact Details</h1>
+            <h1 className="text-3xl md:text-5xl mb-5 dark:text-white">
+              Contact Details
+            </h1>
           </div>
-          <div className="flex justify-around items-center text-oxford-blue dark:text-white">
+          <div className="flex justify-around items-center text-oxford-blue dark:text-white flex-col gap-3 md:flex-row">
             {/* Phone contact */}
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="rounded-full border-champion-blue border-5 p-3 ">
                 <FontAwesomeIcon icon={faPhoneVolume} className="text-3xl " />
               </div>
-              <p className="text-2xl font-bold font-Rethink">Contact Number</p>
+              <p className="text-xl md:text-2xl font-bold font-Rethink">
+                Contact Number
+              </p>
               <p className="text-lg italic font-Rethink">6498 6332</p>
             </div>
             {/* Email contact */}
@@ -54,7 +60,9 @@ const Contact: FC = () => {
               <div className="rounded-full border-champion-blue border-5 p-3 ">
                 <FontAwesomeIcon icon={faEnvelope} className="text-3xl" />
               </div>
-              <p className="text-2xl font-bold font-Rethink">Email</p>
+              <p className="text-xl md:text-2xl font-bold font-Rethink">
+                Email
+              </p>
               <p className="text-lg italic font-Rethink">
                 TravelMateHelp@gmail.com
               </p>
@@ -64,7 +72,9 @@ const Contact: FC = () => {
               <div className="rounded-full border-champion-blue border-5 p-3 ">
                 <FontAwesomeIcon icon={faHourglassEnd} className="text-3xl" />
               </div>
-              <p className="text-2xl font-bold font-Rethink">Opening Hours</p>
+              <p className="text-xl md:text-2xl font-bold font-Rethink">
+                Opening Hours
+              </p>
               <p className="text-lg italic font-Rethink">8:00 am - 6:00 pm</p>
             </div>
           </div>
