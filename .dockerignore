@@ -1,0 +1,48 @@
+# Node modules
+node_modules
+client/node_modules
+server/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Temporary files and directories
+temp
+tmp
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# Build output directories
+dist
+build
+client/build
+
+# Environment variables
+.env
+server/.env
+
+# Docker-specific files
+Dockerfile
+docker-compose.yml
+
+# Ignore coverage directory
+coverage
+
+# Ignore editor directories and files
+.vscode/
+.idea/
+*.code-workspace
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore tests and snapshots
+__tests__/
+__mocks__/
+*.test.js
+
