@@ -121,7 +121,7 @@ const Country: FC<Props> = ({
 
           {/* Display the country name and ISO code, make it clickable to navigate to states */}
           <h1
-            className="text-oxford-blue dark:text-white text-3xl font-medium hover:cursor-pointer font-Oswald"
+            className="text-oxford-blue dark:text-white text-3xl font-medium hover:cursor-pointer font-Raleway"
             onClick={goToStates}
           >
             {country.name}, {country.iso2}
@@ -133,11 +133,10 @@ const Country: FC<Props> = ({
           </p>
         </div>
       </div>
-
       {/* Container for visa details */}
-      <div className="flex flex-col bg-oxford-blue dark:bg-champion-blue px-6 py-3 rounded-lg text-baby-powder text-center hover:cursor-pointer font-Oswald">
+      <div className="flex flex-col dark:text-white text-oxford-blue text-center hover:cursor-pointer font-Raleway">
         <motion.h1
-          className="text-alice-blue font-medium text-2xl"
+          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue text-center px-6 py-3 text-lg whitespace-nowrap font-Rethink"
           onClick={() => fetchCountryVisa(country)} // Fetch visa details on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap
@@ -149,23 +148,23 @@ const Country: FC<Props> = ({
         {visaShown ? (
           visaDetails ? (
             <div>
-              <p className="text-lg font-Rethink">
+              <p className="text-lg ml-80 font-Rethink">
                 Status: {visaDetails.visaStatus}
               </p>
-              <p className="text-lg font-Rethink">
+              <p className="text-lg ml-80 font-Rethink">
                 Duration: {visaDetails.visaDuration || 0} Days
               </p>
             </div>
           ) : (
-            <h1>loading...</h1>
+            <h1 className="ml-80">Loading...</h1>
           )
         ) : null}
       </div>
 
       {/* Container for currency exchange details */}
-      <div className="flex flex-col bg-oxford-blue px-6 py-3 rounded-lg text-baby-powder text-center dark:bg-champion-blue">
+      <div className="flex flex-col dark:text-white text-oxford-blue text-center">
         <motion.h1
-          className="text-alice-blue font-medium text-2xl hover:cursor-pointer font-Oswald"
+          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue px-6 py-3 text-lg whitespace-nowrap font-Rethink hover:cursor-pointer"
           onClick={() => fetchCountryExchange(country)} // Fetch exchange rate on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap
@@ -177,13 +176,13 @@ const Country: FC<Props> = ({
         {currencyShown ? (
           exchangeRate ? (
             <div>
-              <p className="text-lg font-Rethink">
+              <p className="text-lg ml-8 font-Rethink">
                 1 {user?.currencyUsed || "USD"}{" "}
                 <FontAwesomeIcon icon={faArrowRight} />{" "}
                 {exchangeRate.toString().slice(0, 7)}{" "}
                 {country.name === "Albania" ? "ALL" : country.currency}
               </p>
-              <p className="text-lg font-Rethink">
+              <p className="text-lg ml-8 font-Rethink">
                 1 {country.name === "Albania" ? "ALL" : country.currency}{" "}
                 <FontAwesomeIcon icon={faArrowRight} />{" "}
                 {(1 / exchangeRate).toString().slice(0, 7)}{" "}
@@ -191,7 +190,7 @@ const Country: FC<Props> = ({
               </p>
             </div>
           ) : (
-            <h1>loading...</h1>
+            <h1>Loading...</h1>
           )
         ) : null}
       </div>

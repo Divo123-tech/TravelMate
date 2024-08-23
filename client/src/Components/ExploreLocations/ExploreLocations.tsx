@@ -337,12 +337,12 @@ const ExploreLocations: FC = () => {
       case "countries":
         return (
           <div>
-            <header className="flex items-center align-center py-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-semibold font-Oswald dark:text-white">
+            <header className="flex items-center align-center py-8 px-6 flex-wrap justify-center gap-4">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-semibold font-Raleway dark:text-white">
                 SELECT COUNTRY FROM
               </h1>
               <select
-                className="text-oxford-blue text-3xl md:text-4xl border-2 font-Oswald"
+                className="text-oxford-blue text-3xl md:text-4xl border-2 font-Raleway"
                 onChange={changeContinent}
                 defaultValue={continent}
               >
@@ -358,9 +358,9 @@ const ExploreLocations: FC = () => {
                 <input
                   onChange={handleSearch}
                   placeholder={`Search Country...`}
-                  className="border-2 text-2xl px-1 rounded-md font-Oswald"
+                  className="border-2 text-2xl px-1 rounded-md font-Raleway"
                 ></input>
-                <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
+                <button className="bg-oxford-blue text-white text-2xl py-2 px-3 rounded-md">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
               </div>
@@ -380,7 +380,7 @@ const ExploreLocations: FC = () => {
                       return (
                         <motion.div
                           layout
-                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row  justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
                           key={country.iso2}
                         >
                           <Country
@@ -394,7 +394,7 @@ const ExploreLocations: FC = () => {
                     })}
                   </motion.div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald dark:text-white">
+                  <h1 className="text-oxford-blue  h-[100px] text-2xl md:text-3xl text-center my-24 font-Raleway dark:text-white">
                     No Countries Matched Your Search {":("}
                   </h1>
                 )
@@ -402,8 +402,8 @@ const ExploreLocations: FC = () => {
                 <LocationsLoading />
               )}
             </section>
-            <div className="flex justify-center px-12 py-8 mb-auto dark:text-white">
-              <h1 className="text-xl font-Oswald">
+            <div className="flex justify-center px-12 py-8  dark:text-white">
+              <h1 className="text-xl font-Raleway">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
                   className="text-2xl hover:cursor-pointer"
@@ -432,16 +432,16 @@ const ExploreLocations: FC = () => {
               <FontAwesomeIcon icon={faCaretLeft} /> Back to Countries
             </p>
             <header className="flex items-center align-center pb-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue dark:text-white text-3xl md:text-4xl font-semibold font-Oswald">
+              <h1 className="text-oxford-blue dark:text-white text-3xl md:text-4xl font-semibold font-Raleway">
                 SELECT STATE
               </h1>
               <div className="md:ml-auto flex">
                 <input
                   onChange={handleSearch}
                   placeholder={`Search State...`}
-                  className="border-2 text-2xl px-1 rounded-md font-Oswald"
+                  className="border-2 text-2xl px-1 rounded-md font-Raleway"
                 ></input>
-                <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
+                <button className="bg-oxford-blue text-white text-2xl py-2 px-3 rounded-md">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
               </div>
@@ -468,7 +468,7 @@ const ExploreLocations: FC = () => {
                     })}
                   </div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald dark:text-white">
+                  <h1 className="text-oxford-blue text-2xl h-[100px] md:text-3xl text-center my-24 font-Raleway dark:text-white">
                     No States Matched your search {":("}
                   </h1>
                 )
@@ -477,17 +477,17 @@ const ExploreLocations: FC = () => {
               )}
             </section>
             <div className="flex justify-center px-12 py-8 mb-auto">
-              <h1 className="text-xl font-Oswald">
+              <h1 className="text-xl dark:text-white font-Raleway">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
-                  className="text-2xl hover:cursor-pointer"
+                  className="text-2xl dark:text-white hover:cursor-pointer"
                   onClick={updatePageNumber("back")}
                 />{" "}
                 Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                 {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl hover:cursor-pointer hover:cursor-pointer"
+                  className="text-2xl dark:text-white hover:cursor-pointer hover:cursor-pointer"
                   onClick={updatePageNumber("next")}
                 />
               </h1>
@@ -498,7 +498,7 @@ const ExploreLocations: FC = () => {
         return (
           <div>
             <p
-              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Oswald dark:text-white"
+              className="pt-4 pb-2 px-12 hover:cursor-pointer font-Raleway dark:text-white"
               onClick={() => {
                 navigate(
                   `/explore?locationType=states&country=${searchParams.get(
@@ -510,16 +510,16 @@ const ExploreLocations: FC = () => {
               <FontAwesomeIcon icon={faCaretLeft} /> Back to States
             </p>
             <header className="flex items-center align-center pb-8 px-12 flex-wrap justify-center gap-4">
-              <h1 className="text-oxford-blue text-3xl md:text-4xl font-semibold dark:text-white font-Oswald">
+              <h1 className="text-oxford-blue text-3xl md:text-4xl font-semibold dark:text-white font-Raleway">
                 SELECT CITY
               </h1>
               <div className="md:ml-auto flex">
                 <input
                   onChange={handleSearch}
                   placeholder={`Search City...`}
-                  className="border-2 text-2xl px-1 rounded-md font-Oswald"
+                  className="border-2 text-2xl px-1 rounded-md font-Raleway"
                 ></input>
-                <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
+                <button className="bg-oxford-blue text-white text-2xl py-2 px-3 rounded-md">
                   <FontAwesomeIcon icon={faMagnifyingGlass} />
                 </button>
               </div>
@@ -544,7 +544,7 @@ const ExploreLocations: FC = () => {
                     })}
                   </div>
                 ) : (
-                  <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 font-Oswald dark:text-white">
+                  <h1 className="text-oxford-blue h-[100px] text-2xl md:text-3xl text-center my-24 font-Raleway dark:text-white">
                     No Cities Matched your search {":("}
                   </h1>
                 )
@@ -553,17 +553,17 @@ const ExploreLocations: FC = () => {
               )}
             </section>
             <div className="flex justify-center px-12 py-8 mb-auto">
-              <h1 className="text-xl font-Oswald">
+              <h1 className="text-xl dark:text-white font-Raleway">
                 <FontAwesomeIcon
                   icon={faCaretLeft}
-                  className="text-2xl hover:cursor-pointer"
+                  className="text-2xldark:text-white hover:cursor-pointer"
                   onClick={updatePageNumber("back")}
                 />{" "}
                 Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                 {Math.ceil(total / 10)}{" "}
                 <FontAwesomeIcon
                   icon={faCaretRight}
-                  className="text-2xl hover:cursor-pointer hover:cursor-pointer"
+                  className="text-2xl dark:text-white hover:cursor-pointer hover:cursor-pointer"
                   onClick={updatePageNumber("next")}
                 />
               </h1>
@@ -573,7 +573,7 @@ const ExploreLocations: FC = () => {
       case "activities":
         return (
           <div className=" flex flex-col items-center p-16 gap-8">
-            <h1 className="text-6xl font-medium text-oxford-blue text-center font-FatFace dark:text-white ">
+            <h1 className="text-6xl font-medium text-oxford-blue text-center font-Playfair dark:text-white ">
               Explore {currentCity?.name || searchParams.get("city") || "..."}
             </h1>
             <form className="flex items-center" onSubmit={exploreNewLocation}>
@@ -585,7 +585,7 @@ const ExploreLocations: FC = () => {
                 onChange={(e) => setCurrentLocations(e.target.value)}
               ></input>
               <button
-                className="bg-oxford-blue text-baby-powder text-xl px-2 py-1"
+                className="bg-oxford-blue text-white text-xl px-2 py-1"
                 type="submit"
               >
                 Search
@@ -597,7 +597,7 @@ const ExploreLocations: FC = () => {
                   activityType == "Hotels"
                     ? "text-oxford-blue dark:text-white underline font-bold"
                     : "hover:cursor-pointer hover:underline"
-                } font-Oswald`}
+                } font-Raleway`}
                 onClick={handleActivityTypeChange("Hotels")}
               >
                 Hotels
@@ -607,7 +607,7 @@ const ExploreLocations: FC = () => {
                   activityType == "Airports"
                     ? "text-oxford-blue dark:text-white underline font-bold"
                     : "hover:cursor-pointer hover:underline"
-                } font-Oswald`}
+                } font-Raleway`}
                 onClick={handleActivityTypeChange("Airports")}
               >
                 Airports
@@ -617,7 +617,7 @@ const ExploreLocations: FC = () => {
                   activityType == "Restaurants"
                     ? "text-oxford-blue dark:text-white underline font-bold"
                     : "hover:cursor-pointer hover:underline"
-                } font-Oswald`}
+                } font-Raleway`}
                 onClick={handleActivityTypeChange("Restaurants")}
               >
                 Restaurants
@@ -627,7 +627,7 @@ const ExploreLocations: FC = () => {
                   activityType == "Things To Do"
                     ? "text-oxford-blue dark:text-white underline font-bold"
                     : "hover:cursor-pointer hover:underline"
-                } font-Oswald`}
+                } font-Raleway`}
                 onClick={handleActivityTypeChange("Things To Do")}
               >
                 Things To Do
@@ -637,7 +637,7 @@ const ExploreLocations: FC = () => {
                   activityType == "Videos"
                     ? "text-oxford-blue dark:text-white underline font-bold"
                     : "hover:cursor-pointer hover:underline"
-                } font-Oswald`}
+                } font-Raleway`}
                 onClick={handleActivityTypeChange("Videos")}
               >
                 Videos
@@ -649,9 +649,9 @@ const ExploreLocations: FC = () => {
                   <input
                     onChange={handleSearch}
                     placeholder={`Search ${activityType}...`}
-                    className="border-2 text-2xl px-1 rounded-md font-Oswald"
+                    className="border-2 text-2xl px-1 rounded-md font-Raleway"
                   ></input>
-                  <button className="bg-oxford-blue text-baby-powder text-2xl py-2 px-3 rounded-md">
+                  <button className="bg-oxford-blue text-white text-2xl py-2 px-3 rounded-md">
                     <FontAwesomeIcon icon={faMagnifyingGlass} />
                   </button>
                 </div>
@@ -696,7 +696,7 @@ const ExploreLocations: FC = () => {
                       })}
                     </div>
                   ) : (
-                    <h1 className="text-oxford-blue text-2xl md:text-3xl text-center my-24 dark:text-white">
+                    <h1 className="text-oxford-blue h-[200px] text-2xl md:text-3xl text-center my-24 dark:text-white">
                       No {activityType} Matched your search {":("}
                     </h1>
                   )
@@ -704,18 +704,18 @@ const ExploreLocations: FC = () => {
                   <LocationsLoading />
                 )}
 
-                <div className="flex justify-end px-12 py-8 mb-auto">
-                  <h1 className="text-xl font-Oswald">
+                <div className="flex justify-center px-12 py-8 mb-auto">
+                  <h1 className="text-xl dark:text-white font-Raleway">
                     <FontAwesomeIcon
                       icon={faCaretLeft}
-                      className="text-2xl hover:cursor-pointer"
+                      className="text-2xl dark:text-white hover:cursor-pointer"
                       onClick={updatePageNumber("back")}
                     />{" "}
                     Page: {total == 0 ? 0 : currentPageNumber} of{" "}
                     {Math.ceil(total / 10)}{" "}
                     <FontAwesomeIcon
                       icon={faCaretRight}
-                      className="text-2xl hover:cursor-pointer hover:cursor-pointer"
+                      className="text-2xl dark:text-white hover:cursor-pointer hover:cursor-pointer"
                       onClick={updatePageNumber("next")}
                     />
                   </h1>
@@ -723,7 +723,7 @@ const ExploreLocations: FC = () => {
               </section>
             ) : (
               <div className="flex items-center justify-center mt-12">
-                <h1 className="text-4xl font-Oswald h-[100px] dark:text-white">
+                <h1 className="text-4xl font-Raleway h-[100px] dark:text-white">
                   Find a City And Explore What it Has to Offer!
                 </h1>
               </div>
@@ -738,12 +738,12 @@ const ExploreLocations: FC = () => {
               <h2 className="text-6xl font-bold mb-8 text-oxford-blue">
                 Page Not Found
               </h2>
-              <p className="text-2xl mb-8 text-teal">
+              <p className="text-2xl mb-8 text-oxford-blue">
                 Oops! The page you're looking for doesn't exist.
               </p>
               <Link
                 to="/"
-                className="bg-white text-teal py-2 px-4 rounded-full text-xl font-semibold hover:bg-opacity-90 transition duration-300"
+                className="bg-white text-oxford-blue py-2 px-4 rounded-full text-xl font-semibold hover:bg-opacity-90 transition duration-300"
               >
                 Return Home
               </Link>
@@ -754,7 +754,9 @@ const ExploreLocations: FC = () => {
   };
 
   return (
-    <div className="dark:bg-black dark:bg-opacity-85">{renderLocations()}</div>
+    <div className="dark:bg-black dark:bg-opacity-85 mb-auto">
+      {renderLocations()}
+    </div>
   );
 };
 

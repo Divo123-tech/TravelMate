@@ -23,7 +23,7 @@ const Review: FC<Props> = ({ imgSrc, name, title, body }: Props) => {
       {/* Display the reviewer's profile image */}
       <img src={imgSrc} className="rounded-full w-24 md:w-40" alt={name} />
       {/* Display the reviewer's name in italics */}
-      <p className="italic font-Oswald">-{name}-</p>
+      <p className="italic font-Raleway">-{name}-</p>
       {/* Display a row of stars to indicate rating */}
       <div className="flex gap-2 text-yellow-400 justify-center">
         {/* Generate 5 star icons */}
@@ -32,7 +32,7 @@ const Review: FC<Props> = ({ imgSrc, name, title, body }: Props) => {
         ))}
       </div>
       {/* Display the review title in bold */}
-      <p className="font-bold font-Oswald">"{title}"</p>
+      <p className="font-bold font-Raleway">"{title}"</p>
       {/* Display the body of the review */}
       <p className="text-sm md:text-base font-Rethink">{body}</p>
     </motion.div>

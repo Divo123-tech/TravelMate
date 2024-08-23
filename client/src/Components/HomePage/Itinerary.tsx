@@ -29,7 +29,7 @@ const Itinerary: FC<Props> = ({ countryName, imgSrc, desc, url }: Props) => {
         <Card.Img variant="top" src={imgSrc} />
         <Card.Body className="text-center">
           {/* Display the country name in a title */}
-          <Card.Title className="text-4xl text-champion-blue font-Oswald">
+          <Card.Title className="text-4xl text-champion-blue font-Raleway">
             {countryName}
           </Card.Title>
           {/* Display the description of the itinerary */}

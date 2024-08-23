@@ -7,10 +7,13 @@ const getAllCountries = async (req, res) => {
         const searchQuery = typeof req.query.searchQuery === "string"
             ? req.query.searchQuery
             : undefined;
+        const limit = typeof req.query.limit === "string"
+            ? Number(req.query.limit)
+            : undefined;
         // Retrieve countries using the locations service and send response
         res
             .status(200)
-            .json(await locationsService.getAllCountries(req.params.continent, page, searchQuery));
+            .json(await locationsService.getAllCountries(req.params.continent, page, searchQuery, limit || 10));
     }
     catch (err) {
         // Handle errors and send a response with status 400

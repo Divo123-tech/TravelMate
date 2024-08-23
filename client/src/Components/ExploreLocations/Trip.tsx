@@ -28,9 +28,9 @@ const Trip: FC<Props> = ({ trip, addItinerariesToTrip }: Props) => {
   }, [successfullyAdded]); // Dependency array includes successfullyAdded
 
   return (
-    <div className="bg-teal px-4 py-2 rounded-full flex items-center justify-between">
+    <div className="bg-champion-blue px-4 py-2 rounded-full flex items-center justify-between">
       {/* Trip name display */}
-      <h1 className="text-xl font-medium text-baby-powder font-Oswald">
+      <h1 className="text-xl font-medium text-white font-Raleway">
         {trip.name}
       </h1>
 

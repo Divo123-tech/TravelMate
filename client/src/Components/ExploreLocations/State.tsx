@@ -47,7 +47,7 @@ const State: FC<Props> = ({ state, setCurrentState, setSearch }: Props) => {
           </p>
 
           {/* Display state name with a hover effect for cursor pointer */}
-          <h1 className="text-oxford-blue dark:text-white text-3xl font-medium hover:cursor-pointer font-Oswald">
+          <h1 className="text-oxford-blue dark:text-white text-3xl font-medium hover:cursor-pointer font-Raleway">
             {state.name}, {state.code}
           </h1>
         </div>

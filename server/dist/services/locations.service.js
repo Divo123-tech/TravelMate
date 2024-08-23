@@ -8,7 +8,7 @@ const paginateArray = (array, page, pageSize) => {
     return array.slice(startIndex, endIndex);
 };
 // Function to fetch all countries within a given continent
-const getAllCountries = async (continent, page = 1, searchQuery) => {
+const getAllCountries = async (continent, page = 1, searchQuery, limit) => {
     // Base URL for fetching countries
     let url = `https://restfulcountries.com/api/v1/countries`;
     // Append continent to URL if not fetching all continents
@@ -31,7 +31,7 @@ const getAllCountries = async (continent, page = 1, searchQuery) => {
         // Return the paginated result
         return {
             total: countriesArray.length,
-            data: paginateArray(countriesArray, page, 10).map((country) => ({
+            data: paginateArray(countriesArray, page, limit || 20).map((country) => ({
                 name: country.name,
                 iso2: country.iso2,
                 currency: country.currency,

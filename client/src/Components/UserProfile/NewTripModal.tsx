@@ -74,7 +74,7 @@ const NewTripModal: FC<Props> = ({ show, onHide }: Props) => {
       dialogClassName="w-fit" // Adjust the width of the modal
     >
       <Modal.Header closeButton>
-        <Modal.Title className="font-Oswald">
+        <Modal.Title className="font-Raleway">
           Start With a Name And Date!
           {/* Title of the modal */}
         </Modal.Title>
@@ -85,7 +85,7 @@ const NewTripModal: FC<Props> = ({ show, onHide }: Props) => {
           <div className="flex flex-col px-2 gap-3">
             {/* Trip Name Input */}
             <div className="flex flex-col gap-1">
-              <label className="text-xl font-medium font-Oswald">
+              <label className="text-xl font-medium font-Raleway">
                 Trip Name
               </label>
               <input
@@ -99,7 +99,7 @@ const NewTripModal: FC<Props> = ({ show, onHide }: Props) => {
             </div>
             {/* Start Date Input */}
             <div className="flex flex-col gap-1">
-              <label className="text-xl font-medium font-Oswald">
+              <label className="text-xl font-medium font-Raleway">
                 Start Date
               </label>
               <input
@@ -112,7 +112,7 @@ const NewTripModal: FC<Props> = ({ show, onHide }: Props) => {
             </div>
             {/* End Date Input */}
             <div className="flex flex-col gap-1">
-              <label className="text-xl font-medium font-Oswald">
+              <label className="text-xl font-medium font-Raleway">
                 End Date
               </label>
               <input

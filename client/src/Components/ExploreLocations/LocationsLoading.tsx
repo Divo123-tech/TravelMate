@@ -9,7 +9,7 @@ const LocationsLoading: FC = () => {
     Array.from({ length: 5 }).map((_, i) => (
       <div
         key={i}
-        className="flex items-center bg-turquoise dark:bg-oxford-blue mt-4"
+        className="flex items-center bg-alice-blue dark:bg-oxford-blue mt-4"
       >
         {/* Display the loading image */}
         <img src={loading} alt="Loading..." className="mr-4" />

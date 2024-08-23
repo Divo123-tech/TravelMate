@@ -34,7 +34,7 @@ const Airport: FC<Props> = ({ airport }: Props) => {
           </p>
 
           {/* Display the airport name */}
-          <a className="text-oxford-blue text-2xl md:text-3xl font-Oswald dark:text-white">
+          <a className="text-oxford-blue text-2xl md:text-3xl font-Raleway dark:text-white">
             {airport.name}
           </a>
         </div>

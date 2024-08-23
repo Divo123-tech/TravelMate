@@ -10,6 +10,7 @@ import {
   hotelType,
   flightType,
   attractionType,
+  videoType,
 } from "../../types/types";
 import Country from "../ExploreLocations/Country";
 import State from "../ExploreLocations/State";
@@ -25,6 +26,7 @@ import CollaboratorsModal from "./CollaboratorsModal";
 import CustomActivityModal from "./CustomActivityModal";
 import Attraction from "../ExploreLocations/Attraction";
 import { container } from "../../data/animation";
+import Video from "../ExploreLocations/Video";
 
 const EditTrip: FC = () => {
   const context = useContext(UserContext);
@@ -200,7 +202,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={country.iso2}
                     >
                       <Country key={index} country={country} />
@@ -244,7 +246,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={state.code}
                     >
                       <State state={state} />
@@ -286,7 +288,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
                       key={city.name}
                     >
                       <City city={city} />
@@ -328,7 +330,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
                       key={hotel.id}
                     >
                       <Hotel hotel={hotel} />
@@ -378,7 +380,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-turquoise flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
                       key={activity.id}
                     >
                       <Attraction attraction={activity} />
@@ -434,6 +436,58 @@ const EditTrip: FC = () => {
                       }
                       key={Math.random().toString(36).substring(2, 8)}
                     />
+                  );
+                })}
+              </motion.div>
+            </div>
+            <div id="flights-div">
+              <div className="flex justify-between items-center">
+                <motion.div
+                  className="bg-oxford-blue bg-opacity-80 w-48 text-center my-10 p-1"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.6 }}
+                  variants={{
+                    hidden: { opacity: 0, x: -75 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <h1 className="text-3xl text-alice-blue font-medium">
+                    Videos
+                  </h1>
+                </motion.div>
+                <motion.p
+                  className="text-7xl font-bold text-oxford-blue text-opacity-70 pr-8 hover:cursor-pointer dark:text-champion-blue"
+                  onClick={() => navigate("/flights")}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  +
+                </motion.p>
+              </div>
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 1 }}
+                variants={container}
+              >
+                {trip.videos?.map((video: videoType) => {
+                  return (
+                    <motion.div
+                    layout
+                    className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center sm:gap-12 md:gap-20 pr-8"
+                    key={video.url}
+                  >
+                      <Video
+                        video={video}
+                        key={Math.random().toString(36).substring(2, 8)}
+                      />
+                      <DeleteButton
+                        deleteFunction={() => deleteFromTrip(video)}
+                      />
+                    </motion.div>
                   );
                 })}
               </motion.div>

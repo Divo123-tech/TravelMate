@@ -24,7 +24,7 @@ const Video: FC<Props> = ({ video }: Props) => {
         {/* Container for video details */}
         <div className="flex flex-col gap-4 justify-center md:text-start p-2 font-Rethink">
           {/* Video title */}
-          <p className="text-3xl font-Oswald">{video.title}</p>
+          <p className="text-3xl font-Raleway">{video.title}</p>
           {/* Channel name */}
           <p className="text-xl">{video.channel}</p>
           {/* Video views and date */}

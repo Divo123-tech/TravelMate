@@ -22,12 +22,12 @@ const EditSuccessToast: FC<Props> = ({
         autohide // Automatically hides the toast after the delay
       >
         {/* Header of the toast */}
-        <Toast.Header className="bg-green-400">
+        <Toast.Header className="bg-champion-blue">
           <strong className="me-auto">User Successfully Updated!</strong>
           {/* The strong element is styled and provides the title of the toast */}
         </Toast.Header>
         {/* Body of the toast */}
-        <Toast.Body className="bg-green-200">
+        <Toast.Body className="bg-champion-blue">
           Your current user information has been updated!
           {/* Provides additional details about the update */}
         </Toast.Body>

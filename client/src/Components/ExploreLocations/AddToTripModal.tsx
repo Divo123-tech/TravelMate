@@ -53,7 +53,7 @@ const AddToTripModal: FC<Props> = ({ show, onHide, itineraries }: Props) => {
       {user != null ? ( // Check if user is logged in
         <div>
           <Modal.Header closeButton>
-            <Modal.Title className="font-FatFace">Select Trip!</Modal.Title>
+            <Modal.Title className="font-Playfair">Select Trip!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="flex flex-col gap-2">

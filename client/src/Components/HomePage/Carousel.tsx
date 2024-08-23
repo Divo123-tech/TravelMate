@@ -8,15 +8,15 @@ import {
   faPlaneDeparture,
   faMagnifyingGlassLocation,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FC, useContext, useState } from "react";
-import { googleAuthenticate } from "../../services/users.service";
 import { UserContext } from "../../App";
 import AuthModal from "../AuthModal";
-
+import NewTripModal from "../UserProfile/NewTripModal";
 // Functional Component for Carousel
 const CarouselComponent: FC = () => {
-  const [modalShow, setModalShow] = useState(false);
+  const [authModalShow, setauthModalShow] = useState(false);
+  const [addTripModalShow, setAddTripModalShow] = useState(false);
 
   const userContext = useContext(UserContext);
   // Ensure that the component is used within the necessary context providers
@@ -69,10 +69,10 @@ const CarouselComponent: FC = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-around">
         {/* Text section with background styling */}
         <div className="text-center text-white bg-black bg-opacity-50 rounded-md p-6 md:p-16 flex flex-col gap-8">
-          <h1 className="text-lg md:text-6xl font-FatFace">
+          <h1 className="text-lg md:text-6xl font-Playfair">
             Global Traveling, Easy Planning
           </h1>
-          <p className="text-xs md:text-xl font-Oswald">
+          <p className="text-xs md:text-xl font-Raleway">
             Plan Your Vacations Anywhere in The World
           </p>
         </div>
@@ -81,8 +81,11 @@ const CarouselComponent: FC = () => {
         <div className="flex flex-row gap-24 md:gap-48 ">
           {/* Explore Button */}
           <div className="bg-black">
-            <button className="text-white h-24 w-24 md:h-30 md:w-80 hover:bg-champion-blue flex items-center justify-center">
-              <div className="flex-col md:flex-row gap-3 md:gap-4 items-center">
+            <button
+              className="text-white h-24 w-36 md:h-30 md:w-80 hover:bg-champion-blue flex items-center justify-center"
+              onClick={() => navigate("/explore")}
+            >
+              <div className="flex gap-3 md:gap-4 items-center justify-center">
                 <p className="text-lg md:text-3xl font-Rethink">Explore</p>
                 <FontAwesomeIcon
                   icon={faMagnifyingGlassLocation}
@@ -94,13 +97,15 @@ const CarouselComponent: FC = () => {
           {/* Create A Trip Button */}
           <div className="bg-black">
             <button
-              className="text-white h-24 w-24 md:h-30 md:w-80 hover:bg-champion-blue flex items-center justify-center px-4"
+              className="text-white h-24 w-36 md:h-30 md:w-80 hover:bg-champion-blue flex items-center justify-center px-4"
               onClick={
-                user ? () => navigate("/profile") : () => setModalShow(true)
+                user
+                  ? () => setAddTripModalShow(true)
+                  : () => setauthModalShow(true)
               }
             >
-              <div className="flex gap-2 md:gap-4 items-center flex-wrap justify-center">
-                <p className="text-md md:text-2xl font-Rethink">
+              <div className="flex gap-2 md:gap-4 items-center">
+                <p className="text-md md:text-3xl font-Rethink">
                   Create A Trip
                 </p>
                 <FontAwesomeIcon
@@ -112,7 +117,11 @@ const CarouselComponent: FC = () => {
           </div>
         </div>
       </div>
-      <AuthModal show={modalShow} onHide={() => setModalShow(false)} />
+      <AuthModal show={authModalShow} onHide={() => setauthModalShow(false)} />
+      <NewTripModal
+        show={addTripModalShow}
+        onHide={() => setAddTripModalShow(false)}
+      />
     </motion.div>
   );
 };

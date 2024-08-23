@@ -38,7 +38,7 @@ const Trip: FC<Props> = ({ role, id, name, startDate, endDate }: Props) => {
         </p>
 
         {/* Display the trip name */}
-        <p className="text-xl md:text-3xl font-Oswald">{name}</p>
+        <p className="text-xl md:text-3xl font-Raleway">{name}</p>
 
         {/* Display the trip duration */}
         <p className="text-md md:text-lg font-Rethink">

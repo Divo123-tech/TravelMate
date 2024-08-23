@@ -19,7 +19,7 @@ const CreateNewTrip: FC = () => {
       {/* Button to trigger the creation of a new trip */}
       <div className="block">
         <button
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black font-medium font-Oswald bg-turquoise bg-opacity-100 hover:bg-opacity-70 border-none p-8 md:py-6 md:px-24 text-xl md:text-4xl rounded-full block hover:scale-150"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-black font-medium font-Raleway bg-turquoise bg-opacity-100 hover:bg-opacity-70 border-none p-8 md:py-6 md:px-24 text-xl md:text-4xl rounded-full block hover:scale-150"
           // Styles the button with text color, background color, padding, font, and rounded corners
           // Positioned in the center of the section using absolute positioning and transforms
           onClick={() => setModalShow(true)}

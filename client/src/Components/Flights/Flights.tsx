@@ -119,7 +119,7 @@ const Flights: FC = () => {
         {/* Centered content */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
           <h1
-            className="text-4xl text-white mb-8 text-center font-FatFace"
+            className="text-4xl text-white mb-8 text-center font-Playfair"
             id="title-header"
           >
             Millions of Cheap Flights. One Simple Search.
@@ -128,12 +128,12 @@ const Flights: FC = () => {
           <form className="bg-oxford-blue flex py-3 px-4 gap-4 justify-center rounded-full flex-wrap">
             {/* Origin input */}
             <div className="flex flex-col justify-center items-center gap-1">
-              <label className="text-baby-powder font-medium text-xl font-Oswald">
+              <label className="text-white font-medium text-xl font-Raleway">
                 Origin
               </label>
               <input
                 type="text"
-                className="bg-baby-powder p-2 rounded-full text-md font-Rethink"
+                className="bg-white p-2 rounded-full text-md font-Rethink"
                 placeholder="Airport Code eg.CGK, LHR, LAX"
                 name="origin"
                 onChange={handleChange}
@@ -141,12 +141,12 @@ const Flights: FC = () => {
             </div>
             {/* Destination input */}
             <div className="flex flex-col justify-center items-center gap-1">
-              <label className="text-baby-powder font-medium text-xl font-Oswald">
+              <label className="text-white font-medium text-xl font-Raleway">
                 Destination
               </label>
               <input
                 type="text"
-                className="bg-baby-powder p-2 rounded-full text-md font-Rethink"
+                className="bg-white p-2 rounded-full text-md font-Rethink"
                 placeholder="Airport Code eg.CGK, LHR, LAX"
                 name="destination"
                 onChange={handleChange}
@@ -154,19 +154,20 @@ const Flights: FC = () => {
             </div>
             {/* Departure Date input */}
             <div className="flex flex-col justify-center items-center">
-              <label className="text-baby-powder font-medium text-xl font-Oswald">
+              <label className="text-white font-medium text-xl font-Raleway">
                 Departure Date
               </label>
               <input
                 type="date"
-                className="bg-baby-powder p-2 rounded-full text-md text-gray-400 font-Rethink"
+                className="bg-white p-2 rounded-full text-md text-gray-400 font-Rethink"
                 name="departureDate"
+                min={new Date().toISOString().split("T")[0]} // Set minimum date to today
                 onChange={handleChange}
               />
             </div>
             {/* Advanced Filters button */}
             <button
-              className="bg-alice-blue text-md h-10 px-3 mt-4 text-oxford-blue font-medium rounded-full font-Oswald hover:bg-champion-blue hover:text-white"
+              className="bg-alice-blue text-md h-10 px-2 mt-4 text-oxford-blue font-medium font-Raleway hover:bg-champion-blue hover:text-white"
               type="button"
               onClick={() => setModalShow(true)}
             >
@@ -174,7 +175,7 @@ const Flights: FC = () => {
             </button>
             {/* Search button */}
             <button
-              className="bg-alice-blue text-lg h-10 px-4 mt-4 text-oxford-blue rounded-full font-Oswald font-medium disabled:bg-champion-blue disabled:cursor-not-allowed"
+              className="bg-alice-blue text-lg h-10 px-4 mt-4 text-oxford-blue font-Raleway font-medium disabled:bg-champion-blue disabled:cursor-not-allowed"
               disabled={flightDetails.origin === ""}
               type="button"
               onClick={() => {
@@ -224,11 +225,11 @@ const Flights: FC = () => {
         )}
 
         {/* Pagination controls */}
-        <div className="flex justify-end px-12 py-8 mb-auto">
-          <h1 className="text-xl">
+        <div className="flex justify-center px-12 py-8 mb-auto">
+          <h1 className="text-xl dark:text-white">
             <FontAwesomeIcon
               icon={faCaretLeft}
-              className="text-2xl"
+              className="text-2xl dark:text-white"
               onClick={() =>
                 setCurrentPageNumber((prevPage) =>
                   prevPage === 1 ? Math.ceil(totalFlights / 10) : prevPage - 1
@@ -239,7 +240,7 @@ const Flights: FC = () => {
             {Math.ceil(totalFlights / 10)}{" "}
             <FontAwesomeIcon
               icon={faCaretRight}
-              className="text-2xl"
+              className="text-2xl dark:text-white"
               onClick={() =>
                 setCurrentPageNumber((prevPage) =>
                   prevPage === Math.ceil(totalFlights / 10) ? 1 : prevPage + 1

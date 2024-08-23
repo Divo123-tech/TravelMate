@@ -15,8 +15,8 @@ const Flight: FC<Props> = ({ flight, Button }: Props) => {
   return (
     <motion.div className="bg-alice-blue flex items-center mb-4 h-[150px] pl-4 md:pl-12 md:gap-24 ">
       {/* Link to the flight's URL */}
-      <a href={flight.url}>
-        <div className="flex flex-col">
+      <a href={flight.url} className="block">
+        <div className="flex flex-col hover:scale-105">
           <div className="flex items-center gap-8">
             {/* Origin and departure details */}
             <div className="flex flex-col justify-center items-center text-black">

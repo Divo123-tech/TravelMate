@@ -61,7 +61,7 @@ const UserProfile: FC = () => {
           "all",
           undefined,
           undefined,
-          1000
+          186
         ); // Fetch country data with a limit of 1000
         const countriesData = response.data; // Extract countries data from response
         setCountries(countriesData); // Update state with the fetched countries
@@ -155,8 +155,8 @@ const UserProfile: FC = () => {
                 alt="User Profile"
               />
               <div className="flex flex-col items-center  text-center md:text-left">
-                <p className="text-xl font-Oswald ">User ID</p>
-                <p className="text-lg italic font-Rethink">{user.googleId}</p>
+                <p className="text-xl font-Raleway ">User Email</p>
+                <p className="text-lg italic font-Rethink">{user.email}</p>
               </div>
             </div>
             <div>
@@ -298,7 +298,7 @@ const UserProfile: FC = () => {
                   visible: { opacity: 1, x: 0 },
                 }}
               >
-                <p className="text-4xl font-medium font-Oswald">MY TRIPS</p>
+                <p className="text-4xl font-medium font-Raleway">MY TRIPS</p>
               </motion.div>
             </div>
             {/* List of user's trips with animation */}

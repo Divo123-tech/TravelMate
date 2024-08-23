@@ -138,7 +138,7 @@ const CollaboratorsModal: FC<Props> = ({
                         className="w-10 rounded-full"
                         alt="Collaborator"
                       />
-                      <p className="text-baby-powder text-xl">
+                      <p className="text-white text-xl">
                         {collaborator.name || collaborator.email}
                       </p>
                     </div>
@@ -175,7 +175,7 @@ const CollaboratorsModal: FC<Props> = ({
                     onChange={handleChange}
                   />
                   <motion.button
-                    className="bg-oxford-blue rounded-lg py-2 px-3 text-baby-powder"
+                    className="bg-oxford-blue rounded-lg py-2 px-3 text-white"
                     onClick={handleClick}
                     type="button"
                     whileHover={{ scale: 1.05 }}
@@ -198,14 +198,14 @@ const CollaboratorsModal: FC<Props> = ({
                               className="w-10 rounded-full"
                               alt="User Found"
                             />
-                            <p className="text-baby-powder text-xl">
+                            <p className="text-white text-xl">
                               {userFound.name || userFound.email}
                             </p>
                           </div>
                           <div>
                             {/* Icon button with animations */}
                             <motion.p
-                              className="text-3xl font-bold text-teal hover:cursor-pointer"
+                              className="text-3xl font-bold text-alice-blue hover:cursor-pointer"
                               whileHover={{ scale: 1.1 }} // Scale up on hover
                               whileTap={{ scale: 0.9 }} // Scale down on click
                               onClick={() => {

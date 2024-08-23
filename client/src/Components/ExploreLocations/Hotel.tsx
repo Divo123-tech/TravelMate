@@ -14,7 +14,7 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
 
   return (
     <>
-      <div className="flex items-center gap-8 mr-auto w-full">
+      <div className="flex dark:bg-oxford-blue items-center gap-8 mr-auto w-full">
         {/* Display the loading image if the hotel image has not loaded yet */}
         {!isImageLoaded && <img src={loading} alt="Loading..." />}
 
@@ -35,7 +35,7 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
           {/* Link to the hotel's website */}
           <a
             href={hotel.url} // URL to the hotel website
-            className="text-oxford-blue text-2xl md:text-3xl font-Oswald dark:text-white"
+            className="text-oxford-blue text-2xl md:text-3xl font-Raleway dark:text-white"
           >
             {hotel.name}
           </a>

@@ -8,10 +8,19 @@ import {
 import Accordion from "react-bootstrap/Accordion";
 import FAQAccordion from "./Accordion";
 import { FAQInformation } from "../../data/faq";
-import { FC } from "react";
+import { FC, useContext, useEffect } from "react";
+import { PageContext } from "../../App";
 
 // Functional component for the Contact page
 const Contact: FC = () => {
+  const pageContext = useContext(PageContext);
+  if (!pageContext) {
+    throw new Error("YourComponent must be used within a UserProvider");
+  }
+  const { setCurrentPage } = pageContext;
+  useEffect(() => {
+    setCurrentPage("Contact");
+  }, []);
   return (
     <>
       <div className="dark:bg-black">
@@ -19,8 +28,8 @@ const Contact: FC = () => {
         <div className="relative">
           <img src={contactUsImage} className="w-full" alt="Contact Us" />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-white text-8xl p-4 font-FatFace">Contact Us</p>
-            <p className="text-white text-3xl p-4 font-Oswald">
+            <p className="text-white text-8xl p-4 font-Playfair">Contact Us</p>
+            <p className="text-white text-3xl p-4 font-Raleway">
               We'd love to hear from you
             </p>
           </div>
@@ -28,7 +37,7 @@ const Contact: FC = () => {
 
         {/* Contact details section */}
         <section className="text-center mt-8">
-          <div className="font-Oswald font-medium text-black ">
+          <div className="font-Raleway font-medium text-black ">
             <h1 className=" text-5xl mb-5 dark:text-white">Contact Details</h1>
           </div>
           <div className="flex justify-around items-center text-oxford-blue dark:text-white">
@@ -63,7 +72,7 @@ const Contact: FC = () => {
 
         {/* FAQ section */}
         <section>
-          <h1 className="text-center text-5xl font-medium my-4 font-Oswald dark:text-white">
+          <h1 className="text-center text-5xl font-medium my-4 font-Raleway dark:text-white">
             FAQ
           </h1>
           <div className="flex flex-col gap-4 ">

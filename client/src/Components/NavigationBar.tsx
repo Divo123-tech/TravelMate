@@ -49,19 +49,17 @@ const NavigationBar: FC = () => {
     <>
       <Navbar
         className="bg-alice-blue sticky top-0 z-50 text-white"
-        expand="md"
+        expand="lg"
       >
         <Container className="flex">
-          <Navbar.Brand>
-            <img src={logo} className="w-[200px]" />
-          </Navbar.Brand>
+          <img src={logo} className="w-[150px]" />
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
             className="justify-content-end"
           >
-            <Nav className="text-black flex gap-3 text-lg items-center ">
+            <Nav className="text-black flex gap-3 text-md md:text-lg items-center ">
               <Link to={"/"}>
                 <Nav.Link
                   className={`${
@@ -127,7 +125,7 @@ const NavigationBar: FC = () => {
               </Link>
               {user == null ? (
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className="text-black hover:font-bold font-Rethink whitespace-nowrap"
                   href="#pricing"
                   onClick={() => setModalShow(true)}
                 >
@@ -151,7 +149,7 @@ const NavigationBar: FC = () => {
               )}
               {user && (
                 <Nav.Link
-                  className="text-black hover:font-bold font-Rethink"
+                  className="text-black hover:font-bold font-Rethink whitespace-nowrap"
                   onClick={logOut}
                 >
                   <Link to={"/"}> Log Out</Link>

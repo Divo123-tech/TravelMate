@@ -50,11 +50,11 @@ const DetailsModal: FC<Props> = ({
       dialogClassName="w-1/2" // Set the width of the modal
     >
       <Modal.Header closeButton>
-        <Modal.Title className="font-Oswald">SET FILTERS</Modal.Title>
+        <Modal.Title className="font-Raleway">SET FILTERS</Modal.Title>
       </Modal.Header>
       <form>
         <Modal.Body>
-          <div className="flex flex-col px-2 gap-3 font-Oswald">
+          <div className="flex flex-col px-2 gap-3 font-Raleway">
             {/* Direct flight checkbox */}
             <div className="flex items-center gap-2 ">
               <label className="text-xl font-medium">Direct</label>

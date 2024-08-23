@@ -82,7 +82,7 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
 
           {/* Display the city name and make it clickable to navigate to activities */}
           <h1
-            className="text-oxford-blue text-3xl font-medium hover:cursor-pointer font-Oswald dark:text-white"
+            className="text-oxford-blue text-2xl font-medium hover:cursor-pointer font-Raleway dark:text-white"
             onClick={goToActivities}
           >
             {city.name}
@@ -96,9 +96,9 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
       </div>
 
       {/* Container for time zone details */}
-      <div className="flex flex-col bg-oxford-blue dark:bg-champion-blue dark:text-white px-3 py-6 rounded-lg text-baby-powder text-center mx-16 hover:cursor-pointer">
+      <div className="flex flex-col dark:text-white text-oxford-blue text-center mx-16 hover:cursor-pointer">
         <motion.h1
-          className="dark:text-white font-medium text-2xl font-Oswald"
+          className="bg-oxford-blue dark:bg-champion-blue text-alice-blue text-center px-6 ml-60 py-3 text-lg whitespace-nowrap font-Raleway"
           onClick={() => fetchLocationTimeZone(city)} // Fetch time zone details on click
           whileHover={{ scale: 1.05 }} // Animation effect on hover
           whileTap={{ scale: 0.9 }} // Animation effect on tap
@@ -110,15 +110,15 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
         {timeZoneShown ? (
           timeZoneDetails ? (
             <div>
-              <p className="text-lg dark:text-white font-Rethink">
+              <p className="text-lg ml-60 font-Rethink">
                 Time: {timeZoneDetails.time}, {timeZoneDetails.date}
               </p>
-              <p className="text-lg dark:text-white font-Rethink">
+              <p className="text-lg ml-60 font-Rethink">
                 TimeZone: {timeZoneDetails.timeZone}
               </p>
             </div>
           ) : (
-            <h1>loading...</h1>
+            <h1 className="ml-60">Loading...</h1>
           )
         ) : null}
       </div>

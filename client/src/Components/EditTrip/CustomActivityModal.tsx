@@ -136,7 +136,7 @@ const CustomActivityModal: FC<Props> = ({ show, onHide, tripId }: Props) => {
         </form>
         <Modal.Footer>
           <button
-            className="bg-oxford-blue px-4 py-2 text-xl rounded-full text-baby-powder disabled:opacity-85 "
+            className="bg-oxford-blue px-4 py-2 text-xl rounded-full text-white disabled:opacity-85 "
             onClick={addActivityToTrip} // Handle button click to add activity
             disabled={
               // Disable button if required fields are empty

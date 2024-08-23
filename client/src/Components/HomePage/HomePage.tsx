@@ -32,7 +32,7 @@ const HomePage: FC = () => {
           transition={{ duration: 1 }}
           variants={rightSlideVariant}
         >
-          <p className="text-oxford-blue dark:text-white text-4xl font-medium font-Oswald whitespace-nowrap">
+          <p className="text-oxford-blue dark:text-white text-4xl font-medium font-Raleway whitespace-nowrap">
             TOP DESTINATIONS
           </p>
         </motion.div>
@@ -62,7 +62,7 @@ const HomePage: FC = () => {
           }}
         >
           <div className="text-center">
-            <h1 className="text-oxford-blue text-5xl dark:text-alice-blue font-bold font-FatFace">
+            <h1 className="text-oxford-blue text-5xl dark:text-alice-blue font-bold font-Playfair">
               Hear From Our Travellers
             </h1>
           </div>

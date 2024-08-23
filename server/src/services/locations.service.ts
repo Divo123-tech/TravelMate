@@ -23,7 +23,8 @@ const paginateArray = <T>(array: T[], page: number, pageSize: number): T[] => {
 const getAllCountries = async (
   continent: string,
   page: number = 1,
-  searchQuery?: string
+  searchQuery?: string,
+  limit?: number
 ): Promise<{ total: number; data: countryType[] }> => {
   // Base URL for fetching countries
   let url = `https://restfulcountries.com/api/v1/countries`;
@@ -54,14 +55,16 @@ const getAllCountries = async (
     // Return the paginated result
     return {
       total: countriesArray.length,
-      data: paginateArray(countriesArray, page, 10).map((country: any) => ({
-        name: country.name,
-        iso2: country.iso2,
-        currency: country.currency,
-        capital: country.capital,
-        continent: country.continent,
-        type: "countries",
-      })),
+      data: paginateArray(countriesArray, page, limit || 20).map(
+        (country: any) => ({
+          name: country.name,
+          iso2: country.iso2,
+          currency: country.currency,
+          capital: country.capital,
+          continent: country.continent,
+          type: "countries",
+        })
+      ),
     };
   } catch (err: any) {
     // Error handling with specific message
