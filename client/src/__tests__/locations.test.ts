@@ -18,7 +18,7 @@ import {
 import { cachedApiCall } from "../utils/apiCache";
 import { timeZoneType } from "../types/types";
 
-const ServerAPI = "http://localhost:3000";
+const ServerAPI = "/api";
 // Mocking axios and cachedApiCall
 jest.mock("axios");
 jest.mock("../utils/apiCache");

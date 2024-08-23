@@ -9,7 +9,7 @@ import {
   createNewTrip,
   getTripDetails,
 } from "../services/users.service";
-const ServerAPI = "http://localhost:3000";
+const ServerAPI = "/api";
 
 // Mock axios and apiCache for testing
 jest.mock("axios");

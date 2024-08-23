@@ -42,7 +42,7 @@ function App() {
     getUser();
   }, []);
   useEffect(() => {
-    const newSocket: Socket = io("http://localhost:3000");
+    const newSocket: Socket = io("/");
     setSocket(newSocket);
     return () => {
       newSocket.close();

@@ -1,4 +1,4 @@
-const ServerAPI = "http://localhost:3000"; // Base URL for the server API
+const ServerAPI = "/api"; // Base URL for the server API
 
 import axios from "axios"; // Axios for making HTTP requests
 import { PassportType, TripType, UserType } from "../types/types"; // Importing TypeScript types

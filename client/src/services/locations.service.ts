@@ -1,4 +1,4 @@
-const ServerAPI = "http://localhost:3000"; // Base URL for the server API
+const ServerAPI = "/api"; // Base URL for the server API
 import axios from "axios";
 import { timeZoneType } from "../types/types"; // Importing types for type safety
 import { cachedApiCall } from "../utils/apiCache"; // Utility function for caching API responses

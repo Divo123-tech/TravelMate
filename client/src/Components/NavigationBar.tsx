@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useContext, FC, useState, useEffect } from "react";
 import { UserContext, PageContext } from "../App";
-import { googleAuthenticate, logOutAPI } from "../services/users.service";
+import { logOutAPI } from "../services/users.service";
 import logo from "../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
