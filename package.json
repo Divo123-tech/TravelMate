@@ -5,10 +5,9 @@
   "scripts": {
     "install-server": "npm install --prefix server",
     "install-client": "npm install --prefix client",
-    "server": "npm start --prefix server",
-    "client": "npm run dev --prefix client",
+    "build-server": "npm run build --prefix server",
     "install": "npm-run-all install-server install-client",
-    "start": "npm-run-all --parallel server client",
+    "start": "npm start --prefix server",
     "deploy": "npm run build --prefix client && npm start --prefix server"
   },
   "keywords": [],
