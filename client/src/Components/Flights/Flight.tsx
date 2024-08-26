@@ -13,7 +13,7 @@ type Props = {
 // Functional component to display flight information
 const Flight: FC<Props> = ({ flight, Button }: Props) => {
   return (
-    <motion.div className="bg-alice-blue flex items-center mb-4 h-[150px] pl-4 md:pl-12 md:gap-24 ">
+    <motion.div className="flex flex-col md:flex-row items-center mb-4 pl-4 md:pl-12 md:gap-24 bg-alice-blue ">
       {/* Link to the flight's URL */}
       <a href={flight.url} className="block">
         <div className="flex flex-col hover:scale-105">
@@ -61,8 +61,8 @@ const Flight: FC<Props> = ({ flight, Button }: Props) => {
         <p className="text-xl md:text-3xl text-black pl-4">
           {flight.price} {flight.currency}
         </p>
-        {Button}
       </div>
+      {Button}
     </motion.div>
   );
 };

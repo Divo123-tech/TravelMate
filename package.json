@@ -9,6 +9,7 @@
     "server": "npm start --prefix server",
     "client": "npm run dev --prefix client",
     "install": "npm-run-all install-server install-client",
+    "startdev": "npm-run-all --parallel server client",
     "start": "npm start --prefix server",
     "deploy": "npm run build --prefix client && npm start --prefix server"
   },

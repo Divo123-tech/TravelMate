@@ -2,7 +2,6 @@ import express from "express";
 import session from "express-session";
 import helmet from "helmet";
 import passport from "./utils/passportSetup.js";
-import cors from "cors";
 import dotenv from "dotenv";
 import api from "./api.js";
 import path, { dirname } from "path";
@@ -33,13 +32,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(
-  cors({
-    origin: process.env.REDIRECT_URI,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "..", "public")));

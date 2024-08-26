@@ -206,11 +206,13 @@ const Flights: FC = () => {
             <div>
               {/* Render a list of Flight components */}
               {flights.map((flight: flightType) => (
-                <Flight
-                  key={flight.url} // Add a unique key prop for each flight
-                  flight={flight}
-                  Button={<AddToTrip itineraries={[flight]} />}
-                />
+                <div className="flex flex-col gap-4">
+                  <Flight
+                    key={flight.url} // Add a unique key prop for each flight
+                    flight={flight}
+                    Button={<AddToTrip itineraries={[flight]} />}
+                  />
+                </div>
               ))}
             </div>
           ) : (

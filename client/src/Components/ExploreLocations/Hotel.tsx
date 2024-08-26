@@ -26,7 +26,7 @@ const Hotel: FC<Props> = ({ hotel }: Props) => {
         ></img>
 
         {/* Container for hotel details */}
-        <div className="flex flex-col justify-start">
+        <div className="flex flex-col justify-center text-center sm:text-left">
           {/* Display the hotel location (city) */}
           <p className="text-oxford-blue text-md md:text-lg font-Rethink dark:text-white">
             Location: {hotel.city}

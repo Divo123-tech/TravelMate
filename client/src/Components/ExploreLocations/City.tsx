@@ -110,15 +110,15 @@ const City: FC<Props> = ({ city, setCurrentCity }: Props) => {
         {timeZoneShown ? (
           timeZoneDetails ? (
             <div>
-              <p className="text-lg ml-60 font-Rethink">
+              <p className="text-lg  font-Rethink">
                 Time: {timeZoneDetails.time}, {timeZoneDetails.date}
               </p>
-              <p className="text-lg ml-60 font-Rethink">
+              <p className="text-lg font-Rethink">
                 TimeZone: {timeZoneDetails.timeZone}
               </p>
             </div>
           ) : (
-            <h1 className="ml-60">Loading...</h1>
+            <h1>Loading...</h1>
           )
         ) : null}
       </div>

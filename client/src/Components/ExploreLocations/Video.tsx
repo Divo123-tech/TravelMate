@@ -22,7 +22,7 @@ const Video: FC<Props> = ({ video }: Props) => {
           />
         </div>
         {/* Container for video details */}
-        <div className="flex flex-col gap-4 justify-center text-center md:text-start p-2 font-Rethink w-full md:w-auto md:max-w-[400px]">
+        <div className="flex flex-col gap-4 justify-center md:text-start p-2 font-Rethink w-full md:w-auto md:max-w-[400px]">
           {/* Video title */}
           <p className="text-xl md:text-2xl lg:text-3xl font-Raleway">
             {video.title}

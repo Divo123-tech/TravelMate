@@ -100,6 +100,7 @@ const Country: FC<Props> = ({
 
   return (
     <>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {/* Container for country details */}
       <div
         className="flex flex-col md:flex-row items-center gap-8 md:mr-auto"
@@ -136,9 +137,10 @@ const Country: FC<Props> = ({
           </p>
         </div>
       </div>
-
+      </div>
+    
       {/* Container for visa details */}
-      <div className="flex flex-col dark:text-white text-oxford-blue  text-center hover:cursor-pointer font-Raleway">
+      <div className="flex flex-col dark:text-white text-oxford-blue text-center hover:cursor-pointer font-Raleway">
         <motion.h1
           className="bg-oxford-blue dark:bg-champion-blue text-alice-blue text-center px-6 py-3 text-lg whitespace-nowrap font-Rethink"
           onClick={() => fetchCountryVisa(country)} // Fetch visa details on click
@@ -152,15 +154,15 @@ const Country: FC<Props> = ({
         {visaShown ? (
           visaDetails ? (
             <div>
-              <p className="text-lg ml-80 font-Rethink">
+              <p className="text-lg font-Rethink">
                 Status: {visaDetails.visaStatus}
               </p>
-              <p className="text-lg ml-80 font-Rethink">
+              <p className="text-lg font-Rethink">
                 Duration: {visaDetails.visaDuration || 0} Days
               </p>
             </div>
           ) : (
-            <h1 className="ml-80">Loading...</h1>
+            <h1>Loading...</h1>
           )
         ) : null}
       </div>
@@ -180,13 +182,13 @@ const Country: FC<Props> = ({
         {currencyShown ? (
           exchangeRate ? (
             <div>
-              <p className="text-lg ml-8 font-Rethink">
+              <p className="text-lg font-Rethink">
                 1 {user?.currencyUsed || "USD"}{" "}
                 <FontAwesomeIcon icon={faArrowRight} />{" "}
                 {exchangeRate.toString().slice(0, 7)}{" "}
                 {country.name === "Albania" ? "ALL" : country.currency}
               </p>
-              <p className="text-lg ml-8 font-Rethink">
+              <p className="text-lg font-Rethink">
                 1 {country.name === "Albania" ? "ALL" : country.currency}{" "}
                 <FontAwesomeIcon icon={faArrowRight} />{" "}
                 {(1 / exchangeRate).toString().slice(0, 7)}{" "}
@@ -198,6 +200,7 @@ const Country: FC<Props> = ({
           )
         ) : null}
       </div>
+      
     </>
   );
 };

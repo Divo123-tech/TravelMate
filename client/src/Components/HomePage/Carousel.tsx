@@ -37,7 +37,7 @@ const CarouselComponent: FC = () => {
         visible: { opacity: 1 },
       }}
     >
-      <Carousel className="md:h-full">
+      <Carousel className="md:h-full" indicators={false}>
         {[Carousel1, Carousel2, Carousel3].map((src, index) => (
           <Carousel.Item key={index} interval={5000}>
             <img
@@ -59,7 +59,7 @@ const CarouselComponent: FC = () => {
           </p>
         </div>
 
-        <div className="flex flex-col xs:flex-row gap-4 xs:gap-8 md:gap-24 lg:gap-48 w-full px-4 xs:px-0 justify-around">
+        <div className="flex flex-col xs:flex-row gap-1 xs:gap-8 md:gap-24 lg:gap-48 w-full px-4 xs:px-0 justify-around">
           {[
             {
               text: "Explore",

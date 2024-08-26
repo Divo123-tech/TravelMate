@@ -369,7 +369,7 @@ const ExploreLocations: FC = () => {
               {countries ? (
                 countries.length > 0 ? (
                   <motion.div
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center gap-4"
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.25 }}
@@ -380,7 +380,7 @@ const ExploreLocations: FC = () => {
                       return (
                         <motion.div
                           layout
-                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row  justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20  w-full"
+                          className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center items-center gap-8 sm:gap-12 md:gap-20 w-full"
                           key={country.iso2}
                         >
                           <Country

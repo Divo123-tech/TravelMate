@@ -32,7 +32,7 @@ const Review: FC<Props> = ({ imgSrc, name, title, body }: Props) => {
         ))}
       </div>
       {/* Display the review title in bold */}
-      <p className="font-bold font-Raleway">"{title}"</p>
+      <p className="font-bold font-Raleway text-center">"{title}"</p>
       {/* Display the body of the review */}
       <p className="text-sm md:text-base font-Rethink">{body}</p>
     </motion.div>

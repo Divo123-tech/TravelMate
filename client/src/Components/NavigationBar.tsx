@@ -52,7 +52,9 @@ const NavigationBar: FC = () => {
         expand="lg"
       >
         <Container className="flex">
-          <img src={logo} className="w-[150px]" />
+          <Link to={"/"}>
+            <img src={logo} className="w-[150px]" />
+          </Link>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
