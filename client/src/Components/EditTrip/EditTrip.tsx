@@ -313,7 +313,7 @@ const EditTrip: FC = () => {
                   return (
                     <motion.div
                       layout
-                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-20 w-full pr-8"
+                      className="bg-turquoise dark:bg-oxford-blue flex flex-col md:flex-row justify-center mb-4 items-center gap-8 sm:gap-12 md:gap-16  w-full"
                       key={city.name}
                     >
                       <City city={city} />
